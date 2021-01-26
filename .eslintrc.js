@@ -6,5 +6,6 @@ module.exports = {
   "rules": {
     "quotes": ["error", "double"],
     'prettier/prettier': 0,
+    "react-hooks/exhaustive-deps": 0,
   }
 };
