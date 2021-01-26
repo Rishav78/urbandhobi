@@ -12,7 +12,6 @@ import {
 export interface ButtonProps extends TouchableOpacityProps {
   title?: string;
   transparent?: boolean;
-  contentContainerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
 }
 
