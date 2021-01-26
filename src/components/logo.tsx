@@ -1,10 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
 
-export const AppLogo = () => {
+export interface AppLogoProps {
+  contentContainerStyle?: ViewStyle;
+  iconStyle?: TextStyle;
+}
+
+export const AppLogo: React.FC<AppLogoProps> = ({
+  contentContainerStyle = {},
+  iconStyle = {},
+}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.symbol}>U</Text>
+    <View style={[styles.container, contentContainerStyle]}>
+      <Text style={[styles.symbol, iconStyle]}>UD</Text>
     </View>
   );
 };
@@ -21,7 +29,8 @@ const styles = StyleSheet.create({
   },
   symbol: {
     color: "#fff",
-    fontSize: 40,
+    fontSize: 35,
+    fontWeight: "bold",
   },
 });
 
