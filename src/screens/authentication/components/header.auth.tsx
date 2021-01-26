@@ -1,12 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "../../../components";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export const AuthHeaderLeft = () => {
   return (
-    <></>
+    <AntDesign
+      name="arrowleft"
+      size={24}
+      style={leftStyles.icon}
+      color="black"
+    />
   );
 };
+
+export const leftStyles = StyleSheet.create({
+  icon: {
+    marginLeft: 15,
+  },
+});
 
 export const AuthHeaderRight = () => {
   return (

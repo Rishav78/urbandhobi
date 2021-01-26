@@ -1,22 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
-import { SigninMethod } from "../../../@types";
 import { AppLogo } from "../../../components";
 import { colors } from "../../../lib/constants";
 
 export interface SigninHeadingProps {
-  method?: SigninMethod;
   contentContainerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   subTitleStyle?: TextStyle;
+  title: string;
+  subTitle: string;
 }
 
-const subHeading = {
-  email: "LOGIN with your email and password",
-};
-
 export const Heading: React.FC<SigninHeadingProps> = ({ 
-  method = "email",
+  title,
+  subTitle,
   contentContainerStyle = {},
   titleStyle = {},
   subTitleStyle = {},
@@ -25,8 +22,8 @@ export const Heading: React.FC<SigninHeadingProps> = ({
     <>
       <View style={[styles.container, contentContainerStyle]}>
         <View style={styles.headings}>
-          <Text style={[styles.title, titleStyle]}>LOGIN</Text>
-          <Text style={[styles.subTitle, subTitleStyle]}>{subHeading[method]}</Text>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          <Text style={[styles.subTitle, subTitleStyle]}>{subTitle}</Text>
         </View>
         <View>
           <AppLogo />
