@@ -51,7 +51,10 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
 
   return (
     <View style={styles.container}>
-      <Heading contentContainerStyle={styles.heading} method="email" />
+      <Heading
+        title="LOGIN"
+        subTitle="LOGIN with your email and password"
+        contentContainerStyle={styles.heading} />
       <Seperator contentContainerStyle={styles.seprator} />
       <View style={styles.form}>
         <Input
