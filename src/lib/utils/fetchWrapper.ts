@@ -1,6 +1,6 @@
-import {ReqMethod} from "../../@types";
+import { APIError, ReqMethod, Response } from "../../@types";
 
-export class fetchWrapper<Body=any, Res=any> {
+export class fetchWrapper<Body = any, Res = any> {
   private url!: string;
   private method!: ReqMethod;
   private authReq: boolean;
@@ -47,7 +47,6 @@ export class fetchWrapper<Body=any, Res=any> {
     if (this.authReq) {
       // get stored token
     }
-    console.log(this.url, this.method);
     const res = await fetch(this.url, {
       method: this.method,
       body: this.data,
@@ -56,8 +55,12 @@ export class fetchWrapper<Body=any, Res=any> {
         Authorization: token,
       },
     });
-    const data: Res = await res.json();
-    return data;
+    const data: Response<Res | APIError> = await res.json();
+    if (data.code >= 400 && data.code <= 500) {
+      const { error } = data.data as APIError;
+      throw new Error(error);
+    }
+    return data.data as Res;
   }
 }
 

@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { APIError, FieldData, Response, SigninResponse } from "../../@types";
-import { Seperator, Input, Button } from "../../components";
-import { useForm } from "../../hooks/form";
-import { api } from "../../lib/config";
-import { Heading } from "./components";
+import { FieldData, SigninResponse } from "../../../@types";
+import { Seperator, Input, Button } from "../../../components";
+import { useForm } from "../../../hooks/form";
+import { api } from "../../../lib/config";
+import { Heading } from "../components";
 
 export interface SigninForm {
   username: string;
@@ -40,15 +40,12 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   }, []);
 
   const onSubmit = useCallback(async () => {
-    const res = await submit<Response<SigninResponse | APIError>>();
-    if (res.code === 200) {
-      const r = res.data as SigninResponse;
+    try {
+      await submit<SigninResponse>();
       Alert.alert("Success");
-      console.log(r.token);
     }
-    else {
-      const {error} = res.data as APIError;
-      Alert.alert(error);
+    catch (error) {
+      Alert.alert(error.message);
     }
   }, []);
 
@@ -99,5 +96,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 15,
+    marginBottom: 10,
   },
 });

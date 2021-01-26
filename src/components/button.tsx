@@ -6,17 +6,22 @@ import {
   TouchableOpacity,
   ViewStyle,
   TouchableOpacityProps,
+  TextStyle,
 } from "react-native";
 
 export interface ButtonProps extends TouchableOpacityProps {
   title?: string;
+  transparent?: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   title,
-  style,
+  style = {},
+  textStyle = {},
+  transparent,
   activeOpacity = 0.9,
   ...rest
 }) => {
@@ -29,6 +34,9 @@ export const Button: React.FC<ButtonProps> = ({
     else {
       buttonStyle.push(styles.containerEnable);
     }
+    if (transparent) {
+      buttonStyle.push(styles.transparent);
+    }
     return buttonStyle;
   }, [rest.disabled]);
 
@@ -39,7 +47,7 @@ export const Button: React.FC<ButtonProps> = ({
       style={[getButtonStyle(), style]}
     >
       { children ? children :
-        <Text style={styles.text}>{title}</Text>
+        <Text style={[styles.text, textStyle]}>{title}</Text>
       }
     </TouchableOpacity>
   );
@@ -58,6 +66,11 @@ const styles = StyleSheet.create({
   },
   containerEnable: {
     backgroundColor: "#737373",
+  },
+  transparent: {
+    backgroundColor: "transparent",
+    elevation: 0,
+    color: "#333",
   },
   text: {
     fontSize: 18,
