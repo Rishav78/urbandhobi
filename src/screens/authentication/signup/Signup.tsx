@@ -29,7 +29,7 @@ const fields: FieldData[] = [
 ];
 
 export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { data, setFieldValue, submit } = useForm(api.auth.SIGNIN, "POST", fields);
+  const { data, setFieldValue, submit } = useForm(api.auth.SIGNUP, "POST", fields);
   const [confirm, setConfirm] = useState<string>("");
 
   const onEmailChangeHandler = useCallback((text: string) => {
