@@ -9,15 +9,14 @@
  */
 
 import React from "react";
-import { StatusBar } from "react-native";
-import { Signin } from "./src/screens/Signin";
+import { NavigationContainer } from "@react-navigation/native";
+import { MainStackNavigation } from "./src/navigation";
 
-const App = () => {
+const App: React.FC<{}> = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <Signin />
-    </>
+    <NavigationContainer>
+      <MainStackNavigation />
+    </NavigationContainer>
   );
 };
 
