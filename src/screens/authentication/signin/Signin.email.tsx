@@ -20,16 +20,21 @@ const fields: FieldData[] = [
     name: "username",
     type: "email",
     value: "",
+    validate: true,
   },
   {
     name: "password",
     type: "password",
     value: "",
+    validate: true,
   },
 ];
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const { data, setFieldValue, submit } = useForm(api.auth.SIGNIN, "POST", fields);
+
+  const username = data.username.value;
+  const password = data.password.value;
 
   const onEmailChangeHandler = useCallback((text: string) => {
     setFieldValue<string>("username", text);
@@ -59,13 +64,13 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
       <View style={styles.form}>
         <Input
           onChangeText={onEmailChangeHandler}
-          value={data.username}
+          value={username}
           style={[styles.input]}
           placeholder="Email" />
 
         <Input
           onChangeText={onPasswordChangeHandler}
-          value={data.password}
+          value={password}
           style={[styles.input]}
           placeholder="Password" />
       </View>

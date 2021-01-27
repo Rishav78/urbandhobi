@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { FieldData, SigninResponse } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
 import { useForm } from "../../../hooks/form";
 import { api } from "../../../lib/config";
+import { getValidator } from "../../../lib/helpers/validator";
 import { Heading } from "../components";
 
 export interface SigninForm {
@@ -26,11 +27,25 @@ const fields: FieldData[] = [
     type: "password",
     value: "",
   },
+  {
+    name: "confirm",
+    type: "string",
+    value: "",
+    validator: (confirm, data) => {
+      getValidator()
+        .comparePassword(data.password.value, confirm);
+      return true;
+    },
+    send: false,
+  },
 ];
 
 export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const { data, setFieldValue, submit } = useForm(api.auth.SIGNUP, "POST", fields);
-  const [confirm, setConfirm] = useState<string>("");
+
+  const username = data.username.value;
+  const password = data.password.value;
+  const confirm = data.confirm.value;
 
   const onEmailChangeHandler = useCallback((text: string) => {
     setFieldValue<string>("username", text);
@@ -41,24 +56,18 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   }, []);
 
   const onConfirmChangeHandler = useCallback((text: string) => {
-    setConfirm(text);
+    setFieldValue("confirm", text);
   }, []);
 
   const onSubmit = useCallback(async () => {
     try {
-      if (!confirm) {
-        throw new Error("Confirm password can not be empty");
-      }
-      if (confirm !== data.password) {
-        throw new Error("password does not match");
-      }
       await submit<SigninResponse>();
       Alert.alert("Success");
     }
     catch (error) {
       Alert.alert(error.message);
     }
-  }, [data, confirm]);
+  }, [confirm]);
 
   return (
     <View style={styles.container}>
@@ -70,13 +79,13 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
       <View style={styles.form}>
         <Input
           onChangeText={onEmailChangeHandler}
-          value={data.username}
+          value={username}
           style={[styles.input]}
           placeholder="Email" />
 
         <Input
           onChangeText={onPasswordChangeHandler}
-          value={data.password}
+          value={password}
           style={[styles.input]}
           placeholder="Password" />
 
