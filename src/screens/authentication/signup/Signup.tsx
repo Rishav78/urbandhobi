@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { FieldData, SigninResponse } from "../../../@types";
+import { SigninResponse } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
-import { useForm } from "../../../hooks/form";
+import { useForm, UseFormProps } from "../../../hooks/form";
 import { api } from "../../../lib/config";
 import { getValidator } from "../../../lib/helpers/validator";
 import { Heading } from "../components";
@@ -16,47 +16,49 @@ export interface SigninWithEmailProps {
   a?: string;
 }
 
-const fields: FieldData[] = [
-  {
-    name: "username",
-    type: "email",
-    value: "",
-  },
-  {
-    name: "password",
-    type: "password",
-    value: "",
-  },
-  {
-    name: "confirm",
-    type: "string",
-    value: "",
-    validator: (confirm, data) => {
-      getValidator()
-        .comparePassword(data.password.value, confirm);
-      return true;
+const form: UseFormProps = {
+  action: api.auth.SIGNUP,
+  method: "POST",
+  fields: [
+    {
+      name: "username",
+      type: "email",
+      value: "",
     },
-    send: false,
-  },
-];
+    {
+      name: "password",
+      type: "password",
+      value: "",
+    },
+    {
+      name: "confirm",
+      type: "string",
+      value: "",
+      validator: (confirm, data) => {
+        getValidator()
+          .comparePassword(data.password.value, confirm);
+        return true;
+      },
+      send: false,
+    },
+  ],
+};
 
 export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { data, setFieldValue, submit } = useForm(api.auth.SIGNUP, "POST", fields);
+  const { fieldValue, setValue, submit } = useForm(form);
 
-  const username = data.username.value;
-  const password = data.password.value;
-  const confirm = data.confirm.value;
+  const {username, password, confirm} = fieldValue;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setFieldValue<string>("username", text);
+    setValue<string>("username", text);
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
-    setFieldValue<string>("password", text);
+    setValue<string>("password", text);
   }, []);
 
   const onConfirmChangeHandler = useCallback((text: string) => {
-    setFieldValue("confirm", text);
+    setValue("confirm", text);
   }, []);
 
   const onSubmit = useCallback(async () => {

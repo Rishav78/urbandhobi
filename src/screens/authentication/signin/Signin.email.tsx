@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { FieldData, SigninResponse } from "../../../@types";
+import { SigninResponse } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
-import { useForm } from "../../../hooks/form";
+import { useForm, UseFormProps } from "../../../hooks/form";
 import { api } from "../../../lib/config";
 import { Heading } from "../components";
 
@@ -15,33 +15,36 @@ export interface SigninWithEmailProps {
   a?: string;
 }
 
-const fields: FieldData[] = [
-  {
-    name: "username",
-    type: "email",
-    value: "",
-    validate: true,
-  },
-  {
-    name: "password",
-    type: "password",
-    value: "",
-    validate: true,
-  },
-];
+const form: UseFormProps = {
+  action: api.auth.SIGNIN,
+  method: "POST",
+  fields: [
+    {
+      name: "username",
+      type: "email",
+      value: "",
+      validate: true,
+    },
+    {
+      name: "password",
+      type: "password",
+      value: "",
+      validate: true,
+    },
+  ],
+};
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { data, setFieldValue, submit } = useForm(api.auth.SIGNIN, "POST", fields);
+  const { fieldValue, setValue, submit } = useForm(form);
 
-  const username = data.username.value;
-  const password = data.password.value;
+  const {username, password} = fieldValue;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setFieldValue<string>("username", text);
+    setValue<string>("username", text);
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
-    setFieldValue<string>("password", text);
+    setValue<string>("password", text);
   }, []);
 
   const onSubmit = useCallback(async () => {

@@ -4,58 +4,54 @@ import { FieldData, Data } from "../@types";
 import { getValidator } from "../lib/helpers/validator";
 import { getFetchWrapper } from "../lib/utils";
 
-export interface FieldValue {
-  [key: string]: any;
+export interface UseFormProps {
+  action: string;
+  method: ReqMethod;
+  fields: Array<FieldData>;
 }
+type FieldsValue={[key: string]: any};
 
-export const useForm = (
-  url: string,
-  method: ReqMethod,
-  fields: Array<FieldData>,
-) => {
-  const [data, setData] = useState<Data>(() => {
-    const newDataState: Data = {};
+export const useForm = ({
+  action,
+  method,
+  fields,
+}: UseFormProps) => {
+  const [data] = useState(() => {
+    const newState: Data = {};
     fields.forEach(field => {
-      newDataState[field.name] = field;
+      newState[field.name] = field;
     });
-    return newDataState;
+    return newState;
   });
 
-  const dataRef = useRef<Data>(data);
-  dataRef.current = data;
+  const [fieldValue, setFieldValue] = useState<FieldsValue>(() => {
+    const newState: FieldsValue = {};
+    fields.forEach(field => (newState[field.name] = field.value));
+    return newState;
+  });
+
+  const fieldValueRef = useRef(fieldValue);
+  fieldValueRef.current = fieldValue;
 
   const validate = useCallback(() => {
-    const d = dataRef.current;
+    const d = fieldValueRef.current;
     const validator = getValidator();
     fields.forEach(field => {
       if (field.validate === false) {return;}
       if (field.validator) {
-        field.validator(d[field.name].value, d);
+        field.validator(d[field.name], d);
       }
       else {
-        validator.validate(d[field.name].value, field.type);
+        validator.validate(d[field.name], field.type);
       }
     });
   }, [data]);
 
-  const getFieldValue = useCallback((field: string): any => {
-    const d = dataRef.current!;
-    if (d[field]) {
-      return d[field].value;
-    }
-  }, [data]);
-
-  const getField = useCallback((field: string): FieldData => data[field], [data]);
-
-  const setFieldValue = useCallback(<Field>(name: string, value: Field, checkValidation: boolean = false): boolean | undefined => {
-    setData(prevState => {
-      const newState = { ...prevState };
-      newState[name].value = value;
-      return newState;
-    });
+  const setValue = useCallback(<Value=any>(name: string, value: Value, checkValidation: boolean = false): boolean | undefined => {
+    setFieldValue(prevState => ({...prevState, [name]: value}));
     if (checkValidation) {
       try {
-        getValidator().validate(value, dataRef.current![name].type);
+        getValidator().validate(value, fieldValueRef.current![name].type);
         return true;
       }
       catch (error) {
@@ -67,23 +63,15 @@ export const useForm = (
   const submit = useCallback(async <Res = any>() => {
     // validate all the value
     validate();
-    const d: { [key: string]: any } = {};
-    fields.forEach(field => {
-      if (field.send !== false) {
-        d[field.name] = dataRef.current[field.name].value;
-      }
-    });
-    const res = await getFetchWrapper<any, Res>(url, method)
-      .setData(d)
+    const res = await getFetchWrapper<any, Res>(action, method)
+      .setData(fieldValueRef.current)
       .send();
     return res;
-  }, [url, method]);
+  }, [action, method]);
 
   return {
-    getFieldValue,
-    getField,
-    setFieldValue,
+    setValue,
     submit,
-    data,
+    fieldValue,
   };
 };
