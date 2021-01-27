@@ -11,9 +11,7 @@ export interface SigninForm {
   password: string;
 }
 
-export interface SigninWithEmailProps {
-  a?: string;
-}
+export interface SigninWithEmailProps {}
 
 const form: UseFormProps = {
   action: api.auth.SIGNIN,
@@ -35,9 +33,10 @@ const form: UseFormProps = {
 };
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { fieldValue, setValue, submit } = useForm(form);
+  const { fieldValue, setValue, submit, error } = useForm(form);
 
   const {username, password} = fieldValue;
+  const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
     setValue<string>("username", text);
@@ -78,6 +77,7 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
           placeholder="Password" />
       </View>
       <Button
+        disabled={disable}
         onPress={onSubmit}
         style={styles.button}
         title="LOGIN" />

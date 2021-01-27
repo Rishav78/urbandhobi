@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
 import { SigninWithEmailScreen, StartingScreen } from "../screens/authentication";
-import { AuthHeaderRight } from "../screens/authentication/components/header.auth";
+// import { AuthHeaderRight } from "../screens/authentication/components/header.auth";
 
 import {styles as authHeaderStyles} from "../screens/authentication/components";
 import { SignupWithEmailScreen } from "../screens/authentication/signup";
@@ -24,7 +24,6 @@ export const MainStackNavigation = () => {
         component={SigninWithEmailScreen}
         options={({}) => ({
           headerTitle: screens.signin.title,
-          headerRight: AuthHeaderRight,
           headerStyle: authHeaderStyles.container,
         })}
       />
@@ -33,7 +32,6 @@ export const MainStackNavigation = () => {
         component={SignupWithEmailScreen}
         options={({}) => ({
           headerTitle: screens.signup.title,
-          headerRight: AuthHeaderRight,
           headerStyle: authHeaderStyles.container,
         })}
       />

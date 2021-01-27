@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from "react";
-import { ReqMethod } from "../@types";
+import { FieldsValue, ReqMethod } from "../@types";
 import { FieldData, Data } from "../@types";
 import { getValidator } from "../lib/helpers/validator";
 import { getFetchWrapper } from "../lib/utils";
@@ -9,7 +9,12 @@ export interface UseFormProps {
   method: ReqMethod;
   fields: Array<FieldData>;
 }
-type FieldsValue={[key: string]: any};
+
+export interface FormError {
+  error: boolean;
+  message?: string | null;
+}
+
 
 export const useForm = ({
   action,
@@ -24,6 +29,8 @@ export const useForm = ({
     return newState;
   });
 
+  const [error, setError] = useState<FormError>({ error: true });
+
   const [fieldValue, setFieldValue] = useState<FieldsValue>(() => {
     const newState: FieldsValue = {};
     fields.forEach(field => (newState[field.name] = field.value));
@@ -35,34 +42,36 @@ export const useForm = ({
 
   const validate = useCallback(() => {
     const d = fieldValueRef.current;
+    console.log(d)
     const validator = getValidator();
-    fields.forEach(field => {
-      if (field.validate === false) {return;}
-      if (field.validator) {
-        field.validator(d[field.name], d);
-      }
-      else {
-        validator.validate(d[field.name], field.type);
-      }
-    });
-  }, [data]);
-
-  const setValue = useCallback(<Value=any>(name: string, value: Value, checkValidation: boolean = false): boolean | undefined => {
-    setFieldValue(prevState => ({...prevState, [name]: value}));
-    if (checkValidation) {
+    for (const field of fields) {
+      if (field.validate === false) { return; }
       try {
-        getValidator().validate(value, fieldValueRef.current![name].type);
-        return true;
+        if (field.validator) {
+          field.validator(d[field.name], d);
+        }
+        else {
+          validator.validate(d[field.name], field.type);
+        }
       }
-      catch (error) {
-        return false;
+      catch (err) {
+        setError({error: true, message: err.message});
+        return;
       }
     }
+    setError({error: false, message: null});
+  }, [data, fieldValue]);
+
+  const setValue = useCallback(<Value = any>(name: string, value: Value) => {
+    setFieldValue(prevState => {
+      const newState = { ...prevState, [name]: value };
+      fieldValueRef.current = newState;
+      return newState;
+    });
+    validate();
   }, []);
 
   const submit = useCallback(async <Res = any>() => {
-    // validate all the value
-    validate();
     const res = await getFetchWrapper<any, Res>(action, method)
       .setData(fieldValueRef.current)
       .send();
@@ -73,5 +82,6 @@ export const useForm = ({
     setValue,
     submit,
     fieldValue,
+    error,
   };
 };

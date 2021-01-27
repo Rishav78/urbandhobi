@@ -36,7 +36,7 @@ const form: UseFormProps = {
       value: "",
       validator: (confirm, data) => {
         getValidator()
-          .comparePassword(data.password.value, confirm);
+          .comparePassword(data.password, confirm);
         return true;
       },
       send: false,
@@ -45,9 +45,12 @@ const form: UseFormProps = {
 };
 
 export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { fieldValue, setValue, submit } = useForm(form);
+  const { fieldValue, setValue, submit, error } = useForm(form);
 
   const {username, password, confirm} = fieldValue;
+  const disable = error.error;
+
+  // console.log(error);
 
   const onEmailChangeHandler = useCallback((text: string) => {
     setValue<string>("username", text);
@@ -66,8 +69,8 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
       await submit<SigninResponse>();
       Alert.alert("Success");
     }
-    catch (error) {
-      Alert.alert(error.message);
+    catch (err) {
+      Alert.alert(err.message);
     }
   }, [confirm]);
 
@@ -98,6 +101,7 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
           placeholder="Confirm Password" />
       </View>
       <Button
+        disabled={disable}
         onPress={onSubmit}
         style={styles.button}
         title="CREATE ACCOUNT" />
