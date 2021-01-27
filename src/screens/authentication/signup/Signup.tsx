@@ -50,8 +50,6 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const {username, password, confirm} = fieldValue;
   const disable = error.error;
 
-  // console.log(error);
-
   const onEmailChangeHandler = useCallback((text: string) => {
     setValue<string>("username", text);
   }, []);
@@ -85,18 +83,23 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
         <Input
           onChangeText={onEmailChangeHandler}
           value={username}
+          contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Email" />
 
         <Input
           onChangeText={onPasswordChangeHandler}
           value={password}
+          secureTextEntry
+          contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Password" />
 
         <Input
           onChangeText={onConfirmChangeHandler}
           value={confirm}
+          secureTextEntry
+          contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Confirm Password" />
       </View>
@@ -125,9 +128,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     flex: 1,
   },
+  inputContainer: {
+    marginBottom: 15,
+  },
   input: {
-    marginBottom: 20,
-    paddingVertical: 8,
+    padding: 0,
   },
   button: {
     marginHorizontal: 15,

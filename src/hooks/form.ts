@@ -42,7 +42,6 @@ export const useForm = ({
 
   const validate = useCallback(() => {
     const d = fieldValueRef.current;
-    console.log(d)
     const validator = getValidator();
     for (const field of fields) {
       if (field.validate === false) { return; }

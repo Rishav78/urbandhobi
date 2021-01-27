@@ -67,12 +67,16 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
         <Input
           onChangeText={onEmailChangeHandler}
           value={username}
+          keyboardType="email-address"
+          contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Email" />
 
         <Input
           onChangeText={onPasswordChangeHandler}
           value={password}
+          secureTextEntry
+          contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Password" />
       </View>
@@ -101,9 +105,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     flex: 1,
   },
+  inputContainer: {
+    marginBottom: 15,
+  },
   input: {
-    marginBottom: 20,
-    paddingVertical: 8,
+    padding: 0,
   },
   button: {
     marginHorizontal: 15,

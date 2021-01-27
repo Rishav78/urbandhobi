@@ -5,9 +5,9 @@ import {
   TextInput,
   TextInputProps,
   ViewStyle,
-  StyleProp,
-  TextStyle,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Entypo from "react-native-vector-icons/Entypo";
 
 export interface Input extends TextInputProps {
   contentContainerStyle?: ViewStyle;
@@ -16,9 +16,11 @@ export interface Input extends TextInputProps {
 export const Input: React.FC<Input> = ({
   contentContainerStyle = {},
   style = {},
+  secureTextEntry,
   ...textinput
 }) => {
   const [isfocus, setFocus] = useState<boolean>(false);
+  const [hidePassword, setHidePassword] = useState(true);
 
   const onFocusIn = useCallback(() => {
     setFocus(true);
@@ -28,37 +30,63 @@ export const Input: React.FC<Input> = ({
     setFocus(false);
   }, []);
 
-  const getInputStyles = useCallback(() => {
-    const inputStyle: StyleProp<TextStyle> = [styles.input];
-    if (isfocus) {
-      inputStyle.push(styles.inputFocus);
-    }
-    else {
-      inputStyle.push(styles.inputBlur);
-    }
-    return inputStyle;
-  }, [isfocus]);
+  const passwordShowAndHide = useCallback(() => {
+    setHidePassword(prevState => !prevState);
+  }, []);
 
   return (
-    <View style={[contentContainerStyle]}>
-      <TextInput
-        {...textinput}
-        style={[getInputStyles(), style]}
-        onFocus={onFocusIn}
-        onBlur={onFocusOut}
-      />
+    <View style={[
+      styles.container,
+      contentContainerStyle,
+      isfocus ? styles.containerFocus : styles.containerBlur,
+    ]}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          {...textinput}
+          secureTextEntry={secureTextEntry === true ? hidePassword : undefined}
+          style={[styles.input, style]}
+          onFocus={onFocusIn}
+          onBlur={onFocusOut}
+        />
+      </View>
+      {secureTextEntry &&
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={passwordShowAndHide}>
+          {hidePassword ?
+            <Entypo
+              name="eye"
+              size={24}
+              color="black" /> :
+            <Entypo
+              name="eye-with-line"
+              size={24}
+              color="black" />
+          }
+        </TouchableOpacity>
+      }
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
+    paddingHorizontal: 8,
   },
-  inputFocus: {
+  containerFocus: {
     borderBottomColor: "#333",
   },
-  inputBlur: {
+  containerBlur: {
     borderBottomColor: "#B6B6B6",
+  },
+  inputContainer: {
+    flex: 1,
+  },
+  input: {
+    paddingVertical: 10,
   },
 });
