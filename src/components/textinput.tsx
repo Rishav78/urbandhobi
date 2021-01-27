@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, memo } from "react";
 import {
   StyleSheet,
   View,
@@ -13,7 +13,7 @@ export interface Input extends TextInputProps {
   contentContainerStyle?: ViewStyle;
 }
 
-export const Input: React.FC<Input> = ({
+export const Input: React.FC<Input> = memo(({
   contentContainerStyle = {},
   style = {},
   secureTextEntry,
@@ -67,7 +67,7 @@ export const Input: React.FC<Input> = ({
       }
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

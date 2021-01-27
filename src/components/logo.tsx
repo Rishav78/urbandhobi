@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
 
 export interface AppLogoProps {
@@ -6,7 +6,7 @@ export interface AppLogoProps {
   iconStyle?: TextStyle;
 }
 
-export const AppLogo: React.FC<AppLogoProps> = ({
+export const AppLogo: React.FC<AppLogoProps> = memo(({
   contentContainerStyle = {},
   iconStyle = {},
 }) => {
@@ -15,7 +15,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       <Text style={[styles.symbol, iconStyle]}>UD</Text>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

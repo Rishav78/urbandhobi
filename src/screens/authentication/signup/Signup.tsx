@@ -83,6 +83,7 @@ export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
         <Input
           onChangeText={onEmailChangeHandler}
           value={username}
+          keyboardType="email-address"
           contentContainerStyle={styles.inputContainer}
           style={[styles.input]}
           placeholder="Email" />

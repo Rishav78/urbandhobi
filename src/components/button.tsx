@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -15,7 +15,7 @@ export interface ButtonProps extends TouchableOpacityProps {
   textStyle?: StyleProp<TextStyle>;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = memo(({
   children,
   title,
   style = {},
@@ -50,7 +50,7 @@ export const Button: React.FC<ButtonProps> = ({
       }
     </TouchableOpacity>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { StyleSheet, View, ViewStyle } from "react-native";
 
 export interface SeperatorProps {
@@ -6,7 +6,7 @@ export interface SeperatorProps {
   contentContainerStyle?: ViewStyle;
 }
 
-export const Seperator: React.FC<SeperatorProps> = ({ 
+export const Seperator: React.FC<SeperatorProps> = memo(({
   style = {},
   contentContainerStyle = {},
 }) => {
@@ -15,7 +15,7 @@ export const Seperator: React.FC<SeperatorProps> = ({
       <View style={[styles.line, style]} />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
