@@ -4,13 +4,13 @@ import { screens } from "../lib/constants";
 
 export const useNavigate = () => {
   const navigation = useNavigation();
-
+  const {authStack: {screen}} = screens;
   const navigateToSignin = useCallback(() => {
-    navigation.navigate(screens.signin.name);
+    navigation.navigate(screen.signin.name);
   }, []);
 
   const navigateToSignup = useCallback(() => {
-    navigation.navigate(screens.signup.name);
+    navigation.navigate(screen.signup.name);
   }, []);
 
   return {

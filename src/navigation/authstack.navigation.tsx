@@ -2,39 +2,40 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
 import { SigninWithEmailScreen, StartingScreen } from "../screens/authentication";
-// import { AuthHeaderRight } from "../screens/authentication/components/header.auth";
 
 import {styles as authHeaderStyles} from "../screens/authentication/components";
 import { SignupWithEmailScreen } from "../screens/authentication/signup";
 
-const MainStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
-export const MainStackNavigation = () => {
+const {authStack: {screen}} = screens;
+
+export const AuthStackNavigation = () => {
   return (
-    <MainStack.Navigator>
-      <MainStack.Screen
-        name={screens.starting.name}
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        name={screen.starting.name}
         component={StartingScreen}
         options={({}) => ({
           headerShown: false,
         })}
       />
-      <MainStack.Screen
-        name={screens.signin.name}
+      <AuthStack.Screen
+        name={screen.signin.name}
         component={SigninWithEmailScreen}
         options={({}) => ({
-          headerTitle: screens.signin.title,
+          headerTitle: screen.signin.title,
           headerStyle: authHeaderStyles.container,
         })}
       />
-      <MainStack.Screen
-        name={screens.signup.name}
+      <AuthStack.Screen
+        name={screen.signup.name}
         component={SignupWithEmailScreen}
         options={({}) => ({
-          headerTitle: screens.signup.title,
+          headerTitle: screen.signup.title,
           headerStyle: authHeaderStyles.container,
         })}
       />
-    </MainStack.Navigator>
+    </AuthStack.Navigator>
   );
 };
