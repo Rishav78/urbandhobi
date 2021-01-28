@@ -15,12 +15,12 @@ export interface FormError {
   message?: string | null;
 }
 
-
-export const useForm = ({
+export const useForm = <Values>({
   action,
   method,
   fields,
-}: UseFormProps) => {
+}: UseFormProps,
+  defaultValues: Values) => {
   const [data] = useState(() => {
     const newState: Data = {};
     fields.forEach(field => {
@@ -31,17 +31,13 @@ export const useForm = ({
 
   const [error, setError] = useState<FormError>({ error: true });
 
-  const [fieldValue, setFieldValue] = useState<FieldsValue>(() => {
-    const newState: FieldsValue = {};
-    fields.forEach(field => (newState[field.name] = field.value));
-    return newState;
-  });
+  const [fieldValue, setFieldValue] = useState<Values>(defaultValues);
 
   const fieldValueRef = useRef(fieldValue);
   fieldValueRef.current = fieldValue;
 
   const validate = useCallback(() => {
-    const d = fieldValueRef.current;
+    const d = fieldValueRef.current as FieldsValue;
     const validator = getValidator();
     for (const field of fields) {
       if (field.validate === false) { return; }
@@ -54,11 +50,11 @@ export const useForm = ({
         }
       }
       catch (err) {
-        setError({error: true, message: err.message});
+        setError({ error: true, message: err.message });
         return;
       }
     }
-    setError({error: false, message: null});
+    setError({ error: false, message: null });
   }, [data, fieldValue]);
 
   const setValue = useCallback(<Value = any>(name: string, value: Value) => {
@@ -70,8 +66,8 @@ export const useForm = ({
     validate();
   }, []);
 
-  const getValue = useCallback(<Value=any>(): Value => {
-    return fieldValueRef.current as Value;
+  const getValue = useCallback((): Values => {
+    return fieldValueRef.current;
   }, []);
 
   const submit = useCallback(async <Res = any>() => {

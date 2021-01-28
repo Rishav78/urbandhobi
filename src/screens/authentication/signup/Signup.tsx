@@ -13,9 +13,7 @@ export interface SignupForm {
   confirm: string;
 }
 
-export interface SigninWithEmailProps {
-  a?: string;
-}
+export interface SignupWithEmailProps {}
 
 const form: UseFormProps = {
   action: api.auth.SIGNUP,
@@ -24,17 +22,14 @@ const form: UseFormProps = {
     {
       name: "username",
       type: "email",
-      value: "",
     },
     {
       name: "password",
       type: "password",
-      value: "",
     },
     {
       name: "confirm",
       type: "string",
-      value: "",
       validator: (confirm, data) => {
         getValidator()
           .comparePassword(data.password, confirm);
@@ -45,10 +40,10 @@ const form: UseFormProps = {
   ],
 };
 
-export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { getValue, setValue, submit, error } = useForm(form);
+export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
+  const { getValue, setValue, submit, error } = useForm<SignupForm>(form, {username: "", password: "", confirm: ""});
 
-  const {username, password, confirm} = getValue<SignupForm>();
+  const {username, password, confirm} = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {

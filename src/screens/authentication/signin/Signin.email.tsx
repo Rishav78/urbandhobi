@@ -20,22 +20,20 @@ const form: UseFormProps = {
     {
       name: "username",
       type: "email",
-      value: "",
       validate: true,
     },
     {
       name: "password",
       type: "password",
-      value: "",
       validate: true,
     },
   ],
 };
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { getValue, setValue, submit, error } = useForm(form);
+  const { getValue, setValue, submit, error } = useForm<SigninForm>(form, {username: "", password: ""});
 
-  const {username, password} = getValue<SigninForm>();
+  const {username, password} = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
