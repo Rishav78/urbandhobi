@@ -33,9 +33,9 @@ const form: UseFormProps = {
 };
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { fieldValue, setValue, submit, error } = useForm(form);
+  const { getValue, setValue, submit, error } = useForm(form);
 
-  const {username, password} = fieldValue;
+  const {username, password} = getValue<SigninForm>();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
@@ -51,8 +51,8 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
       await submit<SigninResponse>();
       Alert.alert("Success");
     }
-    catch (error) {
-      Alert.alert(error.message);
+    catch (err) {
+      Alert.alert(err.message);
     }
   }, []);
 

@@ -70,6 +70,10 @@ export const useForm = ({
     validate();
   }, []);
 
+  const getValue = useCallback(<Value=any>(): Value => {
+    return fieldValueRef.current as Value;
+  }, []);
+
   const submit = useCallback(async <Res = any>() => {
     const res = await getFetchWrapper<any, Res>(action, method)
       .setData(fieldValueRef.current)
@@ -80,7 +84,7 @@ export const useForm = ({
   return {
     setValue,
     submit,
-    fieldValue,
+    getValue,
     error,
   };
 };

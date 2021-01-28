@@ -7,9 +7,10 @@ import { api } from "../../../lib/config";
 import { getValidator } from "../../../lib/helpers/validator";
 import { Heading } from "../components";
 
-export interface SigninForm {
+export interface SignupForm {
   username: string;
   password: string;
+  confirm: string;
 }
 
 export interface SigninWithEmailProps {
@@ -45,9 +46,9 @@ const form: UseFormProps = {
 };
 
 export const SignupWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
-  const { fieldValue, setValue, submit, error } = useForm(form);
+  const { getValue, setValue, submit, error } = useForm(form);
 
-  const {username, password, confirm} = fieldValue;
+  const {username, password, confirm} = getValue<SignupForm>();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
