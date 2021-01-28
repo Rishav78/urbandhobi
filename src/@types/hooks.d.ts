@@ -5,7 +5,6 @@ export type FieldsValue = { [key: string]: any };
 export interface FieldData {
   name: string;
   type: FormField;
-  value?: any;
   validate?: boolean;
   validator?: (field: string, fields: FieldsValue) => boolean;
   send?: boolean;
