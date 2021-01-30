@@ -1,10 +1,13 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { SigninResponse } from "../../../@types";
+import { useDispatch } from "react-redux";
+import { ResponseToken } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
 import { useForm, UseFormProps } from "../../../hooks/form";
 import { api } from "../../../lib/config";
 import { getValidator } from "../../../lib/helpers/validator";
+import { signIn } from "../../../redux/authentication/auth.action";
 import { Heading } from "../components";
 
 export interface SignupForm {
@@ -41,6 +44,7 @@ const form: UseFormProps = {
 };
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
+  const dispatch = useDispatch();
   const { getValue, setValue, submit, error } = useForm<SignupForm>(form, {username: "", password: "", confirm: ""});
 
   const {username, password, confirm} = getValue();
@@ -60,8 +64,10 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      await submit<SigninResponse>();
-      Alert.alert("Success");
+      const {refreshToken, token} = await submit<ResponseToken>();
+      await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("refreshToken", refreshToken);
+      dispatch(signIn());
     }
     catch (err) {
       Alert.alert(err.message);

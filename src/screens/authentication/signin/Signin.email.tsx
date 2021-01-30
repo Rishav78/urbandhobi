@@ -1,10 +1,13 @@
 import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { View, StyleSheet, Alert } from "react-native";
-import { SigninResponse } from "../../../@types";
+import { ResponseToken } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
 import { useForm, UseFormProps } from "../../../hooks/form";
 import { api } from "../../../lib/config";
 import { Heading } from "../components";
+import { signIn } from "../../../redux/authentication/auth.action";
+import { setTokens } from "../../../lib/helpers";
 
 export interface SigninForm {
   username: string;
@@ -31,6 +34,7 @@ const form: UseFormProps = {
 };
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
+  const dispatch = useDispatch();
   const { getValue, setValue, submit, error } = useForm<SigninForm>(form, {username: "", password: ""});
 
   const {username, password} = getValue();
@@ -46,8 +50,9 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      await submit<SigninResponse>();
-      Alert.alert("Success");
+      const {refreshToken, token} = await submit<ResponseToken>();
+      await setTokens(token, refreshToken);
+      dispatch(signIn());
     }
     catch (err) {
       Alert.alert(err.message);

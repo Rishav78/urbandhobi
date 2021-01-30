@@ -6,6 +6,7 @@ import RootReducer from "./rootReducer";
 const persistConfig: PersistConfig<any> = {
   key: "root",
   storage: AsyncStorage,
+  debug: true,
 };
 
 const persistedReducer = persistReducer(persistConfig, RootReducer);

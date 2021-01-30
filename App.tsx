@@ -13,7 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { MainStackNavigation } from "./src/navigation";
 import { store, persistor } from "./src/redux";
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from "redux-persist/es/integration/react";
 
 const App: React.FC<{}> = () => {
   return (
