@@ -3,8 +3,9 @@ import { APIError, ReqMethod, Response } from "../../@types";
 export class fetchWrapper<Body = any, Res = any> {
   private url!: string;
   private method!: ReqMethod;
-  private authReq: boolean;
   private data?: string;
+  private authToken: string;
+  private refreshToken: string;
 
   constructor(url?: string, method?: ReqMethod) {
     if (url) {
@@ -13,7 +14,8 @@ export class fetchWrapper<Body = any, Res = any> {
     if (method) {
       this.method = method;
     }
-    this.authReq = false;
+    this.authToken = "";
+    this.refreshToken = "";
   }
 
   setURL = (url: string) => {
@@ -26,33 +28,31 @@ export class fetchWrapper<Body = any, Res = any> {
     return this;
   }
 
-  requireAuth = () => {
-    this.authReq = true;
-    return this;
-  }
-
   setData = (data: Body) => {
     this.data = JSON.stringify(data);
     return this;
   }
 
+  setTokens = (authToken: string, refreshToken: string = "") => {
+    this.authToken = authToken;
+    this.refreshToken = refreshToken;
+    return this;
+  }
+
   send = async (): Promise<Res> => {
-    let token: string = "";
     if (!this.url) {
       throw new Error("provide the url");
     }
     if (!this.method) {
       throw new Error("provide the request method type");
     }
-    if (this.authReq) {
-      // get stored token
-    }
     const res = await fetch(this.url, {
       method: this.method,
       body: this.data,
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        "Authorization": this.authToken,
+        "x-refresh-token": this.refreshToken,
       },
     });
     const data: Response<Res | APIError> = await res.json();
