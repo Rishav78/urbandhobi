@@ -4,18 +4,29 @@ import { screens } from "../lib/constants";
 
 export const useNavigate = () => {
   const navigation = useNavigation();
-  const {authStack: {screen}} = screens;
+  const {authStack, homeStack} = screens;
+
   const navigateToSignin = useCallback(() => {
-    navigation.navigate(screen.signin.name);
+    navigation.navigate(authStack.screen.signin.name);
   }, []);
 
   const navigateToSignup = useCallback(() => {
-    navigation.navigate(screen.signup.name);
+    navigation.navigate(authStack.screen.signup.name);
+  }, []);
+
+  const navigateToHome = useCallback(() => {
+    navigation.navigate(homeStack.screen.home.name);
+  }, []);
+
+  const navigateToAddress = useCallback(() => {
+    navigation.navigate(homeStack.screen.address.name);
   }, []);
 
   return {
     navigation,
     navigateToSignin,
     navigateToSignup,
+    navigateToHome,
+    navigateToAddress,
   };
 };

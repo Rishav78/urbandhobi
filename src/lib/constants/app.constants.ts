@@ -24,8 +24,9 @@ export const screens = {
     screen: {
       home: {
         name: "HOME",
-        title: "",
-        subtitle: "",
+      },
+      address: {
+        name: "ADDRESS",
       },
     },
   },

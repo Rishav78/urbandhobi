@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import {
   StyleSheet,
   Animated,
@@ -23,6 +23,7 @@ export type Props = ViewProps & {
 
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
+  headerTitle?: React.ReactNode;
 };
 
 const Header: React.FC<Props> = memo(({
@@ -33,29 +34,32 @@ const Header: React.FC<Props> = memo(({
   subTitle,
   titleStyle,
   subTitleStyle,
-  headerLeft,
-  headerRight,
+  headerLeft: HeaderL,
+  headerRight: HeaderR,
+  headerTitle: HeaderT,
 }) => {
   const { navigation } = useNavigate();
   const canGoBack = navigation.canGoBack();
 
-  const {height = HEADER_HEIGHT, ...rest} = StyleSheet.flatten(headerContainerStyle);
+  const { height = HEADER_HEIGHT, ...rest } = StyleSheet.flatten(headerContainerStyle);
   return (
-    <Animated.View style={[styles.container, {height}, rest]}>
-      { headerLeft ?
-        headerLeft :
-        canGoBack ?
-          <Animated.View style={headerLeftContainerStyle}>
-            <HeaderLeft />
-          </Animated.View> :
-          null
+    <Animated.View style={[styles.container, { height }, rest]}>
+      { HeaderL === undefined && canGoBack ?
+        <Animated.View style={headerLeftContainerStyle}>
+          <HeaderLeft />
+        </Animated.View> :
+        HeaderL !== null ? HeaderL : null
       }
-      <Animated.View style={[styles.titleContainer, titleContainerStyle]}>
-        {title && <Animated.Text style={[styles.title, titleStyle]}>{title}</Animated.Text>}
-        {subTitle && <Animated.Text style={[styles.subTitle, subTitleStyle]}>{subTitle}</Animated.Text>}
-      </Animated.View>
 
-      {headerRight ? headerRight : null}
+      {HeaderT ?
+        HeaderT :
+        <Animated.View style={[styles.titleContainer, titleContainerStyle]}>
+          {title && <Animated.Text style={[styles.title, titleStyle]}>{title}</Animated.Text>}
+          {subTitle && <Animated.Text style={[styles.subTitle, subTitleStyle]}>{subTitle}</Animated.Text>}
+        </Animated.View>
+      }
+
+      {HeaderR ? HeaderR : null}
     </Animated.View>
   );
 });
