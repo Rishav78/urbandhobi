@@ -4,6 +4,7 @@ import { View, StyleSheet, Alert } from "react-native";
 import { useDispatch } from "react-redux";
 import { ResponseToken } from "../../../@types";
 import { Seperator, Input, Button } from "../../../components";
+import Header from "../../../components/header/Header";
 import { useForm, UseFormProps } from "../../../hooks/form";
 import { api } from "../../../lib/config";
 import { getValidator } from "../../../lib/helpers/validator";
@@ -16,7 +17,7 @@ export interface SignupForm {
   confirm: string;
 }
 
-export interface SignupWithEmailProps {}
+export interface SignupWithEmailProps { }
 
 const form: UseFormProps = {
   action: api.auth.SIGNUP,
@@ -45,9 +46,9 @@ const form: UseFormProps = {
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
-  const { getValue, setValue, submit, error } = useForm<SignupForm>(form, {username: "", password: "", confirm: ""});
+  const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { username: "", password: "", confirm: "" });
 
-  const {username, password, confirm} = getValue();
+  const { username, password, confirm } = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
@@ -64,7 +65,7 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      const {refreshToken, token} = await submit<ResponseToken>();
+      const { refreshToken, token } = await submit<ResponseToken>();
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("refreshToken", refreshToken);
       dispatch(signIn());
@@ -75,47 +76,58 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   }, [confirm]);
 
   return (
-    <View style={styles.container}>
-      <Heading
-        title="SIGNUP"
-        subTitle="SIGNUP with your email and password"
-        contentContainerStyle={styles.heading} />
-      <Seperator contentContainerStyle={styles.seprator} />
-      <View style={styles.form}>
-        <Input
-          onChangeText={onEmailChangeHandler}
-          value={username}
-          keyboardType="email-address"
-          contentContainerStyle={styles.inputContainer}
-          style={[styles.input]}
-          placeholder="Email" />
+    <>
+      <Header
+        headerLeftContainerStyle={styles.headerleft}
+        headerContainerStyle={styles.header} />
+      <View style={styles.container}>
+        <Heading
+          title="SIGNUP"
+          subTitle="SIGNUP with your email and password"
+          contentContainerStyle={styles.heading} />
+        <Seperator contentContainerStyle={styles.seprator} />
+        <View style={styles.form}>
+          <Input
+            onChangeText={onEmailChangeHandler}
+            value={username}
+            keyboardType="email-address"
+            contentContainerStyle={styles.inputContainer}
+            style={[styles.input]}
+            placeholder="Email" />
 
-        <Input
-          onChangeText={onPasswordChangeHandler}
-          value={password}
-          secureTextEntry
-          contentContainerStyle={styles.inputContainer}
-          style={[styles.input]}
-          placeholder="Password" />
+          <Input
+            onChangeText={onPasswordChangeHandler}
+            value={password}
+            secureTextEntry
+            contentContainerStyle={styles.inputContainer}
+            style={[styles.input]}
+            placeholder="Password" />
 
-        <Input
-          onChangeText={onConfirmChangeHandler}
-          value={confirm}
-          secureTextEntry
-          contentContainerStyle={styles.inputContainer}
-          style={[styles.input]}
-          placeholder="Confirm Password" />
+          <Input
+            onChangeText={onConfirmChangeHandler}
+            value={confirm}
+            secureTextEntry
+            contentContainerStyle={styles.inputContainer}
+            style={[styles.input]}
+            placeholder="Confirm Password" />
+        </View>
+        <Button
+          disabled={disable}
+          onPress={onSubmit}
+          style={styles.button}
+          title="CREATE ACCOUNT" />
       </View>
-      <Button
-        disabled={disable}
-        onPress={onSubmit}
-        style={styles.button}
-        title="CREATE ACCOUNT" />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#fff",
+  },
+  headerleft: {
+    marginHorizontal: 15,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
