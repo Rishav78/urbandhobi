@@ -17,14 +17,14 @@ export const MainStackNavigation = () => {
   console.log(isauthenticated)
   return (
     <MainStack.Navigator>
-      {!isauthenticated ?
+      {/* {!isauthenticated ?
         <MainStack.Screen
           name={authStack.name}
           component={AuthStackNavigation}
           options={({ }) => ({
             headerShown: false,
           })}
-        /> :
+        /> : */}
         <MainStack.Screen
           name={homeStack.name}
           component={HomeStackNavigation}
@@ -32,7 +32,7 @@ export const MainStackNavigation = () => {
             headerShown: false,
           })}
         />
-      }
+      {/* } */}
     </MainStack.Navigator>
   );
 };

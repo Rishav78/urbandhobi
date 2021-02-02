@@ -1,60 +1,53 @@
-import React from "react";
-import { StyleSheet, Text } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { RootReducerType } from "../../../@types";
+import { getAvailableStates } from "../../../actions";
 import CardView from "../../../components/cardview";
+import { setServiceState } from "../../../redux/home/home.action";
 import City from "./city";
 
-const data = [
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-  {
-    image: "https://images.livemint.com/img/2019/07/11/600x338/c3172c68-a0a5-11e9-be64-50de38257690_1562520262406_1562851478661.jpg",
-    name: "Bhubaneswar",
-  },
-];
+const serviceStateSeclector = (state: RootReducerType) => state.home.serviceState;
 
 export const ServiceArea = () => {
+
+  const dispatch = useDispatch();
+  const serviceArea = useSelector(serviceStateSeclector, shallowEqual);
+
+  const getServiceArea = useCallback(async () => {
+    const states = await getAvailableStates();
+    if (states) {
+      dispatch(setServiceState(states));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!serviceArea) {
+      getServiceArea();
+    }
+  }, []);
+
   return (
     <CardView style={styles.card}>
       <Text style={styles.title}>Service Areas</Text>
-      <ScrollView
-      showsHorizontalScrollIndicator={false}
-      horizontal>
-        {
-          data.map(city => <City key={Math.random().toString()} data={city} />)
-        }
-      </ScrollView>
+      {
+        serviceArea &&
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal>
+          {
+            serviceArea.map(area => (
+              <City
+                key={area.image.id}
+                image={area.image.url}
+                name={area.state}
+              />
+            ))
+          }
+        </ScrollView>
+      }
     </CardView>
   );
 };

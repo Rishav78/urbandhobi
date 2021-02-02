@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-interface Data {
+interface CityProps {
   image: string;
   name: string;
 }
 
-export const City: React.FC<{ data: Data }> = ({ data }) => {
+export const City: React.FC<CityProps> = ({ image, name }) => {
+  const areaName = useMemo(() => name.split(" ").map(([s, ...rest]) => (`${s.toUpperCase() + rest.join("")}`)), [name]);
   return (
     <View style={cityStyle.container}>
-      <Image style={cityStyle.image} source={{ uri: data.image }} />
-      <Text numberOfLines={1}>{data.name}</Text>
+      <Image style={cityStyle.image} source={{ uri: image }} />
+      <Text numberOfLines={1}>{areaName}</Text>
     </View>
   );
 };
