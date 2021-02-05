@@ -40,6 +40,7 @@ export class fetchWrapper<Body = any, Res = any> {
   }
 
   send = async (): Promise<Res> => {
+    const auth = this.authToken ? `Barrer ${this.authToken}` : "";
     if (!this.url) {
       throw new Error("provide the url");
     }
@@ -51,7 +52,7 @@ export class fetchWrapper<Body = any, Res = any> {
       body: this.data,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.authToken,
+        "Authorization": auth,
         "x-refresh-token": this.refreshToken,
       },
     });
