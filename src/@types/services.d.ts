@@ -34,3 +34,18 @@ export interface ServiceState {
   symbol: string;
   image: Assets;
 }
+
+export interface Address {
+  id: string;
+  address: string;
+  city: {
+    id: string;
+    city: string;
+    state: string;
+    country: string;
+    createdAt: Date;
+    updateAt: Date;
+  }
+  createdAt: Date;
+  updateAt: Date;
+}

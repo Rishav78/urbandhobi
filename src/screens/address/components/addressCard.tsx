@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,26 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Clickable } from "../../../components/click";
+import { toTitleCase } from "../../../lib/helpers/string";
 
-const AddressCard = () => {
+interface AddressCardProps {
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+}
+
+const AddressCard: React.FC<AddressCardProps> = ({
+  address,
+  city,
+  country,
+  state,
+}) => {
+
+  city = useMemo(() => toTitleCase(city), [city]);
+  state = useMemo(() => toTitleCase(state), [state]);
+  country = useMemo(() => toTitleCase(country), [country]);
+
   return (
     <Animated.View style={styles.container}>
       <View style={styles.iconContainer}>
@@ -20,7 +38,7 @@ const AddressCard = () => {
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>Home</Text>
-        <Text style={styles.address}>404, Premlata enclave, Near doaba mill, Mandi gobindgarh, Punjab, India</Text>
+        <Text style={styles.address}>{address}, {city}, {state}, {country}</Text>
         <View style={styles.action}>
           <Clickable activeOpacity={0.5}>
             <Text style={styles.delete}>Delete</Text>
