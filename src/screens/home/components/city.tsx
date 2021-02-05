@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { toTitleCase } from "../../../lib/helpers/string";
 
 interface CityProps {
   image: string;
@@ -8,7 +9,7 @@ interface CityProps {
 }
 
 export const City: React.FC<CityProps> = ({ image, name }) => {
-  const areaName = useMemo(() => name.split(" ").map(([s, ...rest]) => (`${s.toUpperCase() + rest.join("")}`)), [name]);
+  const areaName = useMemo(() => toTitleCase(name), [name]);
   return (
     <View style={cityStyle.container}>
       <Image style={cityStyle.image} source={{ uri: image }} />
