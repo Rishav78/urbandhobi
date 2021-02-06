@@ -28,6 +28,9 @@ export const screens = {
       address: {
         name: "ADDRESS",
       },
+      addAddress: {
+        name: "ADD_ADDRESS",
+      },
     },
   },
 };

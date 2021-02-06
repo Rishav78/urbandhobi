@@ -1,8 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
-import { HomeScreen } from "../screens/home";
-import Address from "../screens/address/Address";
+import {Address, AddAddress, HomeScreen} from "../screens";
 
 const HomeStack = createStackNavigator();
 
@@ -18,6 +17,10 @@ export const HomeStackNavigation = () => {
       <HomeStack.Screen
         name={screen.address.name}
         component={Address}
+      />
+      <HomeStack.Screen
+        name={screen.addAddress.name}
+        component={AddAddress}
       />
     </HomeStack.Navigator>
   );

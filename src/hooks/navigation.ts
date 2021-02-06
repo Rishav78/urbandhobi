@@ -22,11 +22,16 @@ export const useNavigate = () => {
     navigation.navigate(homeStack.screen.address.name);
   }, []);
 
+  const navigateToAddAddress = useCallback(() => {
+    navigation.navigate(homeStack.screen.addAddress.name);
+  }, []);
+
   return {
     navigation,
     navigateToSignin,
     navigateToSignup,
     navigateToHome,
     navigateToAddress,
+    navigateToAddAddress,
   };
 };
