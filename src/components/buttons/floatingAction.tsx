@@ -1,5 +1,14 @@
 import React from "react";
-import { StyleProp, StyleSheet, Text, TextProps, TouchableOpacityProps, View, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextProps,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+  ActivityIndicator,
+} from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { Clickable } from "../click";
 
@@ -7,6 +16,7 @@ export interface FloatingActionProps extends TouchableOpacityProps {
   icon?: React.FC<TextProps>;
   title?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  loading?: boolean;
 }
 
 export const FloatingAction: React.FC<FloatingActionProps> = ({
@@ -15,14 +25,19 @@ export const FloatingAction: React.FC<FloatingActionProps> = ({
   children,
   contentContainerStyle,
   style,
+  loading,
   ...rest
 }) => {
   return (
     <View style={[styles.container, contentContainerStyle]}>
       <Clickable {...rest} style={[styles.clickable, style]}>
-        {children ? children :
-          title ? <Text style={styles.text}>{title}</Text> :
-            (Icon && <Icon />)
+        {loading ?
+            <ActivityIndicator
+              color="#fff"
+              size="large" /> :
+            children ? children :
+              Icon ? <Icon /> :
+                <Text style={styles.text}>{title}</Text>
         }
       </Clickable>
     </View>
@@ -34,9 +49,9 @@ export default FloatingAction;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    width: wp("18%"),
-    height: wp("18%"),
-    borderRadius: wp("18%") / 2,
+    width: wp("16%"),
+    height: wp("16%"),
+    borderRadius: wp("16%") / 2,
     bottom: hp("2%"),
     right: hp("2%"),
     overflow: "hidden",
