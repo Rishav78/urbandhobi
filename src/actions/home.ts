@@ -1,6 +1,6 @@
-import { ServiceSections, ServiceState } from "../@types/services";
-import { api, serviceAreaStateURL } from "../lib/config";
-import { getFetchWrapper } from "../lib/utils";
+import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
+import { api, serviceAreaStateURL } from "@urbandhobi/lib/config";
+import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
 export const getServices = async () => {
   try {

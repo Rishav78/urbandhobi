@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { Clickable } from "../click";
+import { Clickable } from "@urbandhobi/components/click";
 
 export interface FloatingActionProps extends TouchableOpacityProps {
   icon?: React.FC<TextProps>;

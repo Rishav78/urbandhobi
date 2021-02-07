@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "../../../@types";
-import { getAvailableStates } from "../../../actions";
-import CardView from "../../../components/cardview";
-import { setServiceState } from "../../../redux/home/home.action";
+import { RootReducerType } from "@urbandhobi/@types";
+import { getAvailableStates } from "@urbandhobi/actions";
+import CardView from "@urbandhobi/components/cardview";
+import { setServiceState } from "@urbandhobi/redux/home/home.action";
 import City from "./city";
 
 const serviceStateSeclector = (state: RootReducerType) => state.home.serviceState;

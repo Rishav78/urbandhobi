@@ -1,4 +1,4 @@
-import { ServiceSections, ServiceState } from "../../@types/services";
+import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
 import { HomeActionType, HomeAction } from "./home.type";
 
 export const setService = (payload: ServiceSections[]): HomeAction => {

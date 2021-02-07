@@ -1,7 +1,7 @@
-import { Address } from "../@types/services";
-import { api } from "../lib/config";
-import { getTokens } from "../lib/helpers";
-import { getFetchWrapper } from "../lib/utils";
+import { Address } from "@urbandhobi/@types/services";
+import { api } from "@urbandhobi/lib/config";
+import { getTokens } from "@urbandhobi/lib/helpers";
+import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
 export const getMyAddress = async () => {
   try {

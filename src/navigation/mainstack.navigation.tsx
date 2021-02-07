@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { screens } from "../lib/constants";
+import { screens } from "@urbandhobi/lib/constants";
 import { AuthStackNavigation } from "./authstack.navigation";
 import { shallowEqual, useSelector } from "react-redux";
-import { RootReducerType } from "../@types";
+import { RootReducerType } from "@urbandhobi/@types";
 import { HomeStackNavigation } from "./homestack.navigation";
 
 const MainStack = createStackNavigator();

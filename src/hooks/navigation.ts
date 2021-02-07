@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
-import { screens } from "../lib/constants";
+import { screens } from "@urbandhobi/lib/constants";
 
 export const useNavigate = () => {
   const navigation = useNavigation();

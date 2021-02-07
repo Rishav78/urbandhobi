@@ -1,4 +1,4 @@
-import { APIError, ReqMethod, Response } from "../../@types";
+import { APIError, ReqMethod, Response } from "@urbandhobi/@types";
 
 export class fetchWrapper<Body = any, Res = any> {
   private url!: string;

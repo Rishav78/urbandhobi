@@ -1,9 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { screens } from "../lib/constants";
-import { SigninWithEmailScreen, StartingScreen } from "../screens";
-
-import { SignupWithEmailScreen } from "../screens/authentication/signup";
+import { screens } from "@urbandhobi/lib/constants";
+import {
+  SigninWithEmailScreen,
+  StartingScreen,
+  SignupWithEmailScreen,
+} from "@urbandhobi/screens";
 
 const AuthStack = createStackNavigator();
 

@@ -1,4 +1,4 @@
-import { ServiceSections, ServiceState } from "../../@types/services";
+import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
 
 export interface HomeAction {
   type: HomeActionType,

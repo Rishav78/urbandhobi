@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
-import { AppLogo } from "../../../components";
-import { colors } from "../../../lib/constants";
+import { AppLogo } from "@urbandhobi/components";
+import { colors } from "@urbandhobi/lib/constants";
 
 export interface SigninHeadingProps {
   contentContainerStyle?: ViewStyle;

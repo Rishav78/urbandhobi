@@ -1,8 +1,12 @@
 import { useState, useCallback, useRef } from "react";
-import { FieldsValue, ReqMethod } from "../@types";
-import { FieldData, Data } from "../@types";
-import { getValidator } from "../lib/helpers/validator";
-import { getFetchWrapper } from "../lib/utils";
+import {
+  FieldData,
+  Data,
+  FieldsValue,
+  ReqMethod,
+} from "@urbandhobi/@types";
+import { getValidator } from "@urbandhobi/lib/helpers/validator";
+import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
 export interface UseFormProps {
   action: string;

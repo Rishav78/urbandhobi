@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
-import {Address, AddAddress, HomeScreen} from "../screens";
+import {Address, AddAddress, HomeScreen} from "@urbandhobi/screens";
 
 const HomeStack = createStackNavigator();
 

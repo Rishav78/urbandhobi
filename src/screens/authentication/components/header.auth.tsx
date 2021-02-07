@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Button } from "../../../components";
+import { Button } from "@urbandhobi/components";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 export const AuthHeaderLeft = () => {

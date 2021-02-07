@@ -6,7 +6,7 @@ import {
   Animated,
 } from "react-native";
 import ServiceCard from "./serviceCard";
-import { Service } from "../../../@types/services";
+import { Service } from "@urbandhobi/@types/services";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 export interface ServiceSectionProps {

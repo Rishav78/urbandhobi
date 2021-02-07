@@ -2,13 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { useDispatch } from "react-redux";
-import { ResponseToken } from "../../../@types";
-import { Seperator, Input, Button } from "../../../components";
-import Header from "../../../components/header/Header";
-import { useForm, UseFormProps } from "../../../hooks/form";
-import { api } from "../../../lib/config";
-import { getValidator } from "../../../lib/helpers/validator";
-import { signIn } from "../../../redux/authentication/auth.action";
+import { ResponseToken } from "@urbandhobi/@types";
+import { Seperator, Input, Button } from "@urbandhobi/components";
+import Header from "@urbandhobi/components/header/Header";
+import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
+import { api } from "@urbandhobi/lib/config";
+import { getValidator } from "@urbandhobi/lib/helpers/validator";
+import { signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { Heading } from "../components";
 
 export interface SignupForm {

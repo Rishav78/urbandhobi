@@ -4,8 +4,8 @@ import {
   Animated,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { Clickable } from "../click";
-import { useNavigate } from "../../hooks/navigation";
+import { Clickable } from "@urbandhobi/components/click";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 const HeaderLeft = memo(() => {
   const { navigation } = useNavigate();

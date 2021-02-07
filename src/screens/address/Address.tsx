@@ -5,13 +5,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "../../@types";
-import { getMyAddress } from "../../actions/address";
-import { FloatingAction } from "../../components";
-import Header from "../../components/header/Header";
-import { setAddress } from "../../redux/address/address.action";
+import { RootReducerType } from "@urbandhobi/@types";
+import { getMyAddress } from "@urbandhobi/actions/address";
+import { FloatingAction } from "@urbandhobi/components";
+import Header from "@urbandhobi/components/header/Header";
+import { setAddress } from "@urbandhobi/redux/address/address.action";
 import AddressCard from "./components/addressCard";
-import { useNavigate } from "../../hooks/navigation";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 const addressSelector = (state: RootReducerType) => state.address.data;
 

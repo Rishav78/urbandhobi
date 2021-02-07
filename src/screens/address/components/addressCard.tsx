@@ -7,8 +7,8 @@ import {
 } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Clickable } from "../../../components/click";
-import { toTitleCase } from "../../../lib/helpers/string";
+import { Clickable } from "@urbandhobi/components/click";
+import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 
 interface AddressCardProps {
   address: string;

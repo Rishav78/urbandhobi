@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "../../components";
-import { useNavigate } from "../../hooks/navigation";
+import { Button } from "@urbandhobi/components";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export const StartingScreen = () => {
 

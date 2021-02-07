@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { toTitleCase } from "../../../lib/helpers/string";
+import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 
 interface CityProps {
   image: string;

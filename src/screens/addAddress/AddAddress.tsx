@@ -3,9 +3,9 @@ import { StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-maps";
-import RNMap from "../../components/map";
-import { getCurrentPosition, LONGITUDE_DELTA, LATITUDE_DELTA } from "../../lib/helpers";
-import { FloatingAction } from "../../components";
+import RNMap from "@urbandhobi/components/map";
+import { getCurrentPosition, LONGITUDE_DELTA, LATITUDE_DELTA } from "@urbandhobi/lib/helpers";
+import { FloatingAction } from "@urbandhobi/components";
 
 export const AddAddress = () => {
   const [loading, setLoading] = useState<boolean>(true);

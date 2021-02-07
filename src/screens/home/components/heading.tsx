@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Clickable } from "../../../components/click";
-import { useNavigate } from "../../../hooks/navigation";
+import { Clickable } from "@urbandhobi/components/click";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 const Heading = () => {
 

@@ -3,15 +3,15 @@ import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AppLogo } from "../../components";
-import Header from "../../components/header/Header";
+import { AppLogo } from "@urbandhobi/components";
+import Header from "@urbandhobi/components/header/Header";
 import Heading from "./components/heading";
 import ServiceSection from "./components/service";
 import ServiceArea from "./components/serviceArea";
-import { RootReducerType } from "../../@types";
+import { RootReducerType } from "@urbandhobi/@types";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getServices } from "../../actions";
-import { setService } from "../../redux/home/home.action";
+import { getServices } from "@urbandhobi/actions";
+import { setService } from "@urbandhobi/redux/home/home.action";
 
 export interface HomeScreenProps { }
 

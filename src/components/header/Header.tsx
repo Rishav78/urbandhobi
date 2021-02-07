@@ -8,7 +8,7 @@ import {
   TextStyle,
   Platform,
 } from "react-native";
-import { useNavigate } from "../../hooks/navigation";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HEADER_HEIGHT } from "./header.helper";
 import HeaderLeft from "./headerLeft";
 

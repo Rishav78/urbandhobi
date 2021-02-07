@@ -6,8 +6,8 @@ import {
   View,
 } from "react-native";
 import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import CardView from "../../../components/cardview";
-import { Clickable } from "../../../components/click";
+import CardView from "@urbandhobi/components/cardview";
+import { Clickable } from "@urbandhobi/components/click";
 
 export interface ServiceCardProps {
   title: string;

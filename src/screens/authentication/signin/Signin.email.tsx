@@ -1,14 +1,14 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { View, StyleSheet, Alert } from "react-native";
-import { ResponseToken } from "../../../@types";
-import { Seperator, Input, Button } from "../../../components";
-import { useForm, UseFormProps } from "../../../hooks/form";
-import { api } from "../../../lib/config";
+import { ResponseToken } from "@urbandhobi/@types";
+import { Seperator, Input, Button } from "@urbandhobi/components";
+import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
+import { api } from "@urbandhobi/lib/config";
 import { Heading } from "../components";
-import { signIn } from "../../../redux/authentication/auth.action";
-import { setTokens } from "../../../lib/helpers";
-import Header from "../../../components/header/Header";
+import { signIn } from "@urbandhobi/redux/authentication/auth.action";
+import { setTokens } from "@urbandhobi/lib/helpers";
+import Header from "@urbandhobi/components/header/Header";
 
 export interface SigninForm {
   username: string;
