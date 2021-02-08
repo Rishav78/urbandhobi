@@ -1,4 +1,4 @@
-import { Address } from "@urbandhobi/@types/services";
+import { Address, AddressBody } from "@urbandhobi/@types/screens";
 import { api } from "@urbandhobi/lib/config";
 import { getTokens } from "@urbandhobi/lib/helpers";
 import { getFetchWrapper } from "@urbandhobi/lib/utils";
@@ -18,4 +18,16 @@ export const getMyAddress = async () => {
   catch (error) {
     console.log(error);
   }
+};
+
+export const saveAddress = async (body: AddressBody) => {
+  const url = api.address.create;
+  const {auth} = await getTokens();
+  const res = await getFetchWrapper<AddressBody, any>()
+      .setURL(url)
+      .setReqMethod("POST")
+      .setTokens(auth!)
+      .setData(body)
+      .send();
+  return res;
 };

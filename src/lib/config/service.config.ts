@@ -6,6 +6,7 @@ export const api = {
   auth: {
     SIGNIN: `${AUTH_API}/signin`,
     SIGNUP: `${AUTH_API}/signup`,
+    REFRESH_TOKEN: `${AUTH_API}/token/refresh`,
   },
   services: `${URBANDHOBI_API}/services`,
   serviceArea: `${URBANDHOBI_API}/location`,

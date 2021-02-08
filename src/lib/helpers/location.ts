@@ -23,6 +23,9 @@ export const getCurrentPosition = async () => {
 export const reverseGeoCoding = async (ln: number, lt: number) => {
   const url = `${HERE_API}/revgeocode?apikey=${HERE_API_KEY}&lang=en-US&at=${lt}%2C${ln}`;
   console.log(url);
-  const [res] = (await (await fetch(url)).json()).items as ReverseGeoCode[];
-  return res;
+  const res = (await (await fetch(url)).json()).items as ReverseGeoCode[];
+  if (!res) {
+    throw new Error("HERE service api expired");
+  }
+  return res[0];
 };
