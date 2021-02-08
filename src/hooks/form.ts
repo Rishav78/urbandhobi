@@ -44,8 +44,11 @@ export const useForm = <Values>({
     const d = fieldValueRef.current as FieldsValue;
     const validator = getValidator();
     for (const field of fields) {
-      if (field.validate === false) { return; }
       try {
+        if (field.required !== false && (d[field.name] === null || d[field.name] === undefined || d[field.name] === "")) {
+          throw new Error(`${field.name} is required`);
+        }
+        if (field.validate === false) { return; }
         if (field.validator) {
           field.validator(d[field.name], d);
         }
