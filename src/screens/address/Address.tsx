@@ -29,9 +29,7 @@ export const Address = () => {
   }, []);
 
   useEffect(() => {
-    if (addresses.length === 0) {
-      fetchAddress();
-    }
+    fetchAddress();
   }, []);
 
   return (
@@ -47,10 +45,8 @@ export const Address = () => {
             addresses.map(address => (
               <AddressCard
                 key={address.id}
-                address={address.address}
-                city={address.city.city}
-                country={address.city.country}
-                state={address.city.state} />
+                title={address.title}
+                address={address.location} />
             ))
           }
         </ScrollView>

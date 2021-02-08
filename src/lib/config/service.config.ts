@@ -1,6 +1,7 @@
 export const AUTH_API: string = "http://192.168.43.202:4000/api/v1/auth";
 export const URBANDHOBI_API: string = "http://192.168.43.202:3000/api/v1";
-
+export const HERE_API: string = "https://revgeocode.search.hereapi.com/v1";
+export * from "../../../env";
 export const api = {
   auth: {
     SIGNIN: `${AUTH_API}/signin`,

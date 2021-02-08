@@ -1,5 +1,7 @@
 import {Dimensions} from "react-native";
 import Geolocation, { GeolocationResponse } from "@react-native-community/geolocation";
+import { HERE_API, HERE_API_KEY } from "../config";
+import { ReverseGeoCode } from "@urbandhobi/@types/services";
 
 const {width, height} = Dimensions.get("window");
 
@@ -12,8 +14,15 @@ export const getCurrentPosition = async () => {
     Geolocation.getCurrentPosition(
       position => resolve(position),
       error => reject(error),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: false, timeout: 40000, maximumAge: 1000}
     );
   });
   return location;
+};
+
+export const reverseGeoCoding = async (ln: number, lt: number) => {
+  const url = `${HERE_API}/revgeocode?apikey=${HERE_API_KEY}&lang=en-US&at=${lt}%2C${ln}`;
+  console.log(url);
+  const [res] = (await (await fetch(url)).json()).items as ReverseGeoCode[];
+  return res;
 };

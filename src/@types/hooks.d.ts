@@ -6,6 +6,7 @@ export interface FieldData {
   name: string;
   type: FormField;
   validate?: boolean;
+  required?: boolean;
   validator?: (field: string, fields: FieldsValue) => boolean;
   send?: boolean;
 }

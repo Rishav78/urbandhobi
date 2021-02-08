@@ -5,7 +5,7 @@ import {
   Text,
   TextProps,
   TouchableOpacityProps,
-  View,
+  Animated,
   ViewStyle,
   ActivityIndicator,
 } from "react-native";
@@ -15,7 +15,7 @@ import { Clickable } from "@urbandhobi/components/click";
 export interface FloatingActionProps extends TouchableOpacityProps {
   icon?: React.FC<TextProps>;
   title?: string;
-  contentContainerStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
   loading?: boolean;
 }
 
@@ -29,7 +29,7 @@ export const FloatingAction: React.FC<FloatingActionProps> = ({
   ...rest
 }) => {
   return (
-    <View style={[styles.container, contentContainerStyle]}>
+    <Animated.View style={[styles.container, contentContainerStyle]}>
       <Clickable {...rest} style={[styles.clickable, style]}>
         {loading ?
             <ActivityIndicator
@@ -40,7 +40,7 @@ export const FloatingAction: React.FC<FloatingActionProps> = ({
                 <Text style={styles.text}>{title}</Text>
         }
       </Clickable>
-    </View>
+    </Animated.View>
   );
 };
 

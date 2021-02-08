@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -8,25 +8,16 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Clickable } from "@urbandhobi/components/click";
-import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 
 interface AddressCardProps {
   address: string;
-  city: string;
-  state: string;
-  country: string;
+  title: string;
 }
 
 const AddressCard: React.FC<AddressCardProps> = ({
   address,
-  city,
-  country,
-  state,
+  title,
 }) => {
-
-  city = useMemo(() => toTitleCase(city), [city]);
-  state = useMemo(() => toTitleCase(state), [state]);
-  country = useMemo(() => toTitleCase(country), [country]);
 
   return (
     <Animated.View style={styles.container}>
@@ -37,8 +28,8 @@ const AddressCard: React.FC<AddressCardProps> = ({
           color="#0C0C0C" />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Home</Text>
-        <Text style={styles.address}>{address}, {city}, {state}, {country}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.address}>{address}</Text>
         <View style={styles.action}>
           <Clickable activeOpacity={0.5}>
             <Text style={styles.delete}>Delete</Text>

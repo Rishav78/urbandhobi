@@ -5,17 +5,24 @@ import {
   TextInput,
   TextInputProps,
   ViewStyle,
+  Text,
+  StyleProp,
+  TextStyle,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Entypo from "react-native-vector-icons/Entypo";
 
 export interface Input extends TextInputProps {
   contentContainerStyle?: ViewStyle;
+  title?: string;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 export const Input: React.FC<Input> = memo(({
   contentContainerStyle = {},
   style = {},
+  title,
+  titleStyle,
   secureTextEntry,
   ...textinput
 }) => {
@@ -35,36 +42,43 @@ export const Input: React.FC<Input> = memo(({
   }, []);
 
   return (
-    <View style={[
-      styles.container,
-      contentContainerStyle,
-      isfocus ? styles.containerFocus : styles.containerBlur,
-    ]}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          {...textinput}
-          secureTextEntry={secureTextEntry === true ? hidePassword : undefined}
-          style={[styles.input, style]}
-          onFocus={onFocusIn}
-          onBlur={onFocusOut}
-        />
-      </View>
-      {secureTextEntry &&
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={passwordShowAndHide}>
-          {hidePassword ?
-            <Entypo
-              name="eye"
-              size={24}
-              color="black" /> :
-            <Entypo
-              name="eye-with-line"
-              size={24}
-              color="black" />
-          }
-        </TouchableOpacity>
+    <View style={contentContainerStyle}>
+      {title &&
+        <Text
+          style={[styles.title, titleStyle]}>
+          {title}
+        </Text>
       }
+      <View style={[
+        styles.container,
+        isfocus ? styles.containerFocus : styles.containerBlur,
+      ]}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            {...textinput}
+            secureTextEntry={secureTextEntry === true ? hidePassword : undefined}
+            style={[styles.input, style]}
+            onFocus={onFocusIn}
+            onBlur={onFocusOut}
+          />
+        </View>
+        {secureTextEntry &&
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={passwordShowAndHide}>
+            {hidePassword ?
+              <Entypo
+                name="eye"
+                size={24}
+                color="black" /> :
+              <Entypo
+                name="eye-with-line"
+                size={24}
+                color="black" />
+            }
+          </TouchableOpacity>
+        }
+      </View>
     </View>
   );
 });
@@ -77,6 +91,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: 8,
   },
+  title: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#333",
+  },
   containerFocus: {
     borderBottomColor: "#333",
   },
@@ -87,6 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    paddingVertical: 10,
+    paddingVertical: 2,
   },
 });

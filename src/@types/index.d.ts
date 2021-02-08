@@ -2,6 +2,7 @@ export * from "./authentication";
 export * from "./hooks";
 export * from "./error";
 export * from "./redux";
+export * from "./services";
 
 export type ReqMethod = "GET" | "POST" | "PUT" | "DELETE";
 
