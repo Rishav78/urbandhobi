@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,23 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Clickable } from "@urbandhobi/components/click";
+import { Address } from "@urbandhobi/@types/screens";
 
 interface AddressCardProps {
-  address: string;
-  title: string;
+  data: Address;
+  onMakeDefault?: (data: Address) => void;
 }
 
 const AddressCard: React.FC<AddressCardProps> = ({
-  address,
-  title,
+  data,
+  onMakeDefault,
 }) => {
+
+  const makeDefault = useCallback(() => {
+    if (onMakeDefault) {
+      onMakeDefault(data);
+    }
+  }, [onMakeDefault]);
 
   return (
     <Animated.View style={styles.container}>
@@ -28,15 +35,20 @@ const AddressCard: React.FC<AddressCardProps> = ({
           color="#0C0C0C" />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.address}>{address}</Text>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.address}>{data.location}</Text>
         <View style={styles.action}>
           <Clickable activeOpacity={0.5}>
             <Text style={styles.delete}>Delete</Text>
           </Clickable>
-          <Clickable activeOpacity={0.5} style={styles.clickable}>
-            <Text style={styles.makedefault}>Make Default</Text>
-          </Clickable>
+          {!data.default &&
+            <Clickable
+              activeOpacity={0.5}
+              onPress={makeDefault}
+              style={styles.clickable}>
+              <Text style={styles.makedefault}>Make Default</Text>
+            </Clickable>
+          }
         </View>
       </View>
     </Animated.View>

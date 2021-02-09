@@ -6,18 +6,20 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@urbandhobi/@types";
-import { getMyAddress } from "@urbandhobi/actions/address";
+import { getMyAddress, makeAddressDefault } from "@urbandhobi/actions/address";
 import { FloatingAction } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { setAddress } from "@urbandhobi/redux/address/address.action";
 import AddressCard from "./components/addressCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import MessageTile from "@urbandhobi/components/messageTile";
+import { Address as AddressInstance } from "@urbandhobi/@types/screens";
 
 const addressSelector = (state: RootReducerType) => state.address.data;
 
 export const Address = () => {
 
-  const {navigateToAddAddress} = useNavigate();
+  const { navigateToAddAddress } = useNavigate();
   const dispatch = useDispatch();
   const addresses = useSelector(addressSelector, shallowEqual);
 
@@ -25,6 +27,16 @@ export const Address = () => {
     const myAddress = await getMyAddress();
     if (myAddress) {
       dispatch(setAddress(myAddress));
+    }
+  }, []);
+
+  const onDefaulClickHandler = useCallback(async (address: AddressInstance) => {
+    try {
+      await makeAddressDefault(address.id);
+      await fetchAddress();
+    }
+    catch (error) {
+
     }
   }, []);
 
@@ -39,17 +51,22 @@ export const Address = () => {
       <Text style={styles.title}>SAVED ADDRESS</Text>
       <Text style={styles.subTitle}>Manage Address</Text>
       <View style={{ flex: 1 }}>
-        <ScrollView>
-          {
-            addresses &&
-            addresses.map(address => (
-              <AddressCard
-                key={address.id}
-                title={address.title}
-                address={address.location} />
-            ))
-          }
-        </ScrollView>
+        {!addresses || addresses.length === 0 ?
+          <MessageTile
+            style={styles.message}
+            message="NO SAVED ADDRESS" /> :
+          <ScrollView>
+            {
+              addresses &&
+              addresses.map(address => (
+                <AddressCard
+                  onMakeDefault={onDefaulClickHandler}
+                  key={address.id}
+                  data={address} />
+              ))
+            }
+          </ScrollView>
+        }
       </View>
       <FloatingAction onPress={navigateToAddAddress}>
         <AntDesign
@@ -71,6 +88,13 @@ const styles = StyleSheet.create({
     color: "#0C0C0C",
     fontSize: wp("6%"),
     marginHorizontal: wp("3%"),
+  },
+  message: {
+    elevation: 10,
+    backgroundColor: "#fff",
+    paddingVertical: hp("2%"),
+    marginHorizontal: wp("3%"),
+    borderRadius: wp("2%"),
   },
   subTitle: {
     color: "#898989",

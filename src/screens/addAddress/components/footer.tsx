@@ -84,6 +84,8 @@ const Footer: React.FC<AddAddressFooterProps> = memo(({
           contentContainerStyle={styles.inputContainer} />
         <Input
           title="LOCATION"
+          editable={false}
+          multiline={true}
           onChangeText={onLocationChange}
           value={values.location}
           contentContainerStyle={styles.inputContainer} />

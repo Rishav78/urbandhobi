@@ -4,6 +4,7 @@ const initialState: HomeState = {
   loading: true,
   data: [],
   serviceState: null,
+  defaultAddress: null,
 };
 
 export type HomeReducerFn = (state: HomeState, action: HomeAction) => HomeState;
@@ -24,6 +25,11 @@ export const HomeReducer: HomeReducerFn = (state = initialState, action) => {
       ...state,
       serviceState: payload,
       loading: false,
+    };
+    case HomeActionType.SET_DEFAULT_ADDRESS: return {
+      ...state,
+      loading: false,
+      defaultAddress: payload,
     };
     case HomeActionType.RESET: return {
       ...initialState,

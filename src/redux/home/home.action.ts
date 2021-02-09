@@ -1,4 +1,5 @@
-import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
+import { ServiceSections, ServiceState } from "@urbandhobi/@types";
+import {Address} from "@urbandhobi/@types/screens";
 import { HomeActionType, HomeAction } from "./home.type";
 
 export const setService = (payload: ServiceSections[]): HomeAction => {
@@ -18,6 +19,13 @@ export const setServiceState = (payload: ServiceState[]): HomeAction => {
 export const setLoading = (payload: boolean): HomeAction => {
   return {
     type: HomeActionType.SET_LOADING,
+    payload,
+  };
+};
+
+export const setDefaultAddress = (payload: Address | null | undefined): HomeAction => {
+  return {
+    type: HomeActionType.SET_DEFAULT_ADDRESS,
     payload,
   };
 };

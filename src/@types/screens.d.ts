@@ -22,6 +22,7 @@ export interface AddressBody extends AddAddressFormData {
 
 export interface Address extends AddressBody {
   id: string;
+  default: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

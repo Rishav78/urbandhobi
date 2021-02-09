@@ -1,23 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Clickable } from "@urbandhobi/components/click";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import MessageTile from "@urbandhobi/components/messageTile";
+import { RootReducerType } from "@urbandhobi/@types";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { getDefaultAddress } from "@urbandhobi/actions";
+import { setDefaultAddress } from "@urbandhobi/redux/home/home.action";
+
+const addressSelector = (state: RootReducerType) => state.home.defaultAddress;
 
 const Heading = () => {
-
+  const dispatch = useDispatch();
+  const defaultAddress = useSelector(addressSelector, shallowEqual);
   const { navigateToAddress } = useNavigate();
 
+  const fetchDefaultAddress = async () => {
+    try {
+      const address = await getDefaultAddress();
+      dispatch(setDefaultAddress(address));
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDefaultAddress();
+  }, []);
   return (
     <View style={styles.container}>
       <Clickable
         style={styles.clickable}
         onPress={navigateToAddress}>
-        <Text
-          numberOfLines={1}
-          style={styles.addressTitle}>HOME</Text>
-        <Text
-          numberOfLines={1}
-          style={styles.address}>404, Premlata enclave</Text>
+        {!defaultAddress ?
+          <MessageTile message="NO DEFAULT ADDRESS" /> :
+          <>
+            <Text
+              numberOfLines={1}
+              style={styles.addressTitle}>{defaultAddress.title}</Text>
+            <Text
+              numberOfLines={1}
+              style={styles.address}>{defaultAddress.location}</Text>
+          </>
+        }
       </Clickable>
     </View>
   );
@@ -38,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 2,
     paddingHorizontal: 20,
+    justifyContent: "center",
   },
   addressTitlecontainer: {
     display: "flex",

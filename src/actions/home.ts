@@ -1,5 +1,7 @@
+import { Address } from "@urbandhobi/@types/screens";
 import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
 import { api, serviceAreaStateURL } from "@urbandhobi/lib/config";
+import { getTokens } from "@urbandhobi/lib/helpers";
 import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
 export const getServices = async () => {
@@ -27,6 +29,20 @@ export const getAvailableStates = async () => {
   }
   catch (error) {
     console.log(error);
+  }
+};
+
+export const getDefaultAddress = async () => {
+  try {
+    const {auth} = await getTokens();
+    const address = await getFetchWrapper<null, Address>(api.address.default)
+      .setTokens(auth)
+      .setReqMethod("GET")
+      .send();
+    return address;
+  }
+  catch (error) {
+    throw error;
   }
 };
 
