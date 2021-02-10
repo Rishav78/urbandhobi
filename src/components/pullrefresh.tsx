@@ -1,26 +1,25 @@
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View, RefreshControl, ScrollViewProps } from "react-native";
+import React, { useCallback, useState, memo } from "react";
+import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListProps } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export interface PullRefreshProps {
-  onRefresh?: (cb: () => void) => void;
+  onRefreshHandler?: (cb: () => void) => (Promise<void> | void);
 }
 
-export interface RefreshScrollViewProps extends PullRefreshProps, ScrollViewProps {}
+export interface RefreshScrollViewProps extends PullRefreshProps, ScrollViewProps { }
 
 export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
   children,
-  onRefresh,
+  onRefreshHandler,
   ...scrollViewProps
 }) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefreshHandler = useCallback(() => {
-    console.log("nkknkn")
-    if (onRefresh) {
+  const onRefresh = useCallback(() => {
+    if (onRefreshHandler) {
       setRefreshing(true);
-      onRefresh(onRefreshComplete);
+      onRefreshHandler(onRefreshComplete);
     }
   }, []);
 
@@ -35,7 +34,7 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={onRefreshHandler}
+            onRefresh={onRefresh}
           />
         }
       >
@@ -44,5 +43,40 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
     </View>
   );
 };
+
+export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = memo(({
+  children,
+  onRefreshHandler,
+  ...flatlistprops
+}) => {
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    if (onRefreshHandler) {
+      setRefreshing(true);
+      onRefreshHandler(onRefreshComplete);
+    }
+  }, []);
+
+  const onRefreshComplete = () => {
+    setRefreshing(false);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <FlatList
+        {...flatlistprops}
+        removeClippedSubviews={true}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      />
+    </View>
+  );
+});
 
 const styles = StyleSheet.create({});

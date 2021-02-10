@@ -25,7 +25,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const getAvailableService = async () => {
     try {
       const serviceSections = await getServices();
-      console.log(serviceSections);
       if (serviceSections) {
         dispatch(setService(serviceSections));
       }
@@ -50,7 +49,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         headerLeft={null} />
       <Heading />
       <RefreshScrollView
-        onRefresh={() => {}}
+        onRefreshHandler={() => {}}
         showsVerticalScrollIndicator={false}>
         <ServiceArea />
         {

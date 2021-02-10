@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,18 +13,26 @@ import { Address } from "@urbandhobi/@types/screens";
 interface AddressCardProps {
   data: Address;
   onMakeDefault?: (data: Address) => void;
+  onDelete?: (data: Address) => void;
 }
 
-const AddressCard: React.FC<AddressCardProps> = ({
+const AddressCard: React.FC<AddressCardProps> = memo(({
   data,
   onMakeDefault,
+  onDelete
 }) => {
 
   const makeDefault = useCallback(() => {
     if (onMakeDefault) {
       onMakeDefault(data);
     }
-  }, [onMakeDefault]);
+  }, [onMakeDefault, data]);
+
+  const deleteAddress = useCallback(() => {
+    if (onDelete) {
+      onDelete(data);
+    }
+  }, [onDelete, data]);
 
   return (
     <Animated.View style={styles.container}>
@@ -36,9 +44,9 @@ const AddressCard: React.FC<AddressCardProps> = ({
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.address}>{data.location}</Text>
+        <Text style={styles.address}>{data.houseno}, {data.location}</Text>
         <View style={styles.action}>
-          <Clickable activeOpacity={0.5}>
+          <Clickable onPress={deleteAddress} activeOpacity={0.5}>
             <Text style={styles.delete}>Delete</Text>
           </Clickable>
           {!data.default &&
@@ -53,7 +61,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
       </View>
     </Animated.View>
   );
-};
+});
 
 export default AddressCard;
 

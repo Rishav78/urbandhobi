@@ -1,11 +1,11 @@
-import React from "react";
+import React, {memo} from "react";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 export interface ClickProps extends TouchableOpacityProps {
 
 }
 
-export const Clickable: React.FC<ClickProps> = ({
+export const Clickable: React.FC<ClickProps> = memo(({
   children,
   ...rest
 }) => {
@@ -16,4 +16,4 @@ export const Clickable: React.FC<ClickProps> = ({
         {children}
     </TouchableOpacity>
   );
-};
+});

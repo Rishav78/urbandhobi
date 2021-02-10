@@ -23,7 +23,7 @@ export const getTokens = async () => {
     throw new Error("token not available");
   }
   let {expireIn, timestamp, token}: AuthToken = JSON.parse(auth);
-  const isExpired = new Date().getSeconds() >= (new Date(timestamp).getSeconds() + expireIn);
+  const isExpired = new Date().getTime() >= new Date(timestamp).setSeconds(new Date(timestamp).getSeconds() + expireIn);
   console.log("isExpired", isExpired);
   if (isExpired) {
     if (!refresh) {

@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { ScrollView } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@urbandhobi/@types";
-import { getMyAddress, makeAddressDefault } from "@urbandhobi/actions";
+import { deleteAddress, getMyAddress, makeAddressDefault } from "@urbandhobi/actions";
 import { FloatingAction } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { setAddress } from "@urbandhobi/redux/address/address.action";
@@ -14,6 +13,7 @@ import AddressCard from "./components/addressCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { Address as AddressInstance } from "@urbandhobi/@types";
+import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 
 const addressSelector = (state: RootReducerType) => state.address.data;
 
@@ -40,6 +40,34 @@ export const Address = () => {
     }
   }, []);
 
+  const onDeleteClickHandler = useCallback(async (address: AddressInstance) => {
+    try {
+      await deleteAddress(address.id);
+      await fetchAddress();
+    }
+    catch (error) {
+
+    }
+  }, []);
+
+  const keyExtractor = useCallback((address: AddressInstance) => {
+    return address.id;
+  }, []);
+
+  const _renderItem = useCallback(({ item }: { index: number, item: AddressInstance }) => {
+    return (
+      <AddressCard
+        onDelete={onDeleteClickHandler}
+        onMakeDefault={onDefaulClickHandler}
+        data={item} />
+    );
+  }, []);
+
+  const onRefresh = useCallback(async (cb: () => void) => {
+    await fetchAddress();
+    cb();
+  }, []);
+
   useEffect(() => {
     fetchAddress();
   }, []);
@@ -55,16 +83,12 @@ export const Address = () => {
           <MessageTile
             style={styles.message}
             message="NO SAVED ADDRESS" /> :
-          <ScrollView>
-            {
-              addresses.map(address => (
-                <AddressCard
-                  onMakeDefault={onDefaulClickHandler}
-                  key={address.id}
-                  data={address} />
-              ))
-            }
-          </ScrollView>
+          <RefreshFlatList
+            data={addresses}
+            keyExtractor={keyExtractor}
+            renderItem={_renderItem}
+            onRefreshHandler={onRefresh}
+           />
         }
       </View>
       <FloatingAction onPress={navigateToAddAddress}>

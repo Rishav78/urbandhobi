@@ -7,13 +7,11 @@ export const getMyAddress = async () => {
   try {
     const url = api.address.myAddress;
     const tokens = await getTokens();
-    console.log(url);
     const res = await getFetchWrapper<null, Address[]>()
       .setURL(url)
       .setReqMethod("GET")
       .setTokens(tokens.auth!)
       .send();
-    console.log(res);
     return res;
   }
   catch (error) {
@@ -39,6 +37,19 @@ export const makeAddressDefault = async (id: string) => {
     await getFetchWrapper(api.address.default, "POST")
       .setTokens(auth)
       .setData({id})
+      .send();
+  }
+  catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteAddress = async (id: string) => {
+  try {
+    const { auth } = await getTokens();
+    await getFetchWrapper<{address: string}>(api.address.delete, "POST")
+      .setTokens(auth)
+      .setData({address: id})
       .send();
   }
   catch (error) {

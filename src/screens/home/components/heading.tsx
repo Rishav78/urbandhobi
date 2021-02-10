@@ -41,7 +41,7 @@ const Heading = () => {
               style={styles.addressTitle}>{defaultAddress.title}</Text>
             <Text
               numberOfLines={1}
-              style={styles.address}>{defaultAddress.location}</Text>
+              style={styles.address}>{defaultAddress.houseno}, {defaultAddress.location}</Text>
           </>
         }
       </Clickable>
