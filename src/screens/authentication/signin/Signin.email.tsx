@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 0,
+    paddingVertical: 5,
+    marginVertical: 5,
   },
   button: {
     marginHorizontal: 15,

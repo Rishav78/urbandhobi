@@ -6,14 +6,14 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "@urbandhobi/@types";
-import { getMyAddress, makeAddressDefault } from "@urbandhobi/actions/address";
+import { getMyAddress, makeAddressDefault } from "@urbandhobi/actions";
 import { FloatingAction } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { setAddress } from "@urbandhobi/redux/address/address.action";
 import AddressCard from "./components/addressCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import MessageTile from "@urbandhobi/components/messageTile";
-import { Address as AddressInstance } from "@urbandhobi/@types/screens";
+import { Address as AddressInstance } from "@urbandhobi/@types";
 
 const addressSelector = (state: RootReducerType) => state.address.data;
 
@@ -57,7 +57,6 @@ export const Address = () => {
             message="NO SAVED ADDRESS" /> :
           <ScrollView>
             {
-              addresses &&
               addresses.map(address => (
                 <AddressCard
                   onMakeDefault={onDefaulClickHandler}

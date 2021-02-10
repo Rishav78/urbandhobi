@@ -40,21 +40,6 @@ export interface ServiceState {
   image: Assets;
 }
 
-export interface Address {
-  id: string;
-  address: string;
-  city: {
-    id: string;
-    city: string;
-    state: string;
-    country: string;
-    createdAt: Date;
-    updateAt: Date;
-  }
-  createdAt: Date;
-  updateAt: Date;
-}
-
 export interface ReverseGeoCode {
   title: string;
   id: string;

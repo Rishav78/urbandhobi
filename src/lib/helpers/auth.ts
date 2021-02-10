@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { refreshAuthToken } from "@urbandhobi/actions";
+import { refreshAuthToken } from "@urbandhobi/actions/auth";
 
 export interface AuthToken {
   timestamp: number;

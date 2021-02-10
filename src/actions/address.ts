@@ -13,6 +13,7 @@ export const getMyAddress = async () => {
       .setReqMethod("GET")
       .setTokens(tokens.auth!)
       .send();
+    console.log(res);
     return res;
   }
   catch (error) {
@@ -35,7 +36,7 @@ export const saveAddress = async (body: AddressBody) => {
 export const makeAddressDefault = async (id: string) => {
   try {
     const { auth } = await getTokens();
-    const res = await getFetchWrapper(api.address.default, "POST")
+    await getFetchWrapper(api.address.default, "POST")
       .setTokens(auth)
       .setData({id})
       .send();
@@ -43,4 +44,4 @@ export const makeAddressDefault = async (id: string) => {
   catch (error) {
     console.log(error);
   }
-}
+};

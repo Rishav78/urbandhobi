@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppLogo } from "@urbandhobi/components";
@@ -12,18 +11,16 @@ import { RootReducerType } from "@urbandhobi/@types";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getServices } from "@urbandhobi/actions";
 import { setService } from "@urbandhobi/redux/home/home.action";
+import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 
 export interface HomeScreenProps { }
 
 const serviceSelector = (state: RootReducerType) => state.home.data;
-const loadingSelector = (state: RootReducerType) => state.home.loading;
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
 
   const dispatch = useDispatch();
   const sections = useSelector(serviceSelector, shallowEqual);
-  const loading = useSelector(loadingSelector, shallowEqual);
-
 
   const getAvailableService = async () => {
     try {
@@ -52,7 +49,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         headerTitle={<AppLogo contentContainerStyle={styles.logoContainer} iconStyle={styles.logoIcon} />}
         headerLeft={null} />
       <Heading />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <RefreshScrollView
+        onRefresh={() => {}}
+        showsVerticalScrollIndicator={false}>
         <ServiceArea />
         {
           sections.map(section => (
@@ -62,7 +61,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
               key={section.id} />
           ))
         }
-      </ScrollView>
+      </RefreshScrollView>
     </SafeAreaView>
   );
 };
