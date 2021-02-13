@@ -44,7 +44,7 @@ const Header: React.FC<Props> = memo(({
   const { height = HEADER_HEIGHT, ...rest } = StyleSheet.flatten(headerContainerStyle);
   return (
     <Animated.View style={[styles.container, { height }, rest]}>
-      { HeaderL === undefined && canGoBack ?
+      { HeaderL === undefined ?
         <Animated.View style={headerLeftContainerStyle}>
           <HeaderLeft />
         </Animated.View> :

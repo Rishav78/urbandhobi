@@ -2,6 +2,7 @@ import React, { useCallback, memo } from "react";
 import {
   StyleSheet,
   Animated,
+  BackHandler,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { Clickable } from "@urbandhobi/components/click";
@@ -11,7 +12,12 @@ const HeaderLeft = memo(() => {
   const { navigation } = useNavigate();
 
   const onBackHandler = useCallback(() => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+    else {
+      BackHandler.exitApp();
+    }
   }, [navigation]);
 
   return (
