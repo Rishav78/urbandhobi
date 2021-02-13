@@ -1,4 +1,7 @@
 export const screens = {
+  splash: {
+    name: "SPLASH",
+  },
   authStack: {
     name: "AUTH_STACK",
     screen: {
@@ -16,6 +19,9 @@ export const screens = {
         name: "SIGN_UP",
         title: "",
         subtitle: "",
+      },
+      userinfo: {
+        name: "USER_INFORMATION",
       },
     },
   },

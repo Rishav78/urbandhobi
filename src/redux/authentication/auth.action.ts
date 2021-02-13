@@ -2,6 +2,7 @@ import { AuthActionType, AuthAction } from "./auth.type";
 
 export type SignIn = () => AuthAction;
 export type ResetAuth = () => AuthAction;
+export type SetVerified = (payload: boolean) => AuthAction;
 
 export const signIn: SignIn = () => {
   return {
@@ -15,3 +16,9 @@ export const resetAuth: ResetAuth = () => {
   };
 };
 
+export const setVerified: SetVerified = (payload) => {
+  return {
+    type: AuthActionType.SET_VERIFIED,
+    payload,
+  };
+};

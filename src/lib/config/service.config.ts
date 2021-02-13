@@ -19,6 +19,10 @@ export const api = {
     delete: `${URBANDHOBI_API}/user/address/delete`,
     default: `${URBANDHOBI_API}/user/address/default`,
   },
+  user: {
+    CREATE_USER: `${URBANDHOBI_API}/user/create`,
+    VERIFIED: `${URBANDHOBI_API}/auth/verified`,
+  },
 };
 
 export const serviceAreaStateURL = async () => {

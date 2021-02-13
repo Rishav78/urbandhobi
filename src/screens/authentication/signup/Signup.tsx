@@ -10,6 +10,7 @@ import { api } from "@urbandhobi/lib/config";
 import { getValidator } from "@urbandhobi/lib/helpers/validator";
 import { signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { Heading } from "../components";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export interface SignupForm {
   username: string;
@@ -46,6 +47,7 @@ const form: UseFormProps = {
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
+  const {navigateToCreateUser} = useNavigate();
   const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { username: "", password: "", confirm: "" });
 
   const { username, password, confirm } = getValue();
@@ -69,6 +71,7 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("refreshToken", refreshToken);
       dispatch(signIn());
+      navigateToCreateUser();
     }
     catch (err) {
       Alert.alert(err.message);

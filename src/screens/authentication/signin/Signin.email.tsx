@@ -6,9 +6,10 @@ import { Seperator, Input, Button } from "@urbandhobi/components";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
 import { Heading } from "../components";
-import { signIn } from "@urbandhobi/redux/authentication/auth.action";
+import { setVerified, signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { setTokens } from "@urbandhobi/lib/helpers";
 import Header from "@urbandhobi/components/header/Header";
+import { isVerified } from "@urbandhobi/actions";
 
 export interface SigninForm {
   username: string;
@@ -53,6 +54,9 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
     try {
       const { refreshToken, token } = await submit<ResponseToken>();
       await setTokens(token, refreshToken);
+      if (await isVerified()) {
+        dispatch(setVerified(true));
+      }
       dispatch(signIn());
     }
     catch (err) {
