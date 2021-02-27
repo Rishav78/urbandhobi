@@ -1,6 +1,5 @@
 import React, { useCallback, useState, memo } from "react";
-import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListProps } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListProps, ScrollView } from "react-native";
 
 export interface PullRefreshProps {
   onRefreshHandler?: (cb: () => void) => (Promise<void> | void);
