@@ -15,11 +15,7 @@ import { HeaderRight } from "./header";
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
-  const { navigateToWash } = useNavigate();
-
-  const onWashPressHandler = useCallback(() => {
-    navigateToWash();
-  }, []);
+  const { navigateToWash, navigateToWashAndIron, navigateToWashAndFold } = useNavigate();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -35,19 +31,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         <ServiceArea />
         <ServiceSection title="LAUNDRY">
           <ServiceCard
-            onPress={onWashPressHandler}
+            onPress={navigateToWash}
             title="wash"
             image="https://laundry-app.herokuapp.com/f/app/i/wash.png"
             days={5}
           />
           <ServiceCard
-            onPress={onWashPressHandler}
+            onPress={navigateToWashAndIron}
             title="wash & iron"
             image="https://laundry-app.herokuapp.com/f/app/i/wash-and-iron.png"
             days={5}
           />
           <ServiceCard
-            onPress={onWashPressHandler}
+            onPress={navigateToWashAndFold}
             title="wash & fold"
             image="https://laundry-app.herokuapp.com/f/app/i/wash-and-fold.png"
             days={5}

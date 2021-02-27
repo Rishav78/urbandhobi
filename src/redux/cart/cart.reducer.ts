@@ -56,6 +56,7 @@ export type AuthReducerFn = (state: CartState, action: CartAction) => CartState;
 const addToCart = (state: CartState, key: "wash" | "washAndIron" | "washAndFold" | "dryClean", payload: {[key: string]: number}) => {
   const newState = {...state};
   for (const k of Object.keys(payload)) {
+    console.log(k, payload);
     if (state[key].data[k]) {
       state[key].data[k].count++;
     }

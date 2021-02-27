@@ -2,7 +2,7 @@ import { Route, useRoute } from "@react-navigation/native";
 import { RootReducerType } from "@urbandhobi/@types";
 import { getSupportedLaundry } from "@urbandhobi/actions";
 import ClothView from "@urbandhobi/components/cloth/ClothView";
-import { addToWash } from "@urbandhobi/redux/cart/cart.action";
+import { addToWash, addToWashAndFold, addToWashAndIron } from "@urbandhobi/redux/cart/cart.action";
 import { setSupportedLaundry } from "@urbandhobi/redux/laundry/laundry.actions";
 import React, { useCallback, useEffect } from "react";
 import { Alert } from "react-native";
@@ -24,9 +24,16 @@ export const Laundry = () => {
   };
 
   const onAddToCard = useCallback((data: any) => {
+    console.log(params.id);
     switch (params.id) {
       case "wash":
-        addToWash(data);
+        dispatch(addToWash(data));
+        break;
+      case "washAndFold":
+        dispatch(addToWashAndFold(data));
+        break;
+      case "washAndIron":
+        dispatch(addToWashAndIron(data));
         break;
       default:
         return Alert.alert("ERROR", "Some error occur, please try again later");

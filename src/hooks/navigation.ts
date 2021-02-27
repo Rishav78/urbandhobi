@@ -42,6 +42,10 @@ export const useNavigate = () => {
     navigation.navigate(homeStack.screen.laundry.name, {id: "washAndFold"});
   }, []);
 
+  const navigateToCart = useCallback(() => {
+    navigation.navigate(homeStack.screen.cart.name);
+  }, []);
+
   return {
     navigation,
     navigateToSignin,
@@ -53,5 +57,6 @@ export const useNavigate = () => {
     navigateToWash,
     navigateToWashAndIron,
     navigateToWashAndFold,
+    navigateToCart,
   };
 };

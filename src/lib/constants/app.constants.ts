@@ -40,6 +40,9 @@ export const screens = {
       laundry: {
         name: "LAUNDRY",
       },
+      cart: {
+        name: "CART",
+      },
     },
   },
 };

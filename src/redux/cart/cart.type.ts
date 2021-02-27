@@ -6,9 +6,9 @@ export interface CartAction {
 // eslint-disable-next-line no-shadow
 export enum CartActionType {
   ADD_TO_WASH="@@cart/ADD_TO_WASH",
-  ADD_TO_WASH_AND_IRON="@@cart/ADD_TO_WASH",
-  ADD_TO_WASH_AND_FOLD="@@cart/ADD_TO_WASH",
-  ADD_TO_DRY_CLEAN="@@cart/ADD_TO_WASH",
+  ADD_TO_WASH_AND_IRON="@@cart/ADD_TO_WASH_AND_IRON",
+  ADD_TO_WASH_AND_FOLD="@@cart/ADD_TO_WASH_AND_FOLD",
+  ADD_TO_DRY_CLEAN="@@cart/ADD_TO_DRY_CLEAN",
 }
 
 export interface SelectedCloth {
