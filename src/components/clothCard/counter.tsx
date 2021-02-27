@@ -4,20 +4,38 @@ import { Clickable } from "../click";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 export interface CounterProps {
-
+  onCounterPlus?: (count: number) => boolean;
+  onCounterMinus?: (count: number) => boolean;
 }
 
-export const Counter: React.FC<CounterProps> = () => {
+export const Counter: React.FC<CounterProps> = ({
+  onCounterPlus,
+  onCounterMinus,
+}) => {
 
   const [count, setCount] = useState(0);
   const [enable, setEnable] = useState(false);
 
   const onCountPlus = useCallback(() => {
-    setCount(state => (state + 1));
+    if (onCounterPlus) {
+      if (onCounterPlus(count + 1)) {
+        setCount(state => (state + 1));
+      }
+    }
+    else {
+      setCount(state => (state + 1));
+    }
   }, [count]);
 
   const onCountMinus = useCallback(() => {
-    setCount(state => (state === 0 ? state : state - 1));
+    if (onCounterMinus) {
+      if (onCounterMinus(count - 1)) {
+        setCount(state => (state === 0 ? state : state - 1));
+      }
+    }
+    else {
+      setCount(state => (state === 0 ? state : state - 1));
+    }
   }, [count]);
 
   const enableButton = useCallback(() => {
@@ -29,18 +47,18 @@ export const Counter: React.FC<CounterProps> = () => {
       {
         enable ?
           <>
-            <Clickable onPress={onCountMinus} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Clickable onPress={onCountMinus} style={styles.minus}>
               <AntDesign name="minus" size={15} color="#ff3333" />
             </Clickable>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <View style={styles.count}>
               <Text>{count}</Text>
             </View>
-            <Clickable onPress={onCountPlus} style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Clickable onPress={onCountPlus} style={styles.plus}>
               <AntDesign name="plus" size={15} color="#00e600" />
             </Clickable>
           </> :
-          <Clickable onPress={enableButton} style={{justifyContent: "center", alignItems: "center", flex: 1}}>
-            <Text style={{fontSize: 16, color:"#00e600"}}>ADD</Text>
+          <Clickable onPress={enableButton} style={styles.addContainer}>
+            <Text style={styles.add}>ADD</Text>
           </Clickable>
       }
     </View>
@@ -55,5 +73,28 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#fff",
     flexDirection: "row",
+  },
+  minus: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  count: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  plus: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  add: {
+    fontSize: 16,
+    color: "#00e600",
   },
 });
