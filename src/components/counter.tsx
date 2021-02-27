@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Clickable } from "../click";
+import { Clickable } from "./click";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 export interface CounterProps {
@@ -29,7 +29,7 @@ export const Counter: React.FC<CounterProps> = ({
 
   const onCountMinus = useCallback(() => {
     if (onCounterMinus) {
-      if (onCounterMinus(count - 1)) {
+      if ((count - 1) >= 0 && onCounterMinus(count - 1)) {
         setCount(state => (state === 0 ? state : state - 1));
       }
     }
