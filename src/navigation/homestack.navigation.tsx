@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
 import {Address, AddAddress, HomeScreen} from "@urbandhobi/screens";
+import Laundry from "@urbandhobi/screens/laundry/Laundry";
 
 const HomeStack = createStackNavigator();
 
@@ -21,6 +22,10 @@ export const HomeStackNavigation = () => {
       <HomeStack.Screen
         name={screen.addAddress.name}
         component={AddAddress}
+      />
+      <HomeStack.Screen
+        name={screen.laundry.name}
+        component={Laundry}
       />
     </HomeStack.Navigator>
   );

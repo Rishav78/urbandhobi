@@ -37,6 +37,9 @@ export const screens = {
       addAddress: {
         name: "ADD_ADDRESS",
       },
+      laundry: {
+        name: "LAUNDRY",
+      },
     },
   },
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
 import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CardView from "@urbandhobi/components/cardview";
 import { Clickable } from "@urbandhobi/components/click";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export interface ServiceCardProps {
   title: string;
@@ -21,9 +22,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   image,
   days,
 }) => {
+
+  const {navigateToLaundry} = useNavigate();
+
+  const onPress = useCallback(() => {
+    navigateToLaundry();
+  }, []);
+
   return (
     <CardView style={styles.container}>
-      <Clickable style={styles.clickable}>
+      <Clickable onPress={onPress} style={styles.clickable}>
         <View style={styles.content}>
           <Image source={{ uri: image }} style={styles.image} />
           <Text style={styles.title}>{title}</Text>

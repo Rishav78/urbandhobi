@@ -45,7 +45,6 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
 };
 
 export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = memo(({
-  children,
   onRefreshHandler,
   ...flatlistprops
 }) => {

@@ -23,6 +23,12 @@ export const api = {
     CREATE_USER: `${URBANDHOBI_API}/user/create`,
     VERIFIED: `${URBANDHOBI_API}/auth/verified`,
   },
+  cloth: {
+    laundry: `${URBANDHOBI_API}/cloth/laundry`,
+    dryclean: {
+
+    },
+  },
 };
 
 export const serviceAreaStateURL = async () => {

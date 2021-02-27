@@ -30,6 +30,10 @@ export const useNavigate = () => {
     navigation.navigate(authStack.screen.userinfo.name);
   }, []);
 
+  const navigateToLaundry = useCallback((data: {[key: string]: any} = {}) => {
+    navigation.navigate(homeStack.screen.laundry.name, data);
+  }, []);
+
   return {
     navigation,
     navigateToSignin,
@@ -38,5 +42,6 @@ export const useNavigate = () => {
     navigateToAddress,
     navigateToAddAddress,
     navigateToCreateUser,
+    navigateToLaundry,
   };
 };
