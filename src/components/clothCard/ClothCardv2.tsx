@@ -1,6 +1,6 @@
 import { SupportedCloth } from "@urbandhobi/@types";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CardView from "../cardview";
@@ -14,7 +14,7 @@ export interface ClothCardProps {
 const ClothCard: React.FC<ClothCardProps> = ({
   data,
 }) => {
-  const title = toTitleCase(data.name);
+  const title = useMemo(() => toTitleCase(data.name), [data.name]);
   return (
     <View style={styles.container}>
       <View style={{flexDirection: "row"}}>

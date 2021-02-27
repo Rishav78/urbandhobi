@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   GestureResponderEvent,
   Image,
@@ -9,6 +9,7 @@ import {
 import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CardView from "@urbandhobi/components/cardview";
 import { Clickable } from "@urbandhobi/components/click";
+import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 
 export interface ServiceCardProps {
   title: string;
@@ -24,12 +25,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   days,
   onPress,
 }) => {
+  const name = useMemo(() => toTitleCase(title), [title]);
   return (
     <CardView style={styles.container}>
       <Clickable onPress={onPress} style={styles.clickable}>
         <View style={styles.content}>
           <Image source={{ uri: image }} style={styles.image} />
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{name}</Text>
           {days && <Text style={styles.days}>{days} Days</Text>}
         </View>
       </Clickable>

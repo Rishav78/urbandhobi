@@ -10,9 +10,9 @@ import ServiceArea from "./components/serviceArea";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import { HeaderRight } from "./header";
 
 export interface HomeScreenProps { }
-
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const { navigateToLaundry } = useNavigate();
@@ -26,6 +26,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
       <Header
         headerContainerStyle={styles.header}
         headerTitle={<AppLogo contentContainerStyle={styles.logoContainer} iconStyle={styles.logoIcon} />}
+        headerRight={HeaderRight}
         headerLeft={null} />
       <Heading />
       <RefreshScrollView
