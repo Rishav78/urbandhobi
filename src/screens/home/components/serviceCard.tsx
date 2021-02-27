@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import {
+  GestureResponderEvent,
   Image,
   StyleSheet,
   Text,
@@ -8,27 +9,21 @@ import {
 import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CardView from "@urbandhobi/components/cardview";
 import { Clickable } from "@urbandhobi/components/click";
-import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export interface ServiceCardProps {
   title: string;
   category?: string;
   image: string;
   days: number;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   image,
   days,
+  onPress,
 }) => {
-
-  const {navigateToLaundry} = useNavigate();
-
-  const onPress = useCallback(() => {
-    navigateToLaundry();
-  }, []);
-
   return (
     <CardView style={styles.container}>
       <Clickable onPress={onPress} style={styles.clickable}>

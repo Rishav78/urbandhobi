@@ -24,9 +24,7 @@ export const ServiceArea = () => {
   }, []);
 
   useEffect(() => {
-    if (!serviceArea) {
-      getServiceArea();
-    }
+    getServiceArea();
   }, []);
 
   return (

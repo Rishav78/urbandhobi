@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,39 +7,19 @@ import Header from "@urbandhobi/components/header/Header";
 import Heading from "./components/heading";
 import ServiceSection from "./components/service";
 import ServiceArea from "./components/serviceArea";
-import { RootReducerType } from "@urbandhobi/@types";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getServices } from "@urbandhobi/actions";
-import { setService } from "@urbandhobi/redux/home/home.action";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
+import ServiceCard from "./components/serviceCard";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export interface HomeScreenProps { }
 
-const serviceSelector = (state: RootReducerType) => state.home.data;
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
+  const { navigateToLaundry } = useNavigate();
 
-  const dispatch = useDispatch();
-  const sections = useSelector(serviceSelector, shallowEqual);
-
-  const getAvailableService = async () => {
-    try {
-      const serviceSections = await getServices();
-      if (serviceSections) {
-        dispatch(setService(serviceSections));
-      }
-    }
-    catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (sections.length === 0) {
-      getAvailableService();
-    }
+  const onWashPressHandler = useCallback(() => {
+    navigateToLaundry();
   }, []);
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -49,17 +29,51 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         headerLeft={null} />
       <Heading />
       <RefreshScrollView
-        onRefreshHandler={() => {}}
+        onRefreshHandler={() => { }}
         showsVerticalScrollIndicator={false}>
         <ServiceArea />
-        {
-          sections.map(section => (
-            <ServiceSection
-              title={section.name}
-              services={section.services}
-              key={section.id} />
-          ))
-        }
+        <ServiceSection title="LAUNDRY">
+          <ServiceCard
+            onPress={onWashPressHandler}
+            title="wash"
+            image="https://laundry-app.herokuapp.com/f/app/i/wash.png"
+            days={5}
+          />
+          <ServiceCard
+            onPress={onWashPressHandler}
+            title="wash & iron"
+            image="https://laundry-app.herokuapp.com/f/app/i/wash-and-iron.png"
+            days={5}
+          />
+          <ServiceCard
+            onPress={onWashPressHandler}
+            title="wash & fold"
+            image="https://laundry-app.herokuapp.com/f/app/i/wash-and-fold.png"
+            days={5}
+          />
+        </ServiceSection>
+        <ServiceSection title="dry clean">
+          <ServiceCard
+            title="men"
+            image="https://laundry-app.herokuapp.com/f/app/i/men.png"
+            days={5}
+          />
+          <ServiceCard
+            title="women"
+            image="https://laundry-app.herokuapp.com/f/app/i/women.png"
+            days={5}
+          />
+          <ServiceCard
+            title="stream press"
+            image="https://laundry-app.herokuapp.com/f/app/i/stream-iron.png"
+            days={5}
+          />
+          <ServiceCard
+            title="dry clean"
+            image="https://laundry-app.herokuapp.com/f/app/i/accessories.png"
+            days={5}
+          />
+        </ServiceSection>
       </RefreshScrollView>
     </SafeAreaView>
   );

@@ -11,29 +11,19 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 
 export interface ServiceSectionProps {
   title: string;
-  services: Array<Service>;
 }
 
 export const ServiceSection: React.FC<ServiceSectionProps> = ({
   title,
-  services,
+  children,
 }) => {
   return (
     <Animated.View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title.toUpperCase()}</Text>
       </View>
-      <View style={styles.serviceContainer   }>
-        {
-          services.map(service => (
-            <ServiceCard
-              key={service.id}
-              image={service.image.url}
-              title={service.name}
-              days={service.daysRequired}
-            />
-          ))
-        }
+      <View style={styles.serviceContainer}>
+        {children}
       </View>
     </Animated.View>
   );
