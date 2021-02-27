@@ -7,8 +7,9 @@ import {
   ViewStyle,
   TextStyle,
   Platform,
+  View,
 } from "react-native";
-import { useNavigate } from "@urbandhobi/hooks/navigation";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { HEADER_HEIGHT } from "./header.helper";
 import HeaderLeft from "./headerLeft";
 
@@ -22,7 +23,7 @@ export type Props = ViewProps & {
   subTitleStyle?: Animated.WithAnimatedValue<StyleProp<TextStyle>>;
 
   headerLeft?: React.ReactNode;
-  headerRight?: React.ReactNode;
+  headerRight?: React.FunctionComponent;
   headerTitle?: React.ReactNode;
 };
 
@@ -38,8 +39,6 @@ const Header: React.FC<Props> = memo(({
   headerRight: HeaderR,
   headerTitle: HeaderT,
 }) => {
-  const { navigation } = useNavigate();
-  const canGoBack = navigation.canGoBack();
 
   const { height = HEADER_HEIGHT, ...rest } = StyleSheet.flatten(headerContainerStyle);
   return (
@@ -51,15 +50,22 @@ const Header: React.FC<Props> = memo(({
         HeaderL !== null ? HeaderL : null
       }
 
-      {HeaderT ?
-        HeaderT :
-        <Animated.View style={[styles.titleContainer, titleContainerStyle]}>
-          {title && <Animated.Text style={[styles.title, titleStyle]}>{title}</Animated.Text>}
-          {subTitle && <Animated.Text style={[styles.subTitle, subTitleStyle]}>{subTitle}</Animated.Text>}
-        </Animated.View>
-      }
+      <View style={{display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", width: "100%"}}>
+        {HeaderT ?
+          HeaderT :
+          <Animated.View style={[styles.titleContainer, titleContainerStyle]}>
+            {title && <Animated.Text style={[styles.title, titleStyle]}>{title}</Animated.Text>}
+            {subTitle && <Animated.Text style={[styles.subTitle, subTitleStyle]}>{subTitle}</Animated.Text>}
+          </Animated.View>
+        }
+      </View>
+      <View style={{flex: 1}} />
 
-      {HeaderR ? HeaderR : null}
+      {HeaderR ? 
+      <View style={{marginHorizontal: wp("3%"), justifyContent: "center", alignItems: "center", height: "100%", flexDirection: "row"}}>
+        <HeaderR />
+      </View>
+      : null}
     </Animated.View>
   );
 });
