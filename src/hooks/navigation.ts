@@ -30,8 +30,16 @@ export const useNavigate = () => {
     navigation.navigate(authStack.screen.userinfo.name);
   }, []);
 
-  const navigateToLaundry = useCallback((data: {[key: string]: any} = {}) => {
-    navigation.navigate(homeStack.screen.laundry.name, data);
+  const navigateToWash = useCallback(() => {
+    navigation.navigate(homeStack.screen.laundry.name, {id: "wash"});
+  }, []);
+
+  const navigateToWashAndIron = useCallback(() => {
+    navigation.navigate(homeStack.screen.laundry.name, {id: "washAndIron"});
+  }, []);
+
+  const navigateToWashAndFold = useCallback(() => {
+    navigation.navigate(homeStack.screen.laundry.name, {id: "washAndFold"});
   }, []);
 
   return {
@@ -42,6 +50,8 @@ export const useNavigate = () => {
     navigateToAddress,
     navigateToAddAddress,
     navigateToCreateUser,
-    navigateToLaundry,
+    navigateToWash,
+    navigateToWashAndIron,
+    navigateToWashAndFold,
   };
 };

@@ -3,18 +3,23 @@ import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { memo, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { useDispatch } from "react-redux";
 import CardView from "../cardview";
 import Counter from "./counter";
 
 export interface ClothCardProps {
   imageUri?: string;
   data: SupportedCloth;
+  onAdd: () => boolean;
 }
 
 const ClothCard: React.FC<ClothCardProps> = ({
   data,
+  onAdd,
 }) => {
+  const dispatch = useDispatch();
   const title = useMemo(() => toTitleCase(data.name), [data.name]);
+
   return (
     <View style={styles.container}>
       <View style={{flexDirection: "row"}}>
@@ -27,7 +32,8 @@ const ClothCard: React.FC<ClothCardProps> = ({
         <View style={styles.rightSide}>
           <View style={styles.imageContainer} />
           <CardView style={styles.counterContainer}>
-            <Counter />
+            <Counter 
+              onCounterPlus={onAdd} />
           </CardView>
         </View>
       </View>

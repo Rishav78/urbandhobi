@@ -15,10 +15,10 @@ import { HeaderRight } from "./header";
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
-  const { navigateToLaundry } = useNavigate();
+  const { navigateToWash } = useNavigate();
 
   const onWashPressHandler = useCallback(() => {
-    navigateToLaundry();
+    navigateToWash();
   }, []);
 
   return (
