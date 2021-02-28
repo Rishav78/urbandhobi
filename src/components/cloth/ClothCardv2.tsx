@@ -1,6 +1,7 @@
 import { SupportedCloth } from "@urbandhobi/@types";
+import { getClothById } from "@urbandhobi/actions";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
-import React, { memo, useMemo } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import CardView from "../cardview";
@@ -8,34 +9,69 @@ import Counter from "../counter";
 
 export interface ClothCardProps {
   imageUri?: string;
-  data: SupportedCloth;
-  onAdd: () => boolean;
-  onRemove: () => boolean;
+  data: SupportedCloth | string;
+  onAdd?: () => boolean;
+  onRemove?: () => boolean;
+  editable?: boolean;
+  quantity?: number;
 }
 
 const ClothCard: React.FC<ClothCardProps> = ({
   data,
   onAdd,
   onRemove,
+  editable = true,
+  quantity,
 }) => {
-  const title = useMemo(() => toTitleCase(data.name), [data.name]);
+
+  const [cloth, setCloth] = useState(data);
+  const title = useMemo(() => (typeof cloth === "string" ? "" : toTitleCase(cloth.name)), [cloth]);
+
+  const fetchClothInfo = async (id: string) => {
+    const d = await getClothById(id);
+    if (d) {
+      setCloth(d);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof cloth === "string") {
+      fetchClothInfo(cloth);
+    }
+  }, []);
+
+  if (typeof cloth === "string") {
+    return (
+      <Text>Loading...</Text>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: "row"}}>
+      <View style={{ flexDirection: "row" }}>
         <View style={styles.clothDescription}>
-          <Text style={{fontSize: wp("5%")}}>
+          <Text style={{ fontSize: wp("5%") }}>
             {title}
           </Text>
-          <Text>Rs. {data.cost}/Pcs</Text>
+          <Text>₹{cloth.cost}/Pcs</Text>
+          {
+            editable === false &&
+            <>
+              <Text>Quantity {quantity} Pcs</Text>
+              <View style={{flex: 1}} />
+              <Text>Total ₹{cloth.cost * (quantity || 0)}</Text>
+            </>
+          }
         </View>
         <View style={styles.rightSide}>
           <View style={styles.imageContainer} />
-          <CardView style={styles.counterContainer}>
-            <Counter
-              onCounterMinus={onRemove}
-              onCounterPlus={onAdd} />
-          </CardView>
+          {editable &&
+            <CardView style={styles.counterContainer}>
+              <Counter
+                onCounterMinus={onRemove}
+                onCounterPlus={onAdd} />
+            </CardView>
+          }
         </View>
       </View>
     </View>

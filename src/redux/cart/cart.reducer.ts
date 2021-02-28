@@ -58,10 +58,10 @@ const addToCart = (state: CartState, key: "wash" | "washAndIron" | "washAndFold"
   for (const k of Object.keys(payload)) {
     console.log(k, payload);
     if (state[key].data[k]) {
-      state[key].data[k].count++;
+      state[key].data[k].count += payload[k];
     }
     else {
-      state[key].data[k] = {id: k, count: 1};
+      state[key].data[k] = {id: k, count: payload[k]};
     }
   }
   return newState;

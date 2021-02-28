@@ -18,3 +18,19 @@ export const getSupportedLaundry = async () => {
     console.log(error);
   }
 };
+
+export const getClothById = async (id: string) => {
+  const url = `${api.cloth.laundry}?id=${id}`;
+  try {
+    console.log(url);
+    // const { auth } = await getTokens();
+    const cloth = (await getFetchWrapper<null, Array<SupportedCloth>>(url)
+      .setReqMethod("GET")
+      // .setTokens(auth)
+      .send())[0];
+    return cloth;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
