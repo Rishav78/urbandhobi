@@ -29,8 +29,21 @@ export const api = {
 
     },
   },
+  cart: {
+    createCart: () => `${URBANDHOBI_API}/cart`,
+    getCart: (cart?: string) =>
+      (typeof cart === "string" ?
+        `${URBANDHOBI_API}/cart${cart}` :
+        `${URBANDHOBI_API}/cart`),
+    deleteCart: () => `${URBANDHOBI_API}/cart`,
+    cartItems: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
+    addItem: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
+    updateItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
+    deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
+  },
 };
 
 export const serviceAreaStateURL = async () => {
   return `${api.serviceArea}/states?country=1`;
 };
+
