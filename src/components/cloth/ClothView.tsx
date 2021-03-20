@@ -1,4 +1,4 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { AddItemBody, CleanType, SupportedCloth } from "@urbandhobi/@types";
 import { Button, Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
 import Header from "@urbandhobi/components/header/Header";
@@ -9,43 +9,65 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export interface ClothViewProps {
-  onAddToCard: (data: {[key: string]: number}) => void;
-  data: Array<SupportedCloth>
+  onAddToCard: (data: AddItemBody[]) => void;
+  data: Array<SupportedCloth>;
+  type: CleanType;
 }
 
 export const ClothView: React.FC<ClothViewProps> = ({
   onAddToCard,
   data,
+  type,
 }) => {
-  const [counter, setCounter] = useState<{ [key: string]: number }>({});
-
-  useEffect(() => {
-    console.log(counter);
-  }, [counter]);
+  const [counter, setCounter] = useState<{ [key: string]: AddItemBody }>({});
 
   const onAddCloth = (cloth: SupportedCloth) => {
     return () => {
-      setCounter(state => ({
-        ...state,
-        [cloth.id]: (state[cloth.id] || 0) + 1,
-      }));
+      const { id } = cloth;
+      setCounter(state => {
+        const newState = { ...state };
+        if (newState[id]) {
+          newState[id].count++;
+        }
+        else {
+          newState[id] = {
+            cleanType: type,
+            count: 1,
+            itemId: id,
+          };
+        }
+        return newState;
+      });
       return true;
     };
   };
 
   const onRemoveCloth = (cloth: SupportedCloth) => {
     return () => {
-      setCounter(state => ({
-        ...state,
-        [cloth.id]: (state[cloth.id] || 1) - 1,
-      }));
+      const { id } = cloth;
+      setCounter(state => {
+        const newState = { ...state };
+        if (!newState[id]) {
+          return state;
+        }
+        if (newState[id].count === 1) {
+          delete newState[id];
+        }
+        else {
+          newState[id].count--;
+        }
+        return newState;
+      });
       return true;
     };
   };
 
   const addToCart = useCallback(() => {
-    onAddToCard(counter);
-  }, [counter]);
+    if (onAddToCard) {
+      onAddToCard(Object.values(counter));
+    }
+    setCounter({});
+  }, [counter, onAddToCard]);
 
   const _keyExtractor = useCallback((item: SupportedCloth) => {
     return item.id;
@@ -56,6 +78,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
       <ClothCard
         onRemove={onRemoveCloth(item)}
         onAdd={onAddCloth(item)}
+        quantity={counter[item.id] ? counter[item.id].count : 0}
         data={item} />
     );
   }, [counter]);

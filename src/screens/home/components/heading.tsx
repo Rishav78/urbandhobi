@@ -21,7 +21,7 @@ const Heading = () => {
       dispatch(setDefaultAddress(address));
     }
     catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

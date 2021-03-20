@@ -23,7 +23,7 @@ export const createUser = async (user: CreateUserForm) => {
       .send();
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -39,6 +39,6 @@ export const isVerified = async () => {
     return verified;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

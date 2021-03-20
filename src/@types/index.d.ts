@@ -5,10 +5,5 @@ export * from "./redux";
 export * from "./services";
 export * from "./screens";
 export * from "./actions";
-
-export type ReqMethod = "GET" | "POST" | "PUT" | "DELETE";
-
-export interface Response<T=object> {
-  code: number;
-  data: T;
-}
+export * from "./service";
+export * from "./common";

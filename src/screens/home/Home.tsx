@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,11 +11,26 @@ import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HeaderRight } from "./header";
+import Service from "@urbandhobi/lib/service";
+import { useDispatch } from "react-redux";
+import { setData } from "@urbandhobi/redux/cart/cart.action";
 
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const { navigateToWash, navigateToWashAndIron, navigateToWashAndFold } = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    new Service()
+      .cart()
+      .getCart()
+      .then((res) => {
+        if (res) {
+          dispatch(setData(res));
+        }
+      });
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

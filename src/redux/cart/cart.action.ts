@@ -1,30 +1,9 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { Cart, CartItem, GenericObject } from "@urbandhobi/@types";
 import { CartAction, CartActionType } from "./cart.type";
 
-export const addToWash = (payload: {[key: string]: number}): CartAction => {
+export const setData = (payload: {cart: Cart, items: GenericObject<CartItem[]>}): CartAction => {
   return {
-    type: CartActionType.ADD_TO_WASH,
-    payload,
-  };
-};
-
-export const addToWashAndIron = (payload: SupportedCloth): CartAction => {
-  return {
-    type: CartActionType.ADD_TO_WASH_AND_IRON,
-    payload,
-  };
-};
-
-export const addToWashAndFold = (payload: SupportedCloth): CartAction => {
-  return {
-    type: CartActionType.ADD_TO_WASH_AND_FOLD,
-    payload,
-  };
-};
-
-export const addToDryClean = (payload: SupportedCloth): CartAction => {
-  return {
-    type: CartActionType.ADD_TO_DRY_CLEAN,
+    type: CartActionType.SET_DATA,
     payload,
   };
 };

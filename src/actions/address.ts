@@ -15,7 +15,7 @@ export const getMyAddress = async () => {
     return res;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -40,7 +40,7 @@ export const makeAddressDefault = async (id: string) => {
       .send();
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -53,6 +53,6 @@ export const deleteAddress = async (id: string) => {
       .send();
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

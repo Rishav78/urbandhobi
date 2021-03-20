@@ -13,7 +13,7 @@ export interface ClothCardProps {
   onAdd?: () => boolean;
   onRemove?: () => boolean;
   editable?: boolean;
-  quantity?: number;
+  quantity: number;
 }
 
 const ClothCard: React.FC<ClothCardProps> = ({
@@ -68,6 +68,7 @@ const ClothCard: React.FC<ClothCardProps> = ({
           {editable &&
             <CardView style={styles.counterContainer}>
               <Counter
+                value={quantity}
                 onCounterMinus={onRemove}
                 onCounterPlus={onAdd} />
             </CardView>

@@ -13,7 +13,7 @@ export const getServices = async () => {
     return services;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -27,7 +27,7 @@ export const getAvailableStates = async () => {
     return states;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

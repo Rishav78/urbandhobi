@@ -137,7 +137,7 @@ export const AddAddress = () => {
       }
     }
     catch (error) {
-      console.log(error);
+      console.error(error);
     }
     finally {
       setLoading(false);
@@ -183,7 +183,7 @@ export const AddAddress = () => {
       hideFooter();
     }
     catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [position, selectedPosition]);
 

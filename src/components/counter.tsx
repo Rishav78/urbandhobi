@@ -6,17 +6,28 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 export interface CounterProps {
   onCounterPlus?: (count: number) => boolean;
   onCounterMinus?: (count: number) => boolean;
+  value?: number;
 }
 
 export const Counter: React.FC<CounterProps> = ({
   onCounterPlus,
   onCounterMinus,
+  value
 }) => {
 
   const [count, setCount] = useState(0);
-  const [enable, setEnable] = useState(false);
+
+  const currentCount = typeof value === "number" ? value : count;
 
   const onCountPlus = useCallback(() => {
+
+    if (typeof value === "number") {
+      if (onCounterPlus) {
+        onCounterPlus(value + 1);
+      }
+      return;
+    }
+
     if (onCounterPlus) {
       if (onCounterPlus(count + 1)) {
         setCount(state => (state + 1));
@@ -25,9 +36,17 @@ export const Counter: React.FC<CounterProps> = ({
     else {
       setCount(state => (state + 1));
     }
-  }, [count]);
+  }, [value]);
 
   const onCountMinus = useCallback(() => {
+
+    if (typeof value === "number") {
+      if (onCounterMinus) {
+        onCounterMinus(value - 1);
+      }
+      return;
+    }
+
     if (onCounterMinus) {
       if ((count - 1) >= 0 && onCounterMinus(count - 1)) {
         setCount(state => (state === 0 ? state : state - 1));
@@ -36,28 +55,24 @@ export const Counter: React.FC<CounterProps> = ({
     else {
       setCount(state => (state === 0 ? state : state - 1));
     }
-  }, [count]);
-
-  const enableButton = useCallback(() => {
-    setEnable(true);
-  }, []);
+  }, [count, value]);
 
   return (
     <View style={styles.container}>
       {
-        enable ?
+        currentCount !== 0 ?
           <>
             <Clickable onPress={onCountMinus} style={styles.minus}>
               <AntDesign name="minus" size={15} color="#ff3333" />
             </Clickable>
             <View style={styles.count}>
-              <Text>{count}</Text>
+              <Text>{currentCount}</Text>
             </View>
             <Clickable onPress={onCountPlus} style={styles.plus}>
               <AntDesign name="plus" size={15} color="#00e600" />
             </Clickable>
           </> :
-          <Clickable onPress={enableButton} style={styles.addContainer}>
+          <Clickable onPress={onCountPlus} style={styles.addContainer}>
             <Text style={styles.add}>ADD</Text>
           </Clickable>
       }

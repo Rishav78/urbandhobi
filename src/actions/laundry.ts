@@ -6,23 +6,21 @@ import { getFetchWrapper } from "@urbandhobi/lib/utils";
 export const getSupportedLaundry = async () => {
   const url = api.cloth.laundry;
   try {
-    console.log(url);
-    // const { auth } = await getTokens();
+    const { auth } = await getTokens();
     const clothes = await getFetchWrapper<null, Array<SupportedCloth>>(url)
       .setReqMethod("GET")
-      // .setTokens(auth)
+      .setTokens(auth)
       .send();
     return clothes;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 export const getClothById = async (id: string) => {
   const url = `${api.cloth.laundry}?id=${id}`;
   try {
-    console.log(url);
     // const { auth } = await getTokens();
     const cloth = (await getFetchWrapper<null, Array<SupportedCloth>>(url)
       .setReqMethod("GET")
@@ -31,6 +29,6 @@ export const getClothById = async (id: string) => {
     return cloth;
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
