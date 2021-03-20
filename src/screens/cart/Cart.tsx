@@ -6,15 +6,18 @@ import Header from "@urbandhobi/components/header/Header";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
-import React, { useEffect, useState } from "react";
+import { setData } from "@urbandhobi/redux/cart/cart.action";
+import React, { useCallback, useEffect, useState } from "react";
 import { SectionList, StyleSheet, Text, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 const cartSelector = (state: RootReducerType) => state.cart;
 
 const Cart = () => {
+
+  const dispatch = useDispatch();
 
   const { items } = useSelector(cartSelector, shallowEqual);
   const [data] = useState<Array<{ title: string, data: CartItem[] }>>(() => {
@@ -31,8 +34,21 @@ const Cart = () => {
     new Service()
       .cart()
       .getCart()
-      .then(res => console.error(res));
-  });
+      .then(res => {
+        if (res) {
+          dispatch(setData(res));
+        }
+      });
+  }, []);
+
+  const _renderItem = useCallback(({item}: {item: CartItem}) => {
+    return (
+      <ClothCardv2
+        editable={false}
+        quantity={item.count}
+        data={item.cloth} />
+    );
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -44,7 +60,7 @@ const Cart = () => {
             ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
             keyExtractor={item => item.id}
 
-            renderItem={({ item }) => <ClothCardv2 editable={false} quantity={item.count} data={item.id} />}
+            renderItem={_renderItem}
             renderSectionHeader={({ section: { title, data } }) => (
               data.length > 0 ?
                 <CardView>

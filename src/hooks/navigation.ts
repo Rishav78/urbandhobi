@@ -31,15 +31,15 @@ export const useNavigate = () => {
   }, []);
 
   const navigateToWash = useCallback(() => {
-    navigation.navigate(homeStack.screen.laundry.name, {id: "wash"});
+    navigation.navigate(homeStack.screen.wash.name);
   }, []);
 
   const navigateToWashAndIron = useCallback(() => {
-    navigation.navigate(homeStack.screen.laundry.name, {id: "washAndIron"});
+    navigation.navigate(homeStack.screen.washAndIron.name);
   }, []);
 
   const navigateToWashAndFold = useCallback(() => {
-    navigation.navigate(homeStack.screen.laundry.name, {id: "washAndFold"});
+    navigation.navigate(homeStack.screen.washAndFold.name);
   }, []);
 
   const navigateToCart = useCallback(() => {

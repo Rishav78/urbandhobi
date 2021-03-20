@@ -37,8 +37,14 @@ export const screens = {
       addAddress: {
         name: "ADD_ADDRESS",
       },
-      laundry: {
-        name: "LAUNDRY",
+      wash: {
+        name: "WASH",
+      },
+      washAndIron: {
+        name: "WASH_AND_ICON",
+      },
+      washAndFold: {
+        name: "WASH_AND_FOLD",
       },
       cart: {
         name: "CART",

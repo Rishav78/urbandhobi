@@ -2,7 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
 import {Address, AddAddress, HomeScreen} from "@urbandhobi/screens";
-import Laundry from "@urbandhobi/screens/laundry/WashAndFold";
+import WashAndFold from "@urbandhobi/screens/laundry/WashAndFold";
+import Wash from "@urbandhobi/screens/laundry/Wash";
+import WashAndIron from "@urbandhobi/screens/laundry/WashAndIron";
 import Cart from "@urbandhobi/screens/cart/Cart";
 
 const HomeStack = createStackNavigator();
@@ -24,10 +26,20 @@ export const HomeStackNavigation = () => {
         name={screen.addAddress.name}
         component={AddAddress}
       />
+      {/* laundry screens */}
       <HomeStack.Screen
-        name={screen.laundry.name}
-        component={Laundry}
+        name={screen.wash.name}
+        component={Wash}
       />
+      <HomeStack.Screen
+        name={screen.washAndFold.name}
+        component={WashAndFold}
+      />
+      <HomeStack.Screen
+        name={screen.washAndIron.name}
+        component={WashAndIron}
+      />
+
       <HomeStack.Screen
         name={screen.cart.name}
         component={Cart}
