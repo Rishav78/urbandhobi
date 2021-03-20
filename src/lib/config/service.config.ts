@@ -33,7 +33,7 @@ export const api = {
     createCart: () => `${URBANDHOBI_API}/cart`,
     getCart: (cart?: string) =>
       (typeof cart === "string" ?
-        `${URBANDHOBI_API}/cart${cart}` :
+        `${URBANDHOBI_API}/cart/${cart}` :
         `${URBANDHOBI_API}/cart`),
     deleteCart: () => `${URBANDHOBI_API}/cart`,
     cartItems: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
