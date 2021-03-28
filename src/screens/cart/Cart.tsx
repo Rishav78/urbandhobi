@@ -4,11 +4,12 @@ import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import Header from "@urbandhobi/components/header/Header";
 import MessageTile from "@urbandhobi/components/messageTile";
+import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
 import { setData } from "@urbandhobi/redux/cart/cart.action";
-import React, { useCallback, useEffect, useState } from "react";
-import { SectionList, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -20,7 +21,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const { items } = useSelector(cartSelector, shallowEqual);
-  const [data] = useState<Array<{ title: string, data: CartItem[] }>>(() => {
+  const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
     const keys = Object.keys(items);
     return keys.map(key => {
       return {
@@ -28,9 +29,10 @@ const Cart = () => {
         title: key,
       };
     });
-  });
+  }, [items]);
 
-  useEffect(() => {
+  const fetchCartData = useCallback((cb?: (err?: Error) => void) => {
+    console.log("start")
     new Service()
       .cart()
       .getCart()
@@ -38,10 +40,20 @@ const Cart = () => {
         if (res) {
           dispatch(setData(res));
         }
+        if (cb) {
+          cb();
+        }
+      })
+      .catch(err => {
+        if (cb) {
+          cb(err);
+        }
       });
   }, []);
 
-  const _renderItem = useCallback(({item}: {item: CartItem}) => {
+  useEffect(fetchCartData, []);
+
+  const _renderItem = useCallback(({ item }: { item: CartItem }) => {
     return (
       <ClothCardv2
         editable={false}
@@ -55,11 +67,11 @@ const Cart = () => {
       <Header headerLeftContainerStyle={{ marginHorizontal: wp("3%") }} />
       <View style={{ flex: 1 }}>
         {data.length > 0 ?
-          <SectionList
+          <RefreshSectionList
             sections={data}
+            onRefreshHandler={fetchCartData}
             ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
             keyExtractor={item => item.id}
-
             renderItem={_renderItem}
             renderSectionHeader={({ section: { title, data } }) => (
               data.length > 0 ?
