@@ -23,6 +23,6 @@ export interface CartNItems extends Cart {
 
 export interface AddItemBody {
   itemId: string;
-  cleanType: CleanType;
+  serviceId: string;
   count: number;
 }

@@ -18,6 +18,7 @@ export interface Service {
   id: string;
   name: string;
   category: string;
+  data: string;
   daysRequired: number;
   image: Assets;
   createdAt: Date;

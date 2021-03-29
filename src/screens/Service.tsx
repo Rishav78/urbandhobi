@@ -1,19 +1,22 @@
-import { AddItemBody, RootReducerType } from "@urbandhobi/@types";
+import { useRoute } from "@react-navigation/core";
+import { AddItemBody, RootReducerType, Service } from "@urbandhobi/@types";
 import { getSupportedLaundry } from "@urbandhobi/actions";
 import ClothView from "@urbandhobi/components/cloth/ClothView";
-import Service from "@urbandhobi/lib/service";
+import ServiceManager from "@urbandhobi/lib/service";
 import { setSupportedLaundry } from "@urbandhobi/redux/laundry/laundry.actions";
 import React, { useCallback, useEffect } from "react";
 import { Alert } from "react-native";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-const clothSelector = (state: RootReducerType) => state.laundry.data;
+
 const cartSelector = (state: RootReducerType) => state.cart.cart;
 
-export const Laundry = () => {
+export const ServiceScreen = () => {
+  const {service} = useRoute().params as {service: Service};
+  const clothSelector = useCallback((state: RootReducerType) => state.laundry.data, []);
 
-  const clothes = useSelector(clothSelector, shallowEqual);
   const cart = useSelector(cartSelector, shallowEqual);
+  const clothes = useSelector(clothSelector, shallowEqual);
   const dispatch = useDispatch();
 
   const fetchLaundryData = async () => {
@@ -27,7 +30,7 @@ export const Laundry = () => {
     if (!cart) {
       return Alert.alert("Some error occur try again");
     }
-    await new Service()
+    await new ServiceManager()
       .cart()
       .cart(cart.id)
       .addItem(data);
@@ -39,10 +42,10 @@ export const Laundry = () => {
 
   return (
     <ClothView
-      type="washandfold"
+      service={service}
       onAddToCard={onAddToCard}
       data={clothes} />
   );
 };
 
-export default Laundry;
+export default ServiceScreen;

@@ -1,9 +1,9 @@
-import { AddItemBody, CleanType, SupportedCloth } from "@urbandhobi/@types";
+import { AddItemBody, Service, SupportedCloth } from "@urbandhobi/@types";
 import { Button, Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
 import Header from "@urbandhobi/components/header/Header";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,13 +11,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export interface ClothViewProps {
   onAddToCard: (data: AddItemBody[]) => void;
   data: Array<SupportedCloth>;
-  type: CleanType;
+  service: Service
 }
 
 export const ClothView: React.FC<ClothViewProps> = ({
   onAddToCard,
   data,
-  type,
+  service,
 }) => {
   const [counter, setCounter] = useState<{ [key: string]: AddItemBody }>({});
 
@@ -31,7 +31,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
         }
         else {
           newState[id] = {
-            cleanType: type,
+            serviceId: service.id,
             count: 1,
             itemId: id,
           };

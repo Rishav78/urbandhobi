@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,18 +11,36 @@ import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HeaderRight } from "./header";
-import Service from "@urbandhobi/lib/service";
+import ServiceManager from "@urbandhobi/lib/service";
 import { useDispatch } from "react-redux";
 import { setData } from "@urbandhobi/redux/cart/cart.action";
+import { Service, ServiceSections } from "@urbandhobi/@types";
+import Loading from "@urbandhobi/components/loading";
 
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
-  const { navigateToWash, navigateToWashAndIron, navigateToWashAndFold } = useNavigate();
+  const { navigateToService } = useNavigate();
   const dispatch = useDispatch();
 
+  const [serviceType, setServiceType] = useState<ServiceSections[] | null>(null);
+
+  const onServicePress = useCallback((service: Service) => {
+    navigateToService({service});
+  }, []);
+
+  const getAvailableService = async () => {
+    const res = await new ServiceManager()
+      .services()
+      .getServiceTypes();
+
+    if (res) {
+      setServiceType(res);
+    }
+  };
+
   useEffect(() => {
-    new Service()
+    new ServiceManager()
       .cart()
       .getCart()
       .then((res) => {
@@ -30,7 +48,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
           dispatch(setData(res));
         }
       });
+
+    getAvailableService();
   }, []);
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -44,48 +65,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         onRefreshHandler={() => { }}
         showsVerticalScrollIndicator={false}>
         <ServiceArea />
-        <ServiceSection title="LAUNDRY">
-          <ServiceCard
-            onPress={navigateToWash}
-            title="wash"
-            image="https://laundry-app.herokuapp.com/f/app/i/wash.png"
-            days={5}
-          />
-          <ServiceCard
-            onPress={navigateToWashAndIron}
-            title="wash & iron"
-            image="https://laundry-app.herokuapp.com/f/app/i/wash-and-iron.png"
-            days={5}
-          />
-          <ServiceCard
-            onPress={navigateToWashAndFold}
-            title="wash & fold"
-            image="https://laundry-app.herokuapp.com/f/app/i/wash-and-fold.png"
-            days={5}
-          />
-        </ServiceSection>
-        <ServiceSection title="dry clean">
-          <ServiceCard
-            title="men"
-            image="https://laundry-app.herokuapp.com/f/app/i/men.png"
-            days={5}
-          />
-          <ServiceCard
-            title="women"
-            image="https://laundry-app.herokuapp.com/f/app/i/women.png"
-            days={5}
-          />
-          <ServiceCard
-            title="stream press"
-            image="https://laundry-app.herokuapp.com/f/app/i/stream-iron.png"
-            days={5}
-          />
-          <ServiceCard
-            title="dry clean"
-            image="https://laundry-app.herokuapp.com/f/app/i/accessories.png"
-            days={5}
-          />
-        </ServiceSection>
+        <Loading loading={serviceType === null}>
+          {
+            serviceType?.map(type => (
+              <ServiceSection key={type.id} title={type.name}>
+                {
+                  type.services.map(service => (
+                    <ServiceCard
+                      key={service.id}
+                      onPress={onServicePress}
+                      data={service}
+                    />
+                  ))
+                }
+              </ServiceSection>
+            ))
+          }
+        </Loading>
       </RefreshScrollView>
     </SafeAreaView>
   );

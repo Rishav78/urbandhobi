@@ -1,6 +1,5 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
-  GestureResponderEvent,
   Image,
   StyleSheet,
   Text,
@@ -10,29 +9,41 @@ import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-re
 import CardView from "@urbandhobi/components/cardview";
 import { Clickable } from "@urbandhobi/components/click";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
+import { Service } from "@urbandhobi/@types";
 
 export interface ServiceCardProps {
-  title: string;
-  category?: string;
-  image: string;
-  days: number;
-  onPress?: (event: GestureResponderEvent) => void;
+  data: Service;
+  onPress?: (service: Service) => void;
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({
-  title,
-  image,
-  days,
+  data,
   onPress,
 }) => {
+  const {
+    name: title,
+    image: {
+      url: image,
+    },
+    daysRequired,
+  } = data;
   const name = useMemo(() => toTitleCase(title), [title]);
+
+  const onClick = useCallback(() => {
+    if (onPress) {
+      onPress(data);
+    }
+  }, [data]);
+
   return (
     <CardView style={styles.container}>
-      <Clickable onPress={onPress} style={styles.clickable}>
+      <Clickable onPress={onClick} style={styles.clickable}>
         <View style={styles.content}>
           <Image source={{ uri: image }} style={styles.image} />
           <Text style={styles.title}>{name}</Text>
-          {days && <Text style={styles.days}>{days} Days</Text>}
+          <Text style={styles.days}>
+            {typeof daysRequired === "number" ? `${daysRequired} Days` : "Unvailable"}
+          </Text>
         </View>
       </Clickable>
     </CardView>

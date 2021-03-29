@@ -46,6 +46,9 @@ export const screens = {
       washAndFold: {
         name: "WASH_AND_FOLD",
       },
+      service: {
+        name: "SERVICE",
+      },
       cart: {
         name: "CART",
       },

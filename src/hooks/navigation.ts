@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { screens } from "@urbandhobi/lib/constants";
+import { Service } from "@urbandhobi/@types";
 
 export const useNavigate = () => {
   const navigation = useNavigation();
@@ -30,20 +31,12 @@ export const useNavigate = () => {
     navigation.navigate(authStack.screen.userinfo.name);
   }, []);
 
-  const navigateToWash = useCallback(() => {
-    navigation.navigate(homeStack.screen.wash.name);
-  }, []);
-
-  const navigateToWashAndIron = useCallback(() => {
-    navigation.navigate(homeStack.screen.washAndIron.name);
-  }, []);
-
-  const navigateToWashAndFold = useCallback(() => {
-    navigation.navigate(homeStack.screen.washAndFold.name);
-  }, []);
-
   const navigateToCart = useCallback(() => {
     navigation.navigate(homeStack.screen.cart.name);
+  }, []);
+
+  const navigateToService = useCallback((data: {service: Service}) => {
+    navigation.navigate(homeStack.screen.service.name, data);
   }, []);
 
   return {
@@ -54,9 +47,7 @@ export const useNavigate = () => {
     navigateToAddress,
     navigateToAddAddress,
     navigateToCreateUser,
-    navigateToWash,
-    navigateToWashAndIron,
-    navigateToWashAndFold,
     navigateToCart,
+    navigateToService,
   };
 };
