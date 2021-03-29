@@ -19,6 +19,10 @@ export const ServiceScreen = () => {
   const clothes = useSelector(clothSelector, shallowEqual);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log(cart);
+  })
+
   const fetchLaundryData = async () => {
     const cloths = await getSupportedLaundry();
     if (cloths) {

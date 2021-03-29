@@ -7,8 +7,8 @@ import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
-import { setData } from "@urbandhobi/redux/cart/cart.action";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { setCart, setCartItems} from "@urbandhobi/redux/cart/cart.action";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,25 +20,39 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-  const { items } = useSelector(cartSelector, shallowEqual);
+  const { items, cart} = useSelector(cartSelector, shallowEqual);
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
-    const keys = Object.keys(items);
-    return keys.map(key => {
+    return items.map(service => {
       return {
-        data: items[key],
-        title: key,
+        data: service.items,
+        title: service.name,
       };
     });
   }, [items]);
 
+  const fetchCartItems = useCallback(async (cb?: (err?: Error) => void) => {
+    if (!cart) {
+      return console.error("cart is not intilized");
+    }
+    const res = await new Service()
+      .cart(cart.id)
+      .getItems();
+
+    if (res) {
+      dispatch(setCartItems(res));
+    }
+    if (cb) {
+      cb();
+    }
+  }, []);
+
   const fetchCartData = useCallback((cb?: (err?: Error) => void) => {
-    console.log("start")
     new Service()
       .cart()
       .getCart()
       .then(res => {
         if (res) {
-          dispatch(setData(res));
+          dispatch(setCart(res));
         }
         if (cb) {
           cb();
@@ -51,7 +65,9 @@ const Cart = () => {
       });
   }, []);
 
-  useEffect(fetchCartData, []);
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
   const _renderItem = useCallback(({ item }: { item: CartItem }) => {
     return (
@@ -69,7 +85,7 @@ const Cart = () => {
         {data.length > 0 ?
           <RefreshSectionList
             sections={data}
-            onRefreshHandler={fetchCartData}
+            onRefreshHandler={fetchCartItems}
             ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
             keyExtractor={item => item.id}
             renderItem={_renderItem}

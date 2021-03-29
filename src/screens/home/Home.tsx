@@ -13,7 +13,7 @@ import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HeaderRight } from "./header";
 import ServiceManager from "@urbandhobi/lib/service";
 import { useDispatch } from "react-redux";
-import { setData } from "@urbandhobi/redux/cart/cart.action";
+import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { Service, ServiceSections } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
 
@@ -45,7 +45,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
       .getCart()
       .then((res) => {
         if (res) {
-          dispatch(setData(res));
+          dispatch(setCart(res));
         }
       });
 

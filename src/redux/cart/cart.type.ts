@@ -1,4 +1,4 @@
-import { Cart, CartItem, GenericObject } from "@urbandhobi/@types";
+import { Cart, CartItem, CartItemGBService, GenericObject } from "@urbandhobi/@types";
 
 export interface CartAction {
   type: CartActionType,
@@ -7,11 +7,12 @@ export interface CartAction {
 
 // eslint-disable-next-line no-shadow
 export enum CartActionType {
-  SET_DATA="@@cart/SET_DATA",
+  SET_CART="@@cart/SET_CART",
+  SET_ITEMS="@@cart/SET_ITEMS",
 }
 
 export interface CartState {
   loading: boolean;
   cart: Cart | null;
-  items: GenericObject<CartItem[]>
+  items: CartItemGBService[]
 }

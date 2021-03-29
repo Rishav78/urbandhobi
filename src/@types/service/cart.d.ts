@@ -1,10 +1,9 @@
 import {SupportedCloth} from "@urbandhobi/@types";
-import { CleanType } from "../common";
+import { Service } from "../services";
 
 export interface CartItem {
   id: string;
   count: number;
-  cleanType: CleanType;
   cloth: SupportedCloth;
   createdAt: Date;
   updatedAt: Date;
@@ -15,6 +14,10 @@ export interface Cart {
   status: "pending" | "submited";
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface CartItemGBService extends Service {
+  items: CartItem[];
 }
 
 export interface CartNItems extends Cart {

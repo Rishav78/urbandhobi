@@ -3,7 +3,7 @@ import { CartAction, CartActionType, CartState } from "./cart.type";
 const initialState: CartState = {
   loading: false,
   cart: null,
-  items: {},
+  items: [],
 };
 
 export type AuthReducerFn = (state: CartState, action: CartAction) => CartState;
@@ -11,10 +11,14 @@ export type AuthReducerFn = (state: CartState, action: CartAction) => CartState;
 export const CartReducer: AuthReducerFn = (state = initialState, action) => {
   const { type, payload} = action;
   switch (type) {
-    case CartActionType.SET_DATA: return {
+    case CartActionType.SET_CART: return {
       ...state,
-      cart: payload.cart,
-      items: payload.items,
+      cart: payload,
+      loading: false,
+    };
+    case CartActionType.SET_ITEMS: return {
+      ...state,
+      items: payload,
       loading: false,
     };
     default: return state;
