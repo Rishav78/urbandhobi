@@ -1,9 +1,8 @@
 import { CartItem, RootReducerType } from "@urbandhobi/@types";
-import { Seperator } from "@urbandhobi/components";
+import { Button, Seperator } from "@urbandhobi/components";
 import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import Header from "@urbandhobi/components/header/Header";
-import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
@@ -44,7 +43,7 @@ const Cart = () => {
     if (cb) {
       cb();
     }
-  }, []);
+  }, [cart]);
 
   const fetchCartData = useCallback((cb?: (err?: Error) => void) => {
     new Service()
@@ -65,9 +64,23 @@ const Cart = () => {
       });
   }, []);
 
+  const submitCart = useCallback(async () => {
+    try {
+      if (!cart) {
+        return console.error("cart is not intilized");
+      }
+
+      await new Service().laundry(cart.id).request();
+      await fetchCartData();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }, [cart]);
+
   useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, [cart]);
 
   const _renderItem = useCallback(({ item }: { item: CartItem }) => {
     return (
@@ -100,6 +113,9 @@ const Cart = () => {
           ListFooterComponent={() => <View style={{ height: hp("10%") }} />}
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <Button onPress={submitCart} activeOpacity={1} title="SUBMIT CART" />
+      </View>
     </SafeAreaView>
   );
 };
@@ -107,4 +123,10 @@ const Cart = () => {
 export default Cart;
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    paddingHorizontal: wp("3%"),
+  },
 });

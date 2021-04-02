@@ -41,6 +41,9 @@ export const api = {
     updateItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
     deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
   },
+  laundry: {
+    request: (cart: string) => `${URBANDHOBI_API}/laundry/request?c=${cart}`,
+  },
 };
 
 export const serviceAreaStateURL = async () => {
