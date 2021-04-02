@@ -39,6 +39,10 @@ export const useNavigate = () => {
     navigation.navigate(homeStack.screen.service.name, data);
   }, []);
 
+  const navigateToTiming = useCallback(() => {
+    navigation.navigate(homeStack.screen.pickupTiming.name);
+  }, []);
+
   return {
     navigation,
     navigateToSignin,
@@ -49,5 +53,6 @@ export const useNavigate = () => {
     navigateToCreateUser,
     navigateToCart,
     navigateToService,
+    navigateToTiming,
   };
 };

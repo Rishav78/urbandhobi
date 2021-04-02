@@ -54,8 +54,8 @@ export default ServiceCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: wp("45%"),
-    height: wp("45%"),
+    width: wp("31%"),
+    height: wp("31%"),
     backgroundColor: "#fff",
     marginVertical: heightPercentageToDP("1%"),
   },
@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: wp("25%"),
-    height: wp("25%"),
+    width: wp("15%"),
+    height: wp("15%"),
     marginVertical: wp("2%"),
   },
   title: {
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
   },
   days: {
     color: "#4A4A4A",
-    fontSize: wp("3.5%"),
+    fontSize: wp("2.5%"),
   },
 });

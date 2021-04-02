@@ -52,6 +52,9 @@ export const screens = {
       cart: {
         name: "CART",
       },
+      pickupTiming: {
+        name: "PICKUP_TIMINGS",
+      },
     },
   },
 };

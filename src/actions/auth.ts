@@ -17,7 +17,7 @@ export const createUser = async (user: CreateUserForm) => {
   try {
     await getFetchWrapper()
       .setURL(api.user.CREATE_USER)
-      .setReqMethod("POST")
+      .setReqMethod("PUT")
       .setTokens(auth)
       .setData(user)
       .send();

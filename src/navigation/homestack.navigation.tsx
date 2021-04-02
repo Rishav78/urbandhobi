@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { screens } from "../lib/constants";
 import { Address, AddAddress, HomeScreen, ServiceScreen } from "@urbandhobi/screens";
 import Cart from "@urbandhobi/screens/cart/Cart";
+import PickupTimming from "@urbandhobi/screens/pickupTiming/PickupTiming";
 
 const HomeStack = createStackNavigator();
 
@@ -30,6 +31,10 @@ export const HomeStackNavigation = () => {
       <HomeStack.Screen
         name={screen.cart.name}
         component={Cart}
+      />
+      <HomeStack.Screen
+        name={screen.pickupTiming.name}
+        component={PickupTimming}
       />
     </HomeStack.Navigator>
   );

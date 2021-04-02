@@ -4,6 +4,7 @@ import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import Header from "@urbandhobi/components/header/Header";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
+import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
 import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
@@ -18,6 +19,7 @@ const cartSelector = (state: RootReducerType) => state.cart;
 const Cart = () => {
 
   const dispatch = useDispatch();
+  const { navigateToTiming } = useNavigate();
 
   const { items, cart } = useSelector(cartSelector, shallowEqual);
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
@@ -70,8 +72,12 @@ const Cart = () => {
         return console.error("cart is not intilized");
       }
 
-      await new Service().laundry(cart.id).request();
-      await fetchCartData();
+      navigateToTiming();
+
+      // const newCart = await new Service().laundry(cart.id).request();
+      // if (newCart) {
+      //   dispatch(setCart(newCart));
+      // }
     }
     catch (error) {
       console.log(error);

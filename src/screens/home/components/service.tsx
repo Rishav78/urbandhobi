@@ -4,6 +4,8 @@ import {
   Text,
   View,
   Animated,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import ServiceCard from "./serviceCard";
 import { Service } from "@urbandhobi/@types/services";
@@ -11,14 +13,16 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 
 export interface ServiceSectionProps {
   title: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const ServiceSection: React.FC<ServiceSectionProps> = ({
   title,
   children,
+  style
 }) => {
   return (
-    <Animated.View style={styles.container}>
+    <Animated.View style={[styles.container, style]}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title.toUpperCase()}</Text>
       </View>

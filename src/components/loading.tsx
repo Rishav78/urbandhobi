@@ -1,19 +1,21 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 
 interface LoadingProps {
   loading: boolean;
   message?: string;
   children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
 const Loading: React.FC<LoadingProps> = ({
   loading,
   children,
   message,
+  style
 }) => {
   return (
-    <View>
+    <View style={style}>
       {loading ?
         <Text style={styles.message}>{message || "Loading..."}</Text> :
         children
