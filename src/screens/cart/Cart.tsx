@@ -7,7 +7,7 @@ import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
-import { setCart, setCartItems} from "@urbandhobi/redux/cart/cart.action";
+import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -20,7 +20,7 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-  const { items, cart} = useSelector(cartSelector, shallowEqual);
+  const { items, cart } = useSelector(cartSelector, shallowEqual);
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
     return items.map(service => {
       return {
@@ -82,26 +82,23 @@ const Cart = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header headerLeftContainerStyle={{ marginHorizontal: wp("3%") }} />
       <View style={{ flex: 1 }}>
-        {data.length > 0 ?
-          <RefreshSectionList
-            sections={data}
-            onRefreshHandler={fetchCartItems}
-            ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
-            keyExtractor={item => item.id}
-            renderItem={_renderItem}
-            renderSectionHeader={({ section: { title, data } }) => (
-              data.length > 0 ?
-                <CardView>
-                  <Text style={{
-                    paddingHorizontal: wp("3%"),
-                    fontSize: wp("6%"),
-                  }}>{toTitleCase(title)}</Text>
-                </CardView> : <></>
-            )}
-            ListFooterComponent={() => <View style={{ height: hp("10%") }} />}
-          /> :
-          <MessageTile style={styles.message} message="NO DATA IN THE CART" />
-        }
+        <RefreshSectionList
+          sections={data}
+          onRefreshHandler={fetchCartItems}
+          ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
+          keyExtractor={item => item.id}
+          renderItem={_renderItem}
+          renderSectionHeader={({ section: { title, data } }) => (
+            data.length > 0 ?
+              <CardView>
+                <Text style={{
+                  paddingHorizontal: wp("3%"),
+                  fontSize: wp("6%"),
+                }}>{toTitleCase(title)}</Text>
+              </CardView> : <></>
+          )}
+          ListFooterComponent={() => <View style={{ height: hp("10%") }} />}
+        />
       </View>
     </SafeAreaView>
   );
@@ -110,11 +107,4 @@ const Cart = () => {
 export default Cart;
 
 const styles = StyleSheet.create({
-  message: {
-    elevation: 10,
-    backgroundColor: "#fff",
-    paddingVertical: hp("2%"),
-    marginHorizontal: wp("3%"),
-    borderRadius: wp("2%"),
-  },
 });

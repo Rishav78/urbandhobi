@@ -1,5 +1,7 @@
 import React, { useCallback, useState, memo } from "react";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListProps, ScrollView, SectionList, SectionListProps, Alert } from "react-native";
+import MessageTile from "./messageTile";
 
 export interface PullRefreshProps {
   onRefreshHandler?: (cb: (err?: Error) => void) => (Promise<void> | void);
@@ -48,6 +50,7 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
 
 export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = memo(({
   onRefreshHandler,
+  data,
   ...flatlistprops
 }) => {
 
@@ -71,6 +74,8 @@ export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = 
     <View style={{ flex: 1 }}>
       <FlatList
         {...flatlistprops}
+        data={data}
+        ListHeaderComponent={(!data || data.length <= 0 ) ? <MessageTile style={styles.message} message="NO DATA" /> : <></>}
         removeClippedSubviews={true}
         refreshControl={
           <RefreshControl
@@ -85,6 +90,7 @@ export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = 
 
 export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<any>> = memo(({
   onRefreshHandler,
+  sections,
   ...flatlistprops
 }) => {
 
@@ -108,6 +114,8 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
     <View style={{ flex: 1 }}>
       <SectionList
         {...flatlistprops}
+        sections={sections}
+        ListHeaderComponent={sections.length <= 0 ? <MessageTile style={styles.message} message="NO DATA IN THE CART" /> : <></>}
         removeClippedSubviews={true}
         refreshControl={
           <RefreshControl
@@ -120,4 +128,13 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
   );
 });
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  message: {
+    elevation: 10,
+    backgroundColor: "#fff",
+    marginTop: hp("1%"),
+    paddingVertical: hp("2%"),
+    marginHorizontal: wp("3%"),
+    borderRadius: wp("2%"),
+  },
+});

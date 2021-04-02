@@ -47,12 +47,13 @@ export class CartService {
       }
       const url = api.cart.cartItems(this._cart) + "?groupby=service";
       const {auth} = await getTokens();
-      const res = getFetchWrapper<null, CartItemGBService[]>()
+      const res = await getFetchWrapper<null, CartItemGBService[]>()
         .setURL(url)
         .setReqMethod("GET")
         .setTokens(auth)
         .send();
-      return res;
+      const sections = res.filter(e => e.items.length > 0);
+      return sections;
     }
     catch (error) {
       console.log(error);
