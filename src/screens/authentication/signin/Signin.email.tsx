@@ -12,7 +12,7 @@ import Header from "@urbandhobi/components/header/Header";
 import { isVerified } from "@urbandhobi/actions";
 
 export interface SigninForm {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -23,7 +23,7 @@ const form: UseFormProps = {
   method: "POST",
   fields: [
     {
-      name: "username",
+      name: "email",
       type: "email",
       validate: true,
     },
@@ -39,11 +39,11 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
   const { getValue, setValue, submit, error } = useForm<SigninForm>(form, { username: "", password: "" });
 
-  const { username, password } = getValue();
+  const { email, password } = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setValue<string>("username", text);
+    setValue<string>("email", text);
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
@@ -52,11 +52,11 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      const { refreshToken, token } = await submit<ResponseToken>();
-      await setTokens(token, refreshToken);
-      if (await isVerified()) {
+      const {access, refresh} = await submit<ResponseToken>();
+      await setTokens(access, refresh);
+      // if (await isVerified()) {
         dispatch(setVerified(true));
-      }
+      // }
       dispatch(signIn());
     }
     catch (err) {
@@ -78,7 +78,7 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
         <View style={styles.form}>
           <Input
             onChangeText={onEmailChangeHandler}
-            value={username}
+            value={email}
             keyboardType="email-address"
             contentContainerStyle={styles.inputContainer}
             style={[styles.input]}

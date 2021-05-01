@@ -22,9 +22,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 }) => {
   const {
     name: title,
-    image: {
-      url: image,
-    },
+    // image: {
+    //   url: image,
+    // },
     daysRequired,
   } = data;
   const name = useMemo(() => toTitleCase(title), [title]);
@@ -39,7 +39,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
     <CardView style={styles.container}>
       <Clickable onPress={onClick} style={styles.clickable}>
         <View style={styles.content}>
-          <Image source={{ uri: image }} style={styles.image} />
+          {/* <Image source={{ uri: image }} style={styles.image} /> */}
           <Text style={styles.title}>{name}</Text>
           <Text style={styles.days}>
             {typeof daysRequired === "number" ? `${daysRequired} Days` : "Unvailable"}

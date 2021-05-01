@@ -56,12 +56,17 @@ export class fetchWrapper<Body = any, Res = any> {
         "x-refresh-token": this.refreshToken,
       },
     });
-    const data: Response<Res | APIError> = await res.json();
-    if (data.code >= 400 && data.code <= 500) {
-      const { error } = data.data as APIError;
+    console.log(res.status);
+    if (res.status >= 400) {
+      let error = await res.json();
+      if (typeof error === "object") {
+        error = JSON.stringify(error, null, 2);
+      }
+      console.error(error);
       throw new Error(error);
     }
-    return data.data as Res;
+    const data: Res | APIError = await res.json();
+    return data as Res;
   }
 }
 

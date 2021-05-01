@@ -13,7 +13,7 @@ import { Heading } from "../components";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 
 export interface SignupForm {
-  username: string;
+  email: string;
   password: string;
   confirm: string;
 }
@@ -22,10 +22,10 @@ export interface SignupWithEmailProps { }
 
 const form: UseFormProps = {
   action: api.auth.SIGNUP,
-  method: "POST",
+  method: "PUT",
   fields: [
     {
-      name: "username",
+      name: "email",
       type: "email",
     },
     {
@@ -47,14 +47,14 @@ const form: UseFormProps = {
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
-  const {navigateToCreateUser} = useNavigate();
+  const {navigateToSignin} = useNavigate();
   const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { username: "", password: "", confirm: "" });
 
-  const { username, password, confirm } = getValue();
+  const { email, password, confirm } = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setValue<string>("username", text);
+    setValue<string>("email", text);
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
@@ -67,13 +67,21 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      const { refreshToken, token } = await submit<ResponseToken>();
-      await AsyncStorage.setItem("token", token);
-      await AsyncStorage.setItem("refreshToken", refreshToken);
-      dispatch(signIn());
-      navigateToCreateUser();
+      await submit<ResponseToken>();
+      Alert.alert("ACCOUNT CREATED", undefined, [
+        {
+          text: "Ok",
+          onPress: () => navigateToSignin(),
+          style: "default",
+        },
+      ]);
+      // await AsyncStorage.setItem("token", token);
+      // await AsyncStorage.setItem("refreshToken", refreshToken);
+      // dispatch(signIn());
+      // navigateToCreateUser();
     }
     catch (err) {
+      console.error(err);
       Alert.alert(err.message);
     }
   }, [confirm]);
@@ -92,7 +100,7 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
         <View style={styles.form}>
           <Input
             onChangeText={onEmailChangeHandler}
-            value={username}
+            value={email}
             keyboardType="email-address"
             contentContainerStyle={styles.inputContainer}
             style={[styles.input]}

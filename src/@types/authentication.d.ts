@@ -1,5 +1,10 @@
-export interface ResponseToken {
+export interface Token {
   token: string;
-  timestamp: string;
-  refreshToken: string;
+  exp: number;
+  iat: number;
+}
+
+export interface ResponseToken {
+  access: Token;
+  refresh: Token;
 }

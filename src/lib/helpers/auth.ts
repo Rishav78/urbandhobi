@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Token } from "@urbandhobi/@types";
 import { refreshAuthToken } from "@urbandhobi/actions/auth";
 
 export interface AuthToken {
@@ -7,23 +8,20 @@ export interface AuthToken {
   expireIn: number;
 }
 
-export const setTokens = async (authToken: string, refreshToken: string) => {
-  await AsyncStorage.setItem("authtoken", JSON.stringify({
-    timestamp: new Date().getTime(),
-    token: authToken,
-    expireIn: 60 * 60,
-  }));
-  await AsyncStorage.setItem("refreshtoken", refreshToken);
+export const setTokens = async (authToken: Token, refreshToken: Token) => {
+  await AsyncStorage.setItem("authtoken", JSON.stringify(authToken));
+  await AsyncStorage.setItem("refreshtoken", JSON.stringify(refreshToken));
 };
 
 export const getTokens = async () => {
   const auth = await AsyncStorage.getItem("authtoken");
-  let refresh = await AsyncStorage.getItem("refreshtoken");
+  let refreshTokenString = await AsyncStorage.getItem("refreshtoken");
   if (!auth) {
     throw new Error("token not available");
   }
-  let {expireIn, timestamp, token}: AuthToken = JSON.parse(auth);
-  const isExpired = new Date().getTime() >= new Date(timestamp).setSeconds(new Date(timestamp).getSeconds() + expireIn);
+  let {token: refresh}: Token = JSON.parse(refreshTokenString || "{}");
+  let {exp, iat, token}: Token = JSON.parse(auth);
+  const isExpired = new Date().getTime() >= new Date(iat).setSeconds(new Date(iat).getSeconds() + exp);
   console.info("isExpired", isExpired);
   if (isExpired) {
     if (!refresh) {
