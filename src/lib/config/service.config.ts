@@ -12,7 +12,9 @@ export const api = {
     REFRESH_TOKEN: `${AUTH_API}/token/refresh`,
   },
   services: "http://192.168.101.2:3005/api/services/v1/type",
-  serviceArea: `${URBANDHOBI_API}/location`,
+  serviceArea: {
+    state: "http://192.168.101.2:3005/api/services/v1/area/state",
+  },
   address: {
     myAddress: `${URBANDHOBI_API}/user/address`,
     create: `${URBANDHOBI_API}/user/address/create`,
@@ -24,7 +26,7 @@ export const api = {
     VERIFIED: `${URBANDHOBI_API}/auth/verified`,
   },
   cloth: {
-    laundry: `${URBANDHOBI_API}/cloth/laundry`,
+    laundry: "http://192.168.101.2/api/cloth/v1",
     dryclean: {
 
     },

@@ -19,7 +19,7 @@ export const getServices = async () => {
 
 export const getAvailableStates = async () => {
   try {
-    const url = await serviceAreaStateURL();
+    const url = api.serviceArea.state;
     const states = await getFetchWrapper<null, ServiceState[]>()
       .setURL(url)
       .setReqMethod("GET")

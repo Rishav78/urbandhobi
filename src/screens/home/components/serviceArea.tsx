@@ -18,9 +18,10 @@ export const ServiceArea = () => {
 
   const getServiceArea = useCallback(async () => {
     const states = await getAvailableStates();
-    if (states) {
-      dispatch(setServiceState(states));
-    }
+    console.log(states);
+    // if (states) {
+    //   dispatch(setServiceState([]));
+    // }
   }, []);
 
   useEffect(() => {
@@ -38,9 +39,9 @@ export const ServiceArea = () => {
           {
             serviceArea.map(area => (
               <City
-                key={area.image.id}
-                image={area.image.url}
-                name={area.state}
+                key={area.image}
+                image={area.image}
+                name={area.name}
               />
             ))
           }

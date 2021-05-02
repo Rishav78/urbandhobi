@@ -33,12 +33,21 @@ export interface ServiceSections {
   updatedAt: Date;
 }
 
+// export interface ServiceState {
+//   id: string;
+//   state: string;
+//   country: string;
+//   symbol: string;
+//   image: Assets;
+// }
+
 export interface ServiceState {
   id: string;
-  state: string;
-  country: string;
-  symbol: string;
-  image: Assets;
+  name: string;
+  countryId: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ReverseGeoCode {
