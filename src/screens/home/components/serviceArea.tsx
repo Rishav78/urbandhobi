@@ -18,10 +18,9 @@ export const ServiceArea = () => {
 
   const getServiceArea = useCallback(async () => {
     const states = await getAvailableStates();
-    console.log(states);
-    // if (states) {
-    //   dispatch(setServiceState([]));
-    // }
+    if (states) {
+      dispatch(setServiceState(states));
+    }
   }, []);
 
   useEffect(() => {
