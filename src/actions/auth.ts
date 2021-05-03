@@ -3,13 +3,13 @@ import { api } from "@urbandhobi/lib/config";
 import { getTokens } from "@urbandhobi/lib/helpers";
 import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
-export const refreshAuthToken = async (auth: string, refresh: string) => {
-  const { refreshToken, token } = await getFetchWrapper<null, ResponseToken>()
+export const refreshAuthToken = async (accessToken: string, refreshToken: string) => {
+  const { access, refresh } = await getFetchWrapper<null, ResponseToken>()
     .setURL(api.auth.REFRESH_TOKEN)
     .setReqMethod("GET")
-    .setTokens(auth, refresh)
+    .setTokens(accessToken, refreshToken)
     .send();
-  return { refreshToken, token };
+  return { access, refresh };
 };
 
 export const createUser = async (user: CreateUserForm) => {

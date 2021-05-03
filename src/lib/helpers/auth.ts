@@ -27,10 +27,10 @@ export const getTokens = async () => {
     if (!refresh) {
       throw new Error("refresh token not available");
     }
-    const {refreshToken, token: authToken} = await refreshAuthToken(token, refresh);
-    await setTokens(authToken, refreshToken);
-    refresh = refreshToken;
-    token = authToken;
+    const {access, refresh: refreshToken} = await refreshAuthToken(token, refresh);
+    await setTokens(access, refreshToken);
+    refresh = refreshToken.token;
+    token = access.token;
   }
   return {
     refresh,

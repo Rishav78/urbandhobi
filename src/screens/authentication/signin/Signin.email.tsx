@@ -9,7 +9,6 @@ import { Heading } from "../components";
 import { setVerified, signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { setTokens } from "@urbandhobi/lib/helpers";
 import Header from "@urbandhobi/components/header/Header";
-import { isVerified } from "@urbandhobi/actions";
 
 export interface SigninForm {
   email: string;
@@ -37,7 +36,7 @@ const form: UseFormProps = {
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
-  const { getValue, setValue, submit, error } = useForm<SigninForm>(form, { username: "", password: "" });
+  const { getValue, setValue, submit, error } = useForm<SigninForm>(form, { email: "", password: "" });
 
   const { email, password } = getValue();
   const disable = error.error;

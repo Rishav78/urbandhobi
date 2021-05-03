@@ -1,14 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { useDispatch } from "react-redux";
 import { ResponseToken } from "@urbandhobi/@types";
 import { Seperator, Input, Button } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
 import { getValidator } from "@urbandhobi/lib/helpers/validator";
-import { signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { Heading } from "../components";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 
@@ -46,9 +43,8 @@ const form: UseFormProps = {
 };
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
-  const dispatch = useDispatch();
   const {navigateToSignin} = useNavigate();
-  const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { username: "", password: "", confirm: "" });
+  const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { email: "", password: "", confirm: "" });
 
   const { email, password, confirm } = getValue();
   const disable = error.error;
