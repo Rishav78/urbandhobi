@@ -20,7 +20,7 @@ export interface Service {
   category: string;
   data: string;
   daysRequired: number;
-  image: Assets;
+  image: string;
   createdAt: Date;
   updatedAt: string;
 }

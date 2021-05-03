@@ -16,10 +16,10 @@ export const api = {
     state: "http://192.168.101.2:3005/api/services/v1/area/state",
   },
   address: {
-    myAddress: `${URBANDHOBI_API}/user/address`,
+    myAddress: "http://192.168.101.2/api/address/v1",
     create: `${URBANDHOBI_API}/user/address/create`,
     delete: `${URBANDHOBI_API}/user/address/delete`,
-    default: `${URBANDHOBI_API}/user/address/default`,
+    default: "http://192.168.101.2/api/address/v1/default",
   },
   user: {
     CREATE_USER: `${URBANDHOBI_API}/user/create`,

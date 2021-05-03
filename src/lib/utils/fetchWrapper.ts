@@ -67,6 +67,7 @@ export class fetchWrapper<Body = any, Res = any> {
         throw new Error(error);
       }
       const data: Res | APIError = await res.json();
+      console.log("response of", this.url, JSON.stringify(data, null, 2));
       return data as Res;
     }
     catch (error) {
