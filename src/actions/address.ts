@@ -46,10 +46,10 @@ export const makeAddressDefault = async (id: string) => {
 
 export const deleteAddress = async (id: string) => {
   try {
+    const url = api.address.delete(id);
     const { auth } = await getTokens();
-    await getFetchWrapper<{address: string}>(api.address.delete, "POST")
+    await getFetchWrapper<{address: string}>(url, "DELETE")
       .setTokens(auth)
-      .setData({address: id})
       .send();
   }
   catch (error) {
