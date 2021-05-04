@@ -1,16 +1,13 @@
 import React, {
   useCallback,
-  useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import {
   StyleSheet,
-  Animated,
-  StyleProp,
-  ViewStyle,
-  Dimensions,
-  BackHandler,
+  View,
+  ActivityIndicator,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,102 +20,35 @@ import {
   LATITUDE_DELTA,
   reverseGeoCoding,
 } from "@urbandhobi/lib/helpers";
-import { FloatingAction } from "@urbandhobi/components";
 import { Position, ReverseGeoCode } from "@urbandhobi/@types/services";
-import Footer from "./components/footer";
 import { saveAddress } from "@urbandhobi/actions/address";
 import EditAddress from "./components/edit-address";
-
-const { height } = Dimensions.get("window");
+import { FAB, Portal } from "react-native-paper";
+import { FABState } from "@urbandhobi/@types";
 
 export const AddAddress = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [footer, setFooter] = useState<boolean>(false);
+  const [fabState, setFABState] = useState(false);
+  const [isEditScreenVisible, setEditScreenVisible] = useState(false);
   const [position, setPosition] = useState<Position | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<ReverseGeoCode | null>(null);
   const mapRef = useRef<MapView>(null);
-  const actionButtonOpacity = useRef(new Animated.Value(1)).current;
-  const actionButtonTranslateY = useRef(new Animated.Value(0)).current;
-  const footerOpacity = useRef(new Animated.Value(0)).current;
-  const footerTranslateY = useRef(new Animated.Value(height)).current;
 
-  const actionButtonStyle = useRef<Animated.WithAnimatedValue<StyleProp<ViewStyle>>>({
-    transform: [{ translateY: actionButtonTranslateY }],
-    opacity: actionButtonOpacity,
-  }).current;
-
-  const footerStyle = useRef<Animated.WithAnimatedValue<StyleProp<ViewStyle>>>({
-    ...styles.footer,
-    opacity: footerOpacity,
-    transform: [{ translateY: footerTranslateY }],
-  }).current;
-
-  const AddAddressBackHandler = () => {
-    if (footer === true) {
-      hideFooter();
-      return true;
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", AddAddressBackHandler);
-
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", AddAddressBackHandler);
-    };
-  }, [footer]);
-
-
-  const showFooter = useCallback(() => {
-    setFooter(true);
-    Animated.parallel([
-      Animated.timing(actionButtonOpacity, {
-        duration: 500,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-      Animated.timing(actionButtonTranslateY, {
-        duration: 800,
-        toValue: height,
-        useNativeDriver: true,
-      }),
-      Animated.timing(footerOpacity, {
-        duration: 500,
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-      Animated.timing(footerTranslateY, {
-        duration: 800,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-    ]).start();
+  const onFABStateChange = useCallback(({ open }: FABState) => {
+    setFABState(open);
   }, []);
 
-  const hideFooter = useCallback(() => {
-    Animated.parallel([
-      Animated.timing(actionButtonOpacity, {
-        duration: 300,
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-      Animated.timing(actionButtonTranslateY, {
-        duration: 500,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-      Animated.timing(footerOpacity, {
-        duration: 300,
-        toValue: 0,
-        useNativeDriver: true,
-      }),
-      Animated.timing(footerTranslateY, {
-        duration: 500,
-        toValue: height,
-        useNativeDriver: true,
-      }),
-    ]).start(() => setFooter(false));
+  const editScreenData = useMemo(() => (selectedPosition ? {
+    city: selectedPosition.address.city,
+    pincode: selectedPosition.address.postalCode,
+    state: selectedPosition.address.state,
+    roadname: selectedPosition.address.label,
+  } : null), [selectedPosition]);
+
+  const onEditScreenBackHandler = useCallback(() => {
+    setSelectedPosition(null);
+    setEditScreenVisible(false);
+    setFABState(false);
   }, []);
 
   const getAndSetPosition = useCallback(async () => {
@@ -128,13 +58,13 @@ export const AddAddress = () => {
       setPosition({ lat: latitude, lng: latitude });
       if (mapRef.current) {
         setSelectedPosition(await reverseGeoCoding(longitude, latitude));
-        showFooter();
         mapRef.current.animateToRegion({
           latitude,
           longitude,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         }, 1000);
+        setEditScreenVisible(true);
       }
     }
     catch (error) {
@@ -181,7 +111,6 @@ export const AddAddress = () => {
     };
     try {
       await saveAddress(body);
-      hideFooter();
     }
     catch (error) {
       console.error(error);
@@ -194,24 +123,37 @@ export const AddAddress = () => {
         ref={mapRef}
         onMapReady={setLoadingComplete}
         loadingEnabled={loading}>
-        <FloatingAction
-          disabled={loading}
-          loading={loading}
-          contentContainerStyle={actionButtonStyle}
-          onPress={getAndSetPosition}>
-          <MaterialIcons
-            name="my-location"
-            size={28}
-            color="#fff" />
-        </FloatingAction>
-        <EditAddress />
-        {footer &&
-          <Footer
-            data={selectedPosition}
-            contentContainerStyle={footerStyle}
-            onSubmit={onSubmit}
-            title="ADD NEW ADDRESS" />
-        }
+        <Portal>
+          <FAB.Group
+            onStateChange={onFABStateChange}
+            visible={true}
+            open={fabState}
+            icon={loading ?
+              () => (
+                <View style={styles.mylocation}>
+                  <ActivityIndicator color="#333" size="large" />
+                </View>
+              ) : "plus"
+            }
+            actions={[
+              { icon: "plus", label: "Add new", onPress: () => setEditScreenVisible(true) },
+              {
+                icon: () => (
+                  <View style={styles.mylocation}>
+                    <MaterialIcons name="my-location" size={24} color="#333" />
+                  </View>
+                ),
+                label: "Get my location",
+                onPress: getAndSetPosition,
+              },
+            ]}
+          />
+        </Portal>
+          <EditAddress
+            data={editScreenData}
+            onBack={onEditScreenBackHandler}
+            visible={isEditScreenVisible}
+            animationType="slide" />
       </RNMap>
     </SafeAreaView>
   );
@@ -228,4 +170,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
   },
+  mylocation: { flex: 1, justifyContent: "center", alignItems: "center" },
 });

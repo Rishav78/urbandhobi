@@ -7,3 +7,7 @@ export * from "./screens";
 export * from "./actions";
 export * from "./service";
 export * from "./common";
+
+export interface FABState {
+  open: boolean;
+}
