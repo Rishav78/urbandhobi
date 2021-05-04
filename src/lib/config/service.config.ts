@@ -1,7 +1,7 @@
 // export const AUTH_API: string = "http://192.168.43.202:4000/api/v1/auth";
 // export const URBANDHOBI_API: string = "http://192.168.43.202:3000/api/v1";
 
-export const AUTH_API: string = "http://192.168.101.2/api/auth/v1";
+export const AUTH_API: string = "http://192.168.101.7/api/auth/v1";
 export const URBANDHOBI_API: string = "http://localhost:3000/api/v1";
 export const HERE_API: string = "https://revgeocode.search.hereapi.com/v1";
 export * from "../../../env";
@@ -11,29 +11,29 @@ export const api = {
     SIGNUP: `${AUTH_API}/signup`,
     REFRESH_TOKEN: `${AUTH_API}/token/refresh`,
   },
-  services: "http://192.168.101.2:3005/api/services/v1/type",
+  services: "http://192.168.101.7:3005/api/services/v1/type",
   serviceArea: {
-    state: "http://192.168.101.2:3005/api/services/v1/area/state",
+    state: "http://192.168.101.7:3005/api/services/v1/area/state",
   },
   address: {
-    myAddress: "http://192.168.101.2/api/address/v1",
+    myAddress: "http://192.168.101.7/api/address/v1",
     create: `${URBANDHOBI_API}/user/address/create`,
     delete: `${URBANDHOBI_API}/user/address/delete`,
-    default: "http://192.168.101.2/api/address/v1/default",
+    default: "http://192.168.101.7/api/address/v1/default",
   },
   user: {
     CREATE_USER: `${URBANDHOBI_API}/user/create`,
     VERIFIED: `${URBANDHOBI_API}/auth/verified`,
   },
   cloth: {
-    laundry: "http://192.168.101.2/api/cloth/v1",
+    laundry: "http://192.168.101.7/api/cloth/v1",
     dryclean: {
 
     },
   },
   cart: {
     createCart: () => `${URBANDHOBI_API}/cart`,
-    getCart: (cart?: string) => "http://192.168.101.2/api/cart/v1/user",
+    getCart: (cart?: string) => "http://192.168.101.7/api/cart/v1/user",
     deleteCart: () => `${URBANDHOBI_API}/cart`,
     cartItems: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
     addItem: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,

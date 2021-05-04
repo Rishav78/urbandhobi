@@ -14,14 +14,17 @@ import { Provider } from "react-redux";
 import { MainStackNavigation } from "./src/navigation";
 import { store, persistor } from "./src/redux";
 import { PersistGate } from "redux-persist/es/integration/react";
+import { Provider as PaperProvider } from "react-native-paper";
 
 const App: React.FC<{}> = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <MainStackNavigation />
-        </NavigationContainer>
+        <PaperProvider>
+          <NavigationContainer>
+            <MainStackNavigation />
+          </NavigationContainer>
+        </PaperProvider>
       </PersistGate>
     </Provider>
   );

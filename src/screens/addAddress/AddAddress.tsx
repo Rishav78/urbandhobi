@@ -27,6 +27,7 @@ import { FloatingAction } from "@urbandhobi/components";
 import { Position, ReverseGeoCode } from "@urbandhobi/@types/services";
 import Footer from "./components/footer";
 import { saveAddress } from "@urbandhobi/actions/address";
+import EditAddress from "./components/edit-address";
 
 const { height } = Dimensions.get("window");
 
@@ -203,6 +204,7 @@ export const AddAddress = () => {
             size={28}
             color="#fff" />
         </FloatingAction>
+        <EditAddress />
         {footer &&
           <Footer
             data={selectedPosition}
