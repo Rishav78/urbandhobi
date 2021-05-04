@@ -8,29 +8,28 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-maps";
 import RNMap from "@urbandhobi/components/map";
-import { AddressBody, AddAddressFormData } from "@urbandhobi/@types/screens";
 import {
   getCurrentPosition,
   LONGITUDE_DELTA,
   LATITUDE_DELTA,
   reverseGeoCoding,
 } from "@urbandhobi/lib/helpers";
-import { Position, ReverseGeoCode } from "@urbandhobi/@types/services";
+import { ReverseGeoCode } from "@urbandhobi/@types/services";
 import { saveAddress } from "@urbandhobi/actions/address";
 import EditAddress from "./components/edit-address";
 import { FAB, Portal } from "react-native-paper";
-import { FABState } from "@urbandhobi/@types";
+import { EditAddress as EditAddressT, FABState } from "@urbandhobi/@types";
 
 export const AddAddress = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [fabState, setFABState] = useState(false);
   const [isEditScreenVisible, setEditScreenVisible] = useState(false);
-  const [position, setPosition] = useState<Position | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<ReverseGeoCode | null>(null);
   const mapRef = useRef<MapView>(null);
 
@@ -55,7 +54,6 @@ export const AddAddress = () => {
     setLoading(true);
     try {
       const { coords: { latitude, longitude } } = await getCurrentPosition();
-      setPosition({ lat: latitude, lng: latitude });
       if (mapRef.current) {
         setSelectedPosition(await reverseGeoCoding(longitude, latitude));
         mapRef.current.animateToRegion({
@@ -79,43 +77,17 @@ export const AddAddress = () => {
     setLoading(false);
   }, []);
 
-  const onSubmit = useCallback(async (formData: AddAddressFormData) => {
-    if (!selectedPosition || !position) {
-      return;
-    }
-    const {
-      address: {
-        city,
-        countryCode,
-        countryName,
-        county,
-        district,
-        postalCode,
-        state,
-        stateCode,
-      },
-      title,
-    } = selectedPosition;
-    const body: AddressBody = {
-      ...formData,
-      position,
-      city,
-      countryCode,
-      state,
-      postalCode,
-      stateCode,
-      nearby: title,
-      locality: district,
-      country: countryName,
-      district: county,
-    };
+  const onSubmit = useCallback(async (data: EditAddressT) => {
     try {
-      await saveAddress(body);
+      console.log(data);
+      await saveAddress(data);
+      onEditScreenBackHandler();
+      Alert.alert("Address saved");
     }
     catch (error) {
       console.error(error);
     }
-  }, [position, selectedPosition]);
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -153,6 +125,7 @@ export const AddAddress = () => {
             data={editScreenData}
             onBack={onEditScreenBackHandler}
             visible={isEditScreenVisible}
+            onSubmit={onSubmit}
             animationType="slide" />
       </RNMap>
     </SafeAreaView>

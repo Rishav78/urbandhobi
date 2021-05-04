@@ -11,3 +11,16 @@ export * from "./common";
 export interface FABState {
   open: boolean;
 }
+
+export type AddressType = "home" | "work";
+
+export interface EditAddress {
+  email: string
+  phonenumber: string;
+  city: string;
+  postalCode: string;
+  state: string;
+  locality: string;
+  houseno: string;
+  type: AddressType;
+}

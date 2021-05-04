@@ -1,9 +1,10 @@
 import { emailRegex } from "@urbandhobi/lib/helpers";
-import React, { memo, useEffect, useState } from "react";
-import { Text, View, StyleSheet, Modal, ScrollView, ModalProps } from "react-native";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { Text, View, StyleSheet, Modal, ScrollView, ModalProps, Alert } from "react-native";
 import { Button, TextInput, Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {AddressType, EditAddress as EditAddressT} from "@urbandhobi/@types";
 
 const theme = { colors: { primary: "#333" } };
 
@@ -15,12 +16,11 @@ interface EditAddressProps {
     pincode: string;
     state: string;
     roadname?: string;
-  } | null
+  } | null;
+  onSubmit: (data: EditAddressT) => void;
 }
 
-type AddressType = "home" | "work";
-
-const EditAddress = ({ title, onBack, data, visible, ...rest }: EditAddressProps & ModalProps) => {
+const EditAddress = ({ title, onBack, data, visible, onSubmit, ...rest }: EditAddressProps & ModalProps) => {
   const [email, setEmail] = useState<string | null>(null);
   const [phonenumber, setPhonenumer] = useState<string | null>(null);
   const [city, setCity] = useState<string | null>(null);
@@ -53,6 +53,22 @@ const EditAddress = ({ title, onBack, data, visible, ...rest }: EditAddressProps
     setHouseno(null);
     setType(null);
   };
+
+  const onSubmitHandler = useCallback(() => {
+    if (!email || !phonenumber || !city || !pincode || !state || !roadname || !houseno || !type) {
+      return Alert.alert("Please provide all the required fields");
+    }
+    onSubmit({
+      city,
+      email,
+      houseno,
+      phonenumber,
+      state,
+      type,
+      locality: roadname,
+      postalCode: pincode,
+    });
+  }, [email, phonenumber, city, pincode, state, roadname, houseno, type]);
 
   return (
     <Modal visible={visible} onRequestClose={onBack} {...rest}>
@@ -196,7 +212,7 @@ const EditAddress = ({ title, onBack, data, visible, ...rest }: EditAddressProps
           </View>
           {/* SUBMIT Section */}
           <View style={styles.itemContiner}>
-            <Button color="#333" style={styles.saveButton} mode="contained">SAVE ADDRESS</Button>
+            <Button style={styles.saveButton} onPress={onSubmitHandler} color="#333" contentStyle={styles.saveButtonContent} mode="contained">SAVE ADDRESS</Button>
           </View>
         </View>
       </ScrollView>
@@ -245,7 +261,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   saveButton: {
-    paddingVertical: wp("2%"),
     marginBottom: hp("2%"),
+  },
+  saveButtonContent: {
+    paddingVertical: wp("2%"),
   },
 });

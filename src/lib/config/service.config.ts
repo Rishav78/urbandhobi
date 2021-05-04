@@ -17,7 +17,7 @@ export const api = {
   },
   address: {
     myAddress: "http://192.168.101.7/api/address/v1",
-    create: `${URBANDHOBI_API}/user/address/create`,
+    create: "http://192.168.101.7/api/address/v1",
     delete: `${URBANDHOBI_API}/user/address/delete`,
     default: "http://192.168.101.7/api/address/v1/default",
   },

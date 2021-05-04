@@ -19,12 +19,12 @@ export const getMyAddress = async () => {
   }
 };
 
-export const saveAddress = async (body: AddressBody) => {
+export const saveAddress = async <T>(body: T) => {
   const url = api.address.create;
   const { auth } = await getTokens();
-  const res = await getFetchWrapper<AddressBody, any>()
+  const res = await getFetchWrapper<T, any>()
     .setURL(url)
-    .setReqMethod("POST")
+    .setReqMethod("PUT")
     .setTokens(auth!)
     .setData(body)
     .send();
