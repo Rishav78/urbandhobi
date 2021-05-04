@@ -34,11 +34,25 @@ const EditAddress = ({ title, onBack, data, visible, ...rest }: EditAddressProps
   const isValidPincode = !isNaN(pincode as any) && (pincode || "").length === 6;
 
   useEffect(() => {
-    setCity((data && data.city) || null);
-    setPincode((data && data.pincode) || null);
-    setState((data && data.state) || null);
-    setRoadname((data && data.roadname) || null);
-  }, [data]);
+    if (visible) {
+      resetValues();
+      setCity((data && data.city) || null);
+      setPincode((data && data.pincode) || null);
+      setState((data && data.state) || null);
+      setRoadname((data && data.roadname) || null);
+    }
+  }, [visible]);
+
+  const resetValues = () => {
+    setEmail(null);
+    setPhonenumer(null);
+    setCity(null);
+    setPincode(null);
+    setState(null);
+    setRoadname(null);
+    setHouseno(null);
+    setType(null);
+  };
 
   return (
     <Modal visible={visible} onRequestClose={onBack} {...rest}>
