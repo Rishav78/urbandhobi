@@ -8,7 +8,7 @@ import {
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Clickable } from "@urbandhobi/components/click";
-import { Address } from "@urbandhobi/@types/screens";
+import { Address } from "@urbandhobi/@types";
 
 interface AddressCardProps {
   data: Address;
@@ -21,7 +21,7 @@ const AddressCard: React.FC<AddressCardProps> = memo(({
   onMakeDefault,
   onDelete
 }) => {
-
+  console.log(data);
   const makeDefault = useCallback(() => {
     if (onMakeDefault) {
       onMakeDefault(data);
@@ -43,8 +43,8 @@ const AddressCard: React.FC<AddressCardProps> = memo(({
           color="#0C0C0C" />
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.address}>{data.houseno}, {data.location}</Text>
+        <Text style={styles.title}>{data.title || data.email}</Text>
+        <Text style={styles.address}>{data.houseno}, {data.locality}, {data.city}, {data.state} {data.postalCode}</Text>
         <View style={styles.action}>
           <Clickable onPress={deleteAddress} activeOpacity={0.5}>
             <Text style={styles.delete}>Delete</Text>
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {},
   detailsContainer: {
+    flex: 1,
     marginHorizontal: wp("4%"),
     borderBottomWidth: 0.5,
     borderBottomColor: "#898989",

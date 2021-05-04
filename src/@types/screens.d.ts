@@ -19,10 +19,3 @@ export interface AddressBody extends AddAddressFormData {
   district: string;
   stateCode: string;
 }
-
-export interface Address extends AddressBody {
-  id: string;
-  default: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}

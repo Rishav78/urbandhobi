@@ -79,17 +79,18 @@ export const Address = () => {
       <Text style={styles.title}>SAVED ADDRESS</Text>
       <Text style={styles.subTitle}>Manage Address</Text>
       <View style={{ flex: 1 }}>
-        {!addresses || addresses.length === 0 ?
-          <MessageTile
-            style={styles.message}
-            message="NO SAVED ADDRESS" /> :
-          <RefreshFlatList
-            data={addresses}
-            keyExtractor={keyExtractor}
-            renderItem={_renderItem}
-            onRefreshHandler={onRefresh}
-           />
-        }
+        <RefreshFlatList
+          data={addresses}
+          keyExtractor={keyExtractor}
+          renderItem={_renderItem}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={!addresses || addresses.length === 0 ?
+            <MessageTile
+              style={styles.message}
+              message="NO SAVED ADDRESS" /> : <></>
+          }
+          onRefreshHandler={onRefresh}
+        />
       </View>
       <FloatingAction onPress={navigateToAddAddress}>
         <AntDesign
