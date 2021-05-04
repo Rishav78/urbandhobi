@@ -1,4 +1,4 @@
-import { Address, AddressBody } from "@urbandhobi/@types/screens";
+import { Address } from "@urbandhobi/@types";
 import { api } from "@urbandhobi/lib/config";
 import { getTokens } from "@urbandhobi/lib/helpers";
 import { getFetchWrapper } from "@urbandhobi/lib/utils";
@@ -33,10 +33,10 @@ export const saveAddress = async <T>(body: T) => {
 
 export const makeAddressDefault = async (id: string) => {
   try {
+    const url = api.address.updatedDefault(id);
     const { auth } = await getTokens();
-    await getFetchWrapper(api.address.default, "POST")
+    await getFetchWrapper(url, "PATCH")
       .setTokens(auth)
-      .setData({id})
       .send();
   }
   catch (error) {

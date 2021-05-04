@@ -1,5 +1,5 @@
 import { ServiceSections, ServiceState } from "@urbandhobi/@types";
-import {Address} from "@urbandhobi/@types/screens";
+import {Address} from "@urbandhobi/@types";
 export interface HomeAction {
   type: HomeActionType,
   payload?: any

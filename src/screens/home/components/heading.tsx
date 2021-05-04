@@ -38,10 +38,10 @@ const Heading = () => {
           <>
             <Text
               numberOfLines={1}
-              style={styles.addressTitle}>{defaultAddress.title}</Text>
+              style={styles.addressTitle}>{defaultAddress.title || defaultAddress.email}</Text>
             <Text
               numberOfLines={1}
-              style={styles.address}>{defaultAddress.houseno}, {defaultAddress.location}</Text>
+              style={styles.address}>{defaultAddress.houseno}, {defaultAddress.locality}, {defaultAddress.city}, {defaultAddress.state} {defaultAddress.postalCode}</Text>
           </>
         }
       </Clickable>

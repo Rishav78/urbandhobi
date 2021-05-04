@@ -79,7 +79,6 @@ export const AddAddress = () => {
 
   const onSubmit = useCallback(async (data: EditAddressT) => {
     try {
-      console.log(data);
       await saveAddress(data);
       onEditScreenBackHandler();
       Alert.alert("Address saved");

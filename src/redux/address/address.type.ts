@@ -1,4 +1,4 @@
-import { Address } from "@urbandhobi/@types/screens";
+import { Address } from "@urbandhobi/@types";
 
 export interface AddressAction {
   type: AddressActionType,

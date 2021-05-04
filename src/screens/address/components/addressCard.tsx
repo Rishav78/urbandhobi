@@ -19,9 +19,8 @@ interface AddressCardProps {
 const AddressCard: React.FC<AddressCardProps> = memo(({
   data,
   onMakeDefault,
-  onDelete
+  onDelete,
 }) => {
-  console.log(data);
   const makeDefault = useCallback(() => {
     if (onMakeDefault) {
       onMakeDefault(data);

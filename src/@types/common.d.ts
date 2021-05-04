@@ -1,6 +1,6 @@
 export type CleanType = "wash" | "washandiron" | "washandfold" | "dryclean";
 
-export type ReqMethod = "GET" | "POST" | "PUT" | "DELETE";
+export type ReqMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface Response<T=object> {
   code: number;
