@@ -1,8 +1,8 @@
+import { useNavigation } from "@react-navigation/core";
 import { CartItem, RootReducerType } from "@urbandhobi/@types";
 import { Button, Seperator } from "@urbandhobi/components";
 import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
-import Header from "@urbandhobi/components/header/Header";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
@@ -10,6 +10,7 @@ import Service from "@urbandhobi/lib/service";
 import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const cartSelector = (state: RootReducerType) => state.cart;
 const Cart = () => {
 
   const dispatch = useDispatch();
+  const {goBack} = useNavigation();
   const { navigateToTiming } = useNavigate();
 
   const { items, cart } = useSelector(cartSelector, shallowEqual);
@@ -99,7 +101,10 @@ const Cart = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Header headerLeftContainerStyle={{ marginHorizontal: wp("3%") }} />
+      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+        <Appbar.BackAction onPress={goBack} />
+        <Appbar.Content title="Cart" />
+      </Appbar.Header>
       <View style={{ flex: 1 }}>
         <RefreshSectionList
           sections={data}

@@ -84,11 +84,6 @@ export const Address = () => {
           keyExtractor={keyExtractor}
           renderItem={_renderItem}
           showsVerticalScrollIndicator={false}
-          ListFooterComponent={!addresses || addresses.length === 0 ?
-            <MessageTile
-              style={styles.message}
-              message="NO SAVED ADDRESS" /> : <></>
-          }
           onRefreshHandler={onRefresh}
         />
       </View>

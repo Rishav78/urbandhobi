@@ -28,12 +28,12 @@ export class CartService {
     const url = api.cart.getCart() + "?items=false";
     try {
       const {auth} = await getTokens();
-      const res = await getFetchWrapper<null, Cart[]>()
+      const res = await getFetchWrapper<null, Cart>()
         .setURL(url)
         .setTokens(auth)
         .setReqMethod("GET")
         .send();
-      return res[0];
+      return res;
     }
     catch (error) {
       console.error(error);

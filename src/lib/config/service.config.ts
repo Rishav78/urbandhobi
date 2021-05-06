@@ -1,42 +1,40 @@
 // export const AUTH_API: string = "http://192.168.43.202:4000/api/v1/auth";
 // export const URBANDHOBI_API: string = "http://192.168.43.202:3000/api/v1";
-
-export const AUTH_API: string = "http://192.168.101.7/api/auth/v1";
+import {AUTH_API, UD_API} from "./app.config";
 export const URBANDHOBI_API: string = "http://localhost:3000/api/v1";
 export const HERE_API: string = "https://revgeocode.search.hereapi.com/v1";
-export * from "../../../env";
 export const api = {
   auth: {
     SIGNIN: `${AUTH_API}/signin`,
     SIGNUP: `${AUTH_API}/signup`,
     REFRESH_TOKEN: `${AUTH_API}/token/refresh`,
   },
-  services: "http://192.168.101.7:3005/api/services/v1/type",
+  services: `${UD_API}/api/services/v1/type`,
   serviceArea: {
-    state: "http://192.168.101.7:3005/api/services/v1/area/state",
+    state: `${UD_API}/api/services/v1/area/state`,
   },
   address: {
-    myAddress: "http://192.168.101.7/api/address/v1",
-    create: "http://192.168.101.7/api/address/v1",
-    delete: (id: string) => `http://192.168.101.7/api/address/v1/${id}`,
-    default: "http://192.168.101.7/api/address/v1/default",
-    updatedDefault: (id: string) => `http://192.168.101.7/api/address/v1/default/${id}`,
+    myAddress: `${UD_API}/api/address/v1`,
+    create: `${UD_API}/api/address/v1`,
+    delete: (id: string) => `${UD_API}/api/address/v1/${id}`,
+    default: `${UD_API}/api/address/v1/default`,
+    updatedDefault: (id: string) => `${UD_API}/api/address/v1/default/${id}`,
   },
   user: {
     CREATE_USER: `${URBANDHOBI_API}/user/create`,
     VERIFIED: `${URBANDHOBI_API}/auth/verified`,
   },
   cloth: {
-    laundry: "http://192.168.101.7/api/cloth/v1",
+    laundry: `${UD_API}/api/cloth/v1`,
     dryclean: {
 
     },
   },
   cart: {
     createCart: () => `${URBANDHOBI_API}/cart`,
-    getCart: (cart?: string) => "http://192.168.101.7/api/cart/v1/user",
+    getCart: (cart?: string) => `${UD_API}/api/cart/v1/user`,
     deleteCart: () => `${URBANDHOBI_API}/cart`,
-    cartItems: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
+    cartItems: (cart: string) => `${UD_API}/api/cart/v1/item/all`,
     addItem: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
     updateItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
     deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,

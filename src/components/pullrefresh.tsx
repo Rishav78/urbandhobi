@@ -75,7 +75,7 @@ export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = 
       <FlatList
         {...flatlistprops}
         data={data}
-        ListHeaderComponent={(!data || data.length <= 0 ) ? <MessageTile style={styles.message} message="NO DATA" /> : <></>}
+        ListHeaderComponent={(!data || data.length <= 0) ? <MessageTile style={styles.message} message="NO DATA" /> : <></>}
         removeClippedSubviews={true}
         refreshControl={
           <RefreshControl
@@ -96,6 +96,8 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
 
   const [refreshing, setRefreshing] = useState(false);
 
+  const isEmpty = !sections || sections.length === 0 || sections.filter(section => section.data.length !== 0).length === 0;
+
   const onRefresh = useCallback(() => {
     if (onRefreshHandler) {
       setRefreshing(true);
@@ -112,18 +114,29 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
 
   return (
     <View style={{ flex: 1 }}>
-      <SectionList
-        {...flatlistprops}
-        sections={sections}
-        ListHeaderComponent={sections.length <= 0 ? <MessageTile style={styles.message} message="NO DATA IN THE CART" /> : <></>}
-        removeClippedSubviews={true}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      />
+      {isEmpty ?
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <MessageTile style={styles.message} message="NO DATA IN THE CART" />
+        </ScrollView> :
+        <SectionList
+          sections={sections}
+          removeClippedSubviews={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+          {...flatlistprops}
+        />
+      }
     </View>
   );
 });
@@ -132,7 +145,7 @@ const styles = StyleSheet.create({
   message: {
     elevation: 10,
     backgroundColor: "#fff",
-    marginTop: hp("1%"),
+    marginVertical: hp("2%"),
     paddingVertical: hp("2%"),
     marginHorizontal: wp("3%"),
     borderRadius: wp("2%"),
