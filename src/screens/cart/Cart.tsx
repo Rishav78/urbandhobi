@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import { CartItem, RootReducerType } from "@urbandhobi/@types";
+import { CartItem } from "@urbandhobi/@types";
 import { Button, Seperator } from "@urbandhobi/components";
 import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
@@ -12,17 +12,13 @@ import { StyleSheet, Text, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { shallowEqual, useSelector } from "react-redux";
 import { useService, useCart } from "@urbandhobi/hooks";
-
-const clothSelector = (state: RootReducerType) => state.laundry.data;
 
 const Cart = () => {
   const {goBack} = useNavigation();
   const { navigateToTiming } = useNavigate();
-  const {fetchAndSetCloth} = useCloth();
+  const {getCloths, cloths} = useCloth();
   const {getAndSetService, services} = useService();
-  const cloths = useSelector(clothSelector, shallowEqual);
   const { items, cart, getItems, getCart } = useCart();
 
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
@@ -54,7 +50,7 @@ const Cart = () => {
   }, [cart]);
 
   const onRefresh = useCallback(async () => {
-    await Promise.all([getCart(), getItems()]);
+    await Promise.all([getCart(), getItems(), getCloths(), getAndSetService()]);
   }, []);
 
   useEffect(() => {
@@ -62,9 +58,7 @@ const Cart = () => {
   }, [cart]);
 
   useEffect(() => {
-    getCart();
-    fetchAndSetCloth();
-    getAndSetService();
+    onRefresh();
   }, []);
 
   const _renderItem = useCallback(({ item }: { item: CartItem }) => {

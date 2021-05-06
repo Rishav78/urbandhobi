@@ -3,7 +3,7 @@ import { CartAction, CartActionType, CartState } from "./cart.type";
 const initialState: CartState = {
   loading: false,
   cart: null,
-  items: [],
+  items: {},
 };
 
 export type AuthReducerFn = (state: CartState, action: CartAction) => CartState;

@@ -1,6 +1,6 @@
-import { Address } from "@urbandhobi/@types/screens";
+import { Address } from "@urbandhobi/@types";
 import { ServiceSections, ServiceState } from "@urbandhobi/@types/services";
-import { api, serviceAreaStateURL } from "@urbandhobi/lib/config";
+import { api } from "@urbandhobi/lib/config";
 import { getTokens } from "@urbandhobi/lib/helpers";
 import { getFetchWrapper } from "@urbandhobi/lib/utils";
 
