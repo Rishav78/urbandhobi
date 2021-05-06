@@ -10,8 +10,7 @@ import { FloatingAction } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { setAddress } from "@urbandhobi/redux/address/address.action";
 import AddressCard from "./components/addressCard";
-import { useNavigate } from "@urbandhobi/hooks/navigation";
-import MessageTile from "@urbandhobi/components/messageTile";
+import { useNavigate } from "@urbandhobi/hooks";
 import { Address as AddressInstance } from "@urbandhobi/@types";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 
@@ -63,9 +62,8 @@ export const Address = () => {
     );
   }, []);
 
-  const onRefresh = useCallback(async (cb: () => void) => {
+  const onRefresh = useCallback(async () => {
     await fetchAddress();
-    cb();
   }, []);
 
   useEffect(() => {

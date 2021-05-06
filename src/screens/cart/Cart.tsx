@@ -7,27 +7,24 @@ import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { useCloth } from "@urbandhobi/hooks/cloth.hook";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
-import Service from "@urbandhobi/lib/service";
-import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useService } from "@urbandhobi/hooks/service.hook";
+import { shallowEqual, useSelector } from "react-redux";
+import { useService, useCart } from "@urbandhobi/hooks";
 
-const cartSelector = (state: RootReducerType) => state.cart;
 const clothSelector = (state: RootReducerType) => state.laundry.data;
 
 const Cart = () => {
-  const dispatch = useDispatch();
   const {goBack} = useNavigation();
   const { navigateToTiming } = useNavigate();
   const {fetchAndSetCloth} = useCloth();
   const {getAndSetService, services} = useService();
   const cloths = useSelector(clothSelector, shallowEqual);
-  const { items, cart } = useSelector(cartSelector, shallowEqual);
+  const { items, cart, getItems, getCart } = useCart();
+
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
     const keys = Object.keys(items);
     return keys.map(service => {
@@ -37,41 +34,6 @@ const Cart = () => {
       };
     });
   }, [items]);
-
-  const fetchCartItems = useCallback(async (cb?: (err?: Error) => void) => {
-    if (!cart) {
-      return console.error("cart is not intilized");
-    }
-    const res = await new Service()
-      .cart(cart.id)
-      .getItems();
-
-    if (res) {
-      dispatch(setCartItems(res));
-    }
-    if (cb) {
-      cb();
-    }
-  }, [cart]);
-
-  const fetchCartData = useCallback((cb?: (err?: Error) => void) => {
-    new Service()
-      .cart()
-      .getCart()
-      .then(res => {
-        if (res) {
-          dispatch(setCart(res));
-        }
-        if (cb) {
-          cb();
-        }
-      })
-      .catch(err => {
-        if (cb) {
-          cb(err);
-        }
-      });
-  }, []);
 
   const submitCart = useCallback(async () => {
     try {
@@ -91,11 +53,16 @@ const Cart = () => {
     }
   }, [cart]);
 
+  const onRefresh = useCallback(async () => {
+    await Promise.all([getCart(), getItems()]);
+  }, []);
+
   useEffect(() => {
-    fetchCartItems();
+    getItems();
   }, [cart]);
 
   useEffect(() => {
+    getCart();
     fetchAndSetCloth();
     getAndSetService();
   }, []);
@@ -118,7 +85,7 @@ const Cart = () => {
       <View style={{ flex: 1 }}>
         <RefreshSectionList
           sections={data}
-          onRefreshHandler={fetchCartItems}
+          onRefreshHandler={onRefresh}
           ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
           keyExtractor={item => item.id}
           renderItem={_renderItem}

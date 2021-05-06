@@ -11,36 +11,29 @@ import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HeaderRight } from "./header";
-import ServiceManager from "@urbandhobi/lib/service";
-import { useDispatch } from "react-redux";
-import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { Service } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
-import { useService } from "@urbandhobi/hooks/service.hook";
+import { useService, useCart } from "@urbandhobi/hooks";
 
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const { navigateToService } = useNavigate();
-  const dispatch = useDispatch();
 
   const {getAndSetServiceType, serviceType} = useService();
+  const {getCart} = useCart();
   const serviceTypeArray = Object.values(serviceType);
 
   const onServicePress = useCallback((service: Service) => {
     navigateToService({service});
   }, []);
 
-  useEffect(() => {
-    new ServiceManager()
-      .cart()
-      .getCart()
-      .then((res) => {
-        if (res) {
-          dispatch(setCart(res));
-        }
-      });
+  const onRefresh = useCallback(async () => {
+    await Promise.all([getCart(), getAndSetServiceType()]);
+  }, []);
 
+  useEffect(() => {
+    getCart();
     getAndSetServiceType();
   }, []);
 
@@ -54,7 +47,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         headerLeft={null} />
       <Heading />
       <RefreshScrollView
-        onRefreshHandler={() => { }}
+        onRefreshHandler={onRefresh}
         showsVerticalScrollIndicator={false}>
         <ServiceArea />
         <Loading loading={serviceTypeArray.length === 0}>

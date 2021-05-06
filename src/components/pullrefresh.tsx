@@ -4,7 +4,7 @@ import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListPr
 import MessageTile from "./messageTile";
 
 export interface PullRefreshProps {
-  onRefreshHandler?: (cb: (err?: Error) => void) => (Promise<void> | void);
+  onRefreshHandler?: () => (Promise<void> | void);
 }
 
 export interface RefreshScrollViewProps extends PullRefreshProps, ScrollViewProps { }
@@ -17,19 +17,22 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     if (onRefreshHandler) {
       setRefreshing(true);
-      onRefreshHandler(onRefreshComplete);
+      try {
+        await onRefreshHandler();
+        console.log("complete")
+      }
+      catch (error) {
+        Alert.alert(error.message);
+      }
+      finally {
+        
+        setRefreshing(false);
+      }
     }
   }, []);
-
-  const onRefreshComplete = (err?: Error) => {
-    setRefreshing(false);
-    if (err) {
-      Alert.alert(err.message);
-    }
-  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -56,19 +59,18 @@ export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = 
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     if (onRefreshHandler) {
       setRefreshing(true);
-      onRefreshHandler(onRefreshComplete);
+      try {
+        await onRefreshHandler();
+        setRefreshing(false);
+      }
+      catch (error) {
+        Alert.alert(error.message);
+      }
     }
   }, []);
-
-  const onRefreshComplete = (err?: Error) => {
-    setRefreshing(false);
-    if (err) {
-      Alert.alert(err.message);
-    }
-  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -98,19 +100,18 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
 
   const isEmpty = !sections || sections.length === 0 || sections.filter(section => section.data.length !== 0).length === 0;
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     if (onRefreshHandler) {
       setRefreshing(true);
-      onRefreshHandler(onRefreshComplete);
+      try {
+        await onRefreshHandler();
+        setRefreshing(false);
+      }
+      catch (error) {
+        Alert.alert(error.message);
+      }
     }
   }, []);
-
-  const onRefreshComplete = (err?: Error) => {
-    setRefreshing(false);
-    if (err) {
-      Alert.alert(err.message);
-    }
-  };
 
   return (
     <View style={{ flex: 1 }}>
