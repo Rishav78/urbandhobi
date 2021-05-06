@@ -1,42 +1,29 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "@urbandhobi/@types";
-import { getAvailableStates } from "@urbandhobi/actions";
 import CardView from "@urbandhobi/components/cardview";
-import { setServiceState } from "@urbandhobi/redux/home/home.action";
 import City from "./city";
-
-const serviceStateSeclector = (state: RootReducerType) => state.home.serviceState;
+import { useService } from "@urbandhobi/hooks/service.hook";
 
 export const ServiceArea = () => {
 
-  const dispatch = useDispatch();
-  const serviceArea = useSelector(serviceStateSeclector, shallowEqual);
-
-  const getServiceArea = useCallback(async () => {
-    const states = await getAvailableStates();
-    if (states) {
-      dispatch(setServiceState(states));
-    }
-  }, []);
+  const {serviceStates, getServiceStates} = useService();
 
   useEffect(() => {
-    getServiceArea();
+    getServiceStates();
   }, []);
 
   return (
     <CardView style={styles.card}>
       <Text style={styles.title}>Service Areas</Text>
       {
-        serviceArea &&
+        serviceStates &&
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal>
           {
-            serviceArea.map(area => (
+            serviceStates.map(area => (
               <City
                 key={area.image}
                 image={area.image}

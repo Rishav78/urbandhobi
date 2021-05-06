@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,8 +14,9 @@ import { HeaderRight } from "./header";
 import ServiceManager from "@urbandhobi/lib/service";
 import { useDispatch } from "react-redux";
 import { setCart } from "@urbandhobi/redux/cart/cart.action";
-import { Service, ServiceSections } from "@urbandhobi/@types";
+import { Service } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
+import { useService } from "@urbandhobi/hooks/service.hook";
 
 export interface HomeScreenProps { }
 
@@ -23,21 +24,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const { navigateToService } = useNavigate();
   const dispatch = useDispatch();
 
-  const [serviceType, setServiceType] = useState<ServiceSections[] | null>(null);
+  const {getAndSetServiceType, serviceType} = useService();
+  const serviceTypeArray = Object.values(serviceType);
 
   const onServicePress = useCallback((service: Service) => {
     navigateToService({service});
   }, []);
-
-  const getAvailableService = async () => {
-    const res = await new ServiceManager()
-      .services()
-      .getServiceTypes();
-
-    if (res) {
-      setServiceType(res);
-    }
-  };
 
   useEffect(() => {
     new ServiceManager()
@@ -49,7 +41,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         }
       });
 
-    getAvailableService();
+    getAndSetServiceType();
   }, []);
 
 
@@ -65,9 +57,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
         onRefreshHandler={() => { }}
         showsVerticalScrollIndicator={false}>
         <ServiceArea />
-        <Loading loading={serviceType === null}>
+        <Loading loading={serviceTypeArray.length === 0}>
           {
-            serviceType?.map(type => (
+            serviceTypeArray.map(type => (
               <ServiceSection key={type.id} title={type.name}>
                 {
                   type.services.map(service => (

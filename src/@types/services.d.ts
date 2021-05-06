@@ -1,3 +1,5 @@
+import { GenericObject } from "./common";
+
 export interface Position {
   lng: number;
   lat: number;
@@ -33,6 +35,14 @@ export interface ServiceSections {
   updatedAt: Date;
 }
 
+export interface ServiceType {
+  id: string;
+  name: string;
+  services: Array<Service>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // export interface ServiceState {
 //   id: string;
 //   state: string;
@@ -42,6 +52,15 @@ export interface ServiceSections {
 // }
 
 export interface ServiceState {
+  id: string;
+  name: string;
+  countryId: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ServiceStates {
   id: string;
   name: string;
   countryId: string;

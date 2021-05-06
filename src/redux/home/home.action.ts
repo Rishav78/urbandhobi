@@ -1,27 +1,5 @@
-import { GenericObject, Service, ServiceSections, ServiceState } from "@urbandhobi/@types";
 import {Address} from "@urbandhobi/@types";
 import { HomeActionType, HomeAction } from "./home.type";
-
-export const setServiceType = (payload: ServiceSections[]): HomeAction => {
-  return {
-    type: HomeActionType.SET_SERVICES_TYPE,
-    payload,
-  };
-};
-
-export const setServices = (payload: GenericObject<Service>): HomeAction => {
-  return {
-    type: HomeActionType.SET_SERVICES,
-    payload,
-  };
-};
-
-export const setServiceState = (payload: ServiceState[]): HomeAction => {
-  return {
-    type: HomeActionType.SET_SERVICE_STATE,
-    payload,
-  };
-};
 
 export const setLoading = (payload: boolean): HomeAction => {
   return {

@@ -2,9 +2,6 @@ import { HomeAction, HomeActionType, HomeState } from "./home.type";
 
 const initialState: HomeState = {
   loading: true,
-  data: [],
-  services: {},
-  serviceState: null,
   defaultAddress: null,
 };
 
@@ -16,21 +13,6 @@ export const HomeReducer: HomeReducerFn = (state = initialState, action) => {
     case HomeActionType.SET_LOADING: return {
       ...state,
       loading: payload,
-    };
-    case HomeActionType.SET_SERVICES: return {
-      ...state,
-      loading: false,
-      services: payload,
-    };
-    case HomeActionType.SET_SERVICES_TYPE: return {
-      ...state,
-      loading: false,
-      data: payload,
-    };
-    case HomeActionType.SET_SERVICE_STATE: return {
-      ...state,
-      serviceState: payload,
-      loading: false,
     };
     case HomeActionType.SET_DEFAULT_ADDRESS: return {
       ...state,

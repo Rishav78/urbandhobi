@@ -19,17 +19,14 @@ import { useService } from "@urbandhobi/hooks/service.hook";
 
 const cartSelector = (state: RootReducerType) => state.cart;
 const clothSelector = (state: RootReducerType) => state.laundry.data;
-const serviceSelector = (state: RootReducerType) => state.home.services;
 
 const Cart = () => {
-
   const dispatch = useDispatch();
   const {goBack} = useNavigation();
   const { navigateToTiming } = useNavigate();
   const {fetchAndSetCloth} = useCloth();
-  const {getAndSetService} = useService();
+  const {getAndSetService, services} = useService();
   const cloths = useSelector(clothSelector, shallowEqual);
-  const services = useSelector(serviceSelector, shallowEqual);
   const { items, cart } = useSelector(cartSelector, shallowEqual);
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
     const keys = Object.keys(items);
