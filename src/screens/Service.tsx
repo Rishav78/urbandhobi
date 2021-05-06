@@ -8,20 +8,15 @@ import React, { useCallback, useEffect } from "react";
 import { Alert } from "react-native";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-
 const cartSelector = (state: RootReducerType) => state.cart.cart;
+const clothSelector = (state: RootReducerType) => state.laundry.data;
 
 export const ServiceScreen = () => {
-  const {service} = useRoute().params as {service: Service};
-  const clothSelector = useCallback((state: RootReducerType) => state.laundry.data, []);
+  const { service } = useRoute().params as { service: Service };
 
   const cart = useSelector(cartSelector, shallowEqual);
-  const clothes = useSelector(clothSelector, shallowEqual);
+  const clothes = Object.values(useSelector(clothSelector, shallowEqual));
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(cart);
-  })
 
   const fetchLaundryData = async () => {
     const cloths = await getSupportedLaundry();
@@ -34,10 +29,13 @@ export const ServiceScreen = () => {
     if (!cart) {
       return Alert.alert("Some error occur try again");
     }
-    await new ServiceManager()
+    const res = await new ServiceManager()
       .cart()
       .cart(cart.id)
       .addItem(data);
+    if (res) {
+      Alert.alert("Added to cart");
+    }
   }, []);
 
   useEffect(() => {

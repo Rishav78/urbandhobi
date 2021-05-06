@@ -1,10 +1,12 @@
+import { useNavigation } from "@react-navigation/core";
 import { AddItemBody, Service, SupportedCloth } from "@urbandhobi/@types";
 import { Button, Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
-import Header from "@urbandhobi/components/header/Header";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
+import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -21,6 +23,8 @@ export const ClothView: React.FC<ClothViewProps> = ({
 }) => {
   const [counter, setCounter] = useState<{ [key: string]: AddItemBody }>({});
 
+  const {goBack} = useNavigation();
+
   const onAddCloth = (cloth: SupportedCloth) => {
     return () => {
       const { id } = cloth;
@@ -34,6 +38,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
             serviceId: service.id,
             count: 1,
             itemId: id,
+            serviceTypeId: service.categoryId,
           };
         }
         return newState;
@@ -85,8 +90,10 @@ export const ClothView: React.FC<ClothViewProps> = ({
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header
-        headerLeftContainerStyle={{ marginHorizontal: wp("3%") }} />
+      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+        <Appbar.BackAction onPress={goBack} />
+        <Appbar.Content title={toTitleCase(service.name) || "Service"} />
+      </Appbar.Header>
       <RefreshFlatList
         data={data}
         ListFooterComponent={<View style={{ height: hp("8%") }} />}

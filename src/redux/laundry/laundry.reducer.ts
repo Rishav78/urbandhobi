@@ -2,7 +2,7 @@ import { LaundryAction, LaundryActionType, LaundryState } from "./laundry.type";
 
 const initialState: LaundryState = {
   loading: true,
-  data: [],
+  data: {},
 };
 
 export type LaundryReducerFn = (state: LaundryState, action: LaundryAction) => LaundryState;

@@ -1,4 +1,4 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { GenericObject, SupportedCloth } from "@urbandhobi/@types";
 
 export interface LaundryAction {
   type: LaundryActionType,
@@ -14,5 +14,5 @@ export enum LaundryActionType {
 
 export interface LaundryState {
   loading: boolean;
-  data: Array<SupportedCloth>;
+  data: GenericObject<SupportedCloth>;
 }

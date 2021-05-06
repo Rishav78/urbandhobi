@@ -5,6 +5,7 @@ import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import { useCloth } from "@urbandhobi/hooks/cloth.hook";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
 import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
@@ -14,21 +15,28 @@ import { Appbar } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useService } from "@urbandhobi/hooks/service.hook";
 
 const cartSelector = (state: RootReducerType) => state.cart;
+const clothSelector = (state: RootReducerType) => state.laundry.data;
+const serviceSelector = (state: RootReducerType) => state.home.services;
 
 const Cart = () => {
 
   const dispatch = useDispatch();
   const {goBack} = useNavigation();
   const { navigateToTiming } = useNavigate();
-
+  const {fetchAndSetCloth} = useCloth();
+  const {getAndSetService} = useService();
+  const cloths = useSelector(clothSelector, shallowEqual);
+  const services = useSelector(serviceSelector, shallowEqual);
   const { items, cart } = useSelector(cartSelector, shallowEqual);
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
-    return items.map(service => {
+    const keys = Object.keys(items);
+    return keys.map(service => {
       return {
-        data: service.items,
-        title: service.name,
+        data: items[service],
+        title: (services[service] && services[service].name) || "Invalid Service",
       };
     });
   }, [items]);
@@ -90,14 +98,19 @@ const Cart = () => {
     fetchCartItems();
   }, [cart]);
 
+  useEffect(() => {
+    fetchAndSetCloth();
+    getAndSetService();
+  }, []);
+
   const _renderItem = useCallback(({ item }: { item: CartItem }) => {
     return (
       <ClothCardv2
         editable={false}
         quantity={item.count}
-        data={item.cloth} />
+        data={cloths[item.itemId] || {}} />
     );
-  }, []);
+  }, [cloths]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>

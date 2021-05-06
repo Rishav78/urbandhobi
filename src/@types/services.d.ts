@@ -17,7 +17,7 @@ export interface Assets {
 export interface Service {
   id: string;
   name: string;
-  category: string;
+  categoryId: string;
   data: string;
   daysRequired: number;
   image: string;

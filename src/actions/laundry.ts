@@ -1,7 +1,7 @@
 import { SupportedCloth } from "@urbandhobi/@types";
 import { api } from "@urbandhobi/lib/config";
 import { getTokens } from "@urbandhobi/lib/helpers";
-import { getFetchWrapper } from "@urbandhobi/lib/utils";
+import { getFetchWrapper, Iterator } from "@urbandhobi/lib/utils";
 
 export const getSupportedLaundry = async () => {
   const url = api.cloth.laundry;
@@ -11,7 +11,8 @@ export const getSupportedLaundry = async () => {
       .setReqMethod("GET")
       .setTokens(auth)
       .send();
-    return clothes;
+    const grouped = await Iterator.groupby(clothes, cloth => cloth.id);
+    return grouped;
   }
   catch (error) {
     console.error(error);

@@ -4,7 +4,9 @@ import { Service } from "../services";
 export interface CartItem {
   id: string;
   count: number;
-  cloth: SupportedCloth;
+  itemId: string;
+  serviceId: string;
+  serviceTypeId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,5 +29,6 @@ export interface CartNItems extends Cart {
 export interface AddItemBody {
   itemId: string;
   serviceId: string;
+  serviceTypeId: string;
   count: number;
 }

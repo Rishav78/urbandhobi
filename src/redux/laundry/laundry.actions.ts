@@ -1,4 +1,4 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { GenericObject, SupportedCloth } from "@urbandhobi/@types";
 import { LaundryAction, LaundryActionType } from "./laundry.type";
 
 export const setLoading = (payload: boolean = true): LaundryAction => {
@@ -8,7 +8,7 @@ export const setLoading = (payload: boolean = true): LaundryAction => {
   };
 };
 
-export const setSupportedLaundry = (payload: Array<SupportedCloth>): LaundryAction => {
+export const setSupportedLaundry = (payload: GenericObject<SupportedCloth>): LaundryAction => {
   return {
     type: LaundryActionType.SET_CLOTHS,
     payload,

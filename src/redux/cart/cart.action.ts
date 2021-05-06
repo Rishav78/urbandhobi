@@ -1,4 +1,4 @@
-import { Cart, CartItemGBService } from "@urbandhobi/@types";
+import { Cart, CartItem, CartItemGBService, GenericObject } from "@urbandhobi/@types";
 import { CartAction, CartActionType } from "./cart.type";
 
 export const setCart = (payload: Cart): CartAction => {
@@ -8,7 +8,7 @@ export const setCart = (payload: Cart): CartAction => {
   };
 };
 
-export const setCartItems = (payload: CartItemGBService[]): CartAction => {
+export const setCartItems = (payload: GenericObject<CartItem[]>): CartAction => {
   return {
     type: CartActionType.SET_ITEMS,
     payload,

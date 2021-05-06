@@ -1,7 +1,7 @@
-import { AddItemBody, Cart, CartItemGBService } from "@urbandhobi/@types";
+import { AddItemBody, Cart, CartItem, CartItemGBService } from "@urbandhobi/@types";
 import { api } from "../config";
 import { getTokens } from "../helpers";
-import { getFetchWrapper } from "@urbandhobi/lib/utils";
+import { getFetchWrapper, Iterator } from "@urbandhobi/lib/utils";
 
 export class CartService {
 
@@ -42,18 +42,15 @@ export class CartService {
 
   public getItems = async () => {
     try {
-      if (!this._cart) {
-        throw new Error("cart id not provided");
-      }
-      const url = api.cart.cartItems(this._cart) + "?groupby=service";
+      const url = api.cart.cartItems();
       const {auth} = await getTokens();
-      const res = await getFetchWrapper<null, CartItemGBService[]>()
+      const res = await getFetchWrapper<null, CartItem[]>()
         .setURL(url)
         .setReqMethod("GET")
         .setTokens(auth)
         .send();
-      const sections = res.filter(e => e.items.length > 0);
-      return sections;
+      const grouped = await Iterator.group(res, item => item.serviceId);
+      return grouped;
     }
     catch (error) {
       console.log(error);
@@ -87,11 +84,11 @@ export class CartService {
     const url = api.cart.addItem(this._cart!);
     try {
       const { auth } = await getTokens();
-      await getFetchWrapper(url, "PUT")
+      const res = await getFetchWrapper<AddItemBody[], boolean>(url, "PUT")
         .setTokens(auth)
         .setData(data)
         .send();
-      return true;
+      return res;
     }
     catch (error) {
       console.error(error);

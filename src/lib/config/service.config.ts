@@ -10,6 +10,7 @@ export const api = {
     REFRESH_TOKEN: `${AUTH_API}/token/refresh`,
   },
   services: `${UD_API}/api/services/v1/type`,
+  service: `${UD_API}/api/services/v1`,
   serviceArea: {
     state: `${UD_API}/api/services/v1/area/state`,
   },
@@ -34,8 +35,8 @@ export const api = {
     createCart: () => `${URBANDHOBI_API}/cart`,
     getCart: (cart?: string) => `${UD_API}/api/cart/v1/user`,
     deleteCart: () => `${URBANDHOBI_API}/cart`,
-    cartItems: (cart: string) => `${UD_API}/api/cart/v1/item/all`,
-    addItem: (cart: string) => `${URBANDHOBI_API}/cart/${cart}/item`,
+    cartItems: () => `${UD_API}/api/cart/v1/item/all`,
+    addItem: (cart: string) => `${UD_API}/api/cart/v1/item`,
     updateItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
     deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
   },

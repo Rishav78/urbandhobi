@@ -63,6 +63,18 @@ export class Iterator {
     return obj;
   }
 
+  static groupby = async <T>(
+    data: Array<T>,
+    column: (item: T, index: number, array: T[]) => Promise<string | number> | string | number,
+  ) => {
+    const obj: GenericObject<T> = {};
+    await Iterator.forEach(data, async (item, index, array) => {
+      const key = await column(item, index, array);
+      obj[key] = item;
+    });
+    return obj;
+  }
+
   // static groupByObject = async <T>(
   //   data: Array<T>,
   //   column: (item: T, index: number, array: T[]) => Promise<GroupByObjectColumn> | GroupByObjectColumn

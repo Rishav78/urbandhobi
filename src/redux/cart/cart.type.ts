@@ -1,4 +1,4 @@
-import { Cart, CartItem, CartItemGBService, GenericObject } from "@urbandhobi/@types";
+import { Cart, CartItem, GenericObject } from "@urbandhobi/@types";
 
 export interface CartAction {
   type: CartActionType,
@@ -14,5 +14,5 @@ export enum CartActionType {
 export interface CartState {
   loading: boolean;
   cart: Cart | null;
-  items: CartItemGBService[]
+  items: GenericObject<CartItem[]>;
 }
