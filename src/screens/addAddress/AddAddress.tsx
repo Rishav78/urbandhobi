@@ -62,7 +62,7 @@ export const AddAddress = () => {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         }, 1000);
-        setEditScreenVisible(true);
+        setTimeout(() => setEditScreenVisible(true), 1000);
       }
     }
     catch (error) {

@@ -9,11 +9,10 @@ import ServiceSection from "./components/service";
 import ServiceArea from "./components/serviceArea";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
-import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { HeaderRight } from "./header";
 import { Service } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
-import { useService, useCart } from "@urbandhobi/hooks";
+import { useService, useCart, useNavigate } from "@urbandhobi/hooks";
 
 export interface HomeScreenProps { }
 

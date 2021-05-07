@@ -33,10 +33,10 @@ export const api = {
   },
   cart: {
     createCart: () => `${URBANDHOBI_API}/cart`,
-    getCart: (cart?: string) => `${UD_API}/api/cart/v1/user`,
+    getCart: () => `${UD_API}/api/cart/v1/user`,
     deleteCart: () => `${URBANDHOBI_API}/cart`,
     cartItems: () => `${UD_API}/api/cart/v1/item/all`,
-    addItem: (cart: string) => `${UD_API}/api/cart/v1/item`,
+    addItem: () => `${UD_API}/api/cart/v1/item`,
     updateItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
     deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
   },
