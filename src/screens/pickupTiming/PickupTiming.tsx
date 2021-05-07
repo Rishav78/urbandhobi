@@ -51,18 +51,19 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
 
   const submitCart = useCallback(async () => {
     try {
-      if (!cart) {
-        return console.error("cart is not intilized");
-      }
-
       if (pickupTiming === null) {
         return Alert.alert("", "SELECT PICKUP TIMING");
       }
 
-      const newCart = await new Service().laundry(cart.id).request(pickupTiming);
+      const newCart = await new Service().laundry().request(pickupTiming);
       if (newCart) {
         dispatch(setCart(newCart));
-        navigateToHome();
+        Alert.alert("Requested!! Thank you", "", [
+          {
+            onPress: navigateToHome,
+            text: "Ok",
+          },
+        ]);
       }
     }
     catch (error) {

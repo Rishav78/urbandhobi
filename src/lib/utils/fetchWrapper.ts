@@ -1,4 +1,5 @@
 import { APIError, ReqMethod, Response } from "@urbandhobi/@types";
+import { toJSON } from "../helpers";
 
 export class fetchWrapper<Body = any, Res = any> {
   private url!: string;
@@ -59,14 +60,17 @@ export class fetchWrapper<Body = any, Res = any> {
         },
       });
       console.info("HTTP CODE", this.url, res.status);
+
+      const text = await res.text();
+
       if (res.status >= 400) {
-        let error = await res.json();
+        let error = toJSON<any>(text);
         if (typeof error === "object") {
           error = JSON.stringify(error, null, 2);
         }
         throw new Error(error);
       }
-      const data: Res | APIError = await res.json();
+      const data = toJSON<Res | APIError>(text);
       console.log("response of", this.url, JSON.stringify(data, null, 2));
       return data as Res;
     }

@@ -9,10 +9,10 @@ export interface RequestBody {
 }
 
 export class LaundryService {
-  constructor(private cart: string) { }
+  constructor() { }
 
   public request = async (timingId: number) => {
-    const url = api.laundry.request(this.cart);
+    const url = api.laundry.request();
     try {
       const { auth } = await getTokens();
       const res = await getFetchWrapper<RequestBody, Cart>(url, "PUT")

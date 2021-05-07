@@ -41,7 +41,7 @@ export const api = {
     deleteItem: (cart: string, item: string) => `${URBANDHOBI_API}/cart/${cart}/item/${item}`,
   },
   laundry: {
-    request: (cart: string) => `${URBANDHOBI_API}/laundry/request?c=${cart}`,
+    request: () => `${UD_API}:3006/api/laundry/v1/raise`,
     timing: () => `${UD_API}/api/services/v1/timing/pickup`,
   },
 };

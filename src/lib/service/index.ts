@@ -9,7 +9,7 @@ export class Service {
 
   public services = () => new ServicesService();
 
-  public laundry = (cart?: string) => new LaundryService(cart!);
+  public laundry = () => new LaundryService();
 }
 
 export default Service;
