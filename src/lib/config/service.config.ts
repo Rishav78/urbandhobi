@@ -42,7 +42,7 @@ export const api = {
   },
   laundry: {
     request: (cart: string) => `${URBANDHOBI_API}/laundry/request?c=${cart}`,
-    timing: () => `${URBANDHOBI_API}/laundry/timing`,
+    timing: () => `${UD_API}/api/services/v1/timing/pickup`,
   },
 };
 

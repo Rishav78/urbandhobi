@@ -20,7 +20,7 @@ export interface HomeScreenProps { }
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   const { navigateToService } = useNavigate();
 
-  const {getAndSetServiceType, serviceType} = useService();
+  const {getAndSetServiceType, serviceType, getServiceStates} = useService();
   const {getCart} = useCart();
   const serviceTypeArray = Object.values(serviceType);
 
@@ -29,12 +29,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   }, []);
 
   const onRefresh = useCallback(async () => {
-    await Promise.all([getCart(), getAndSetServiceType()]);
+    await Promise.all([getCart(), getAndSetServiceType(), getServiceStates()]);
   }, []);
 
   useEffect(() => {
-    getCart();
-    getAndSetServiceType();
+    onRefresh();
   }, []);
 
 

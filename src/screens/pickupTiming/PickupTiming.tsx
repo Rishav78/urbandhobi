@@ -1,5 +1,4 @@
 import { RootReducerType, Timings } from "@urbandhobi/@types";
-import Header from "@urbandhobi/components/header/Header";
 import * as Timing from "./components/timingCart";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Text, View, StyleSheet, Alert } from "react-native";
@@ -11,6 +10,7 @@ import { Button } from "@urbandhobi/components";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import { Appbar } from "react-native-paper";
 
 interface PickupTimmingProps { }
 
@@ -113,10 +113,13 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Header headerContainerStyle={{ paddingHorizontal: 10 }} />
+      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+        <Appbar.BackAction />
+        <Appbar.Content title="Pickup timing" />
+      </Appbar.Header>
 
       <View style={styles.section}>
-        <Text style={{ fontSize: wp("5%") }}>Select Pick up Date</Text>
+        <Text style={{ fontSize: wp("5%") }}>Select Pickup Date</Text>
         <Timing.Section style={{ marginVertical: wp("3%") }}>
           <Timing.Block
             fill={pickupDate === 0}
@@ -136,7 +139,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
       </View>
 
       <View style={styles.section}>
-        <Text style={{ fontSize: wp("5%") }}>Select Pick up Date</Text>
+        <Text style={{ fontSize: wp("5%") }}>Select Pickup Timing</Text>
         <Timing.Section style={{ marginVertical: wp("3%") }}>
           {
             filteredTimings.length > 0 ?
