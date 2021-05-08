@@ -6,6 +6,7 @@ import {HomeReducer} from "./home/home.reducer";
 import { LaundryReducer } from "./laundry/laundry.reducer";
 import {CartReducer} from "./cart/cart.reducer";
 import { ServicesReducer } from "./services/services.reducer";
+import {UserReducer} from "./user/user.reducer";
 
 
 const RootReducer = combineReducers({
@@ -15,6 +16,7 @@ const RootReducer = combineReducers({
   laundry: LaundryReducer,
   cart: CartReducer,
   services: ServicesReducer,
+  user: UserReducer,
 });
 
 export default RootReducer;

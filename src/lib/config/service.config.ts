@@ -22,6 +22,7 @@ export const api = {
     updatedDefault: (id: string) => `${UD_API}:3004/api/address/v1/default/${id}`,
   },
   user: {
+    current: `${UD_API}:3001/api/user/v1/currentuser`,
     CREATE_USER: `${URBANDHOBI_API}/user/create`,
     VERIFIED: `${URBANDHOBI_API}/auth/verified`,
   },
