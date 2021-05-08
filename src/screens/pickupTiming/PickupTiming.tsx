@@ -11,6 +11,7 @@ import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { Appbar, FAB } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "@react-navigation/core";
 
 interface PickupTimmingProps { }
 
@@ -26,6 +27,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
   const { cart } = useSelector(cartSelector, shallowEqual);
   const dispatch = useDispatch();
   const {navigateToHome} = useNavigate();
+  const {goBack} = useNavigation();
 
   const [FABVisible] = useState(true);
   const [timings, setTimings] = useState<Timings[]>([]);
@@ -116,7 +118,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
   return (
     <SafeAreaView style={{flex: 1}}>
       <Appbar.Header theme={{colors: {primary: "#fff"}}}>
-        <Appbar.BackAction />
+        <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Pickup timing" />
       </Appbar.Header>
 

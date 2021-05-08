@@ -55,19 +55,19 @@ const BottomTabNavigation = () => {
         component={HomeStackNavigation} />
       <Tab.Screen
         name="ORDERTAB"
-        options={{ title: "Orders" }}
+        options={{ title: "Orders", tabBarVisible: false }}
         component={Orders} />
       <Tab.Screen
         name="ACCOUNTTAB"
-        options={{ title: "Account" }}
+        options={{ title: "Account", tabBarVisible: false }}
         component={Account} />
       <Tab.Screen
         name="NOTIFICATIONTAB"
-        options={{ title: "Notification" }}
+        options={{ title: "Notification", tabBarVisible: false }}
         component={Notification} />
       <Tab.Screen
         name="HELPTAB"
-        options={{ title: "Help" }}
+        options={{ title: "Help", tabBarVisible: false }}
         component={Help} />
     </Tab.Navigator>
   );
