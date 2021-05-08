@@ -2,9 +2,9 @@ import { useNavigation } from "@react-navigation/core";
 import { Seperator } from "@urbandhobi/components";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
-import { useNavigate, useUser } from "@urbandhobi/hooks";
+import { useAuth, useNavigate, useUser } from "@urbandhobi/hooks";
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { Appbar } from "react-native-paper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +18,7 @@ const Account = ({ }: AccountProps) => {
   const { goBack } = useNavigation();
   const { getUser, user } = useUser();
   const {navigateToUpdateUser} = useNavigate();
+  const {logout} = useAuth();
 
   const onOrderClick = React.useCallback(() => {
 
@@ -35,8 +36,16 @@ const Account = ({ }: AccountProps) => {
 
   }, []);
 
-  const onLogoutClick = React.useCallback(() => {
-
+  const onLogoutClick = React.useCallback(async () => {
+    Alert.alert("Confirmation", "Are you sure want to logout", [
+      {
+        onPress: logout,
+        text: "YES",
+      },
+      {
+        text: "NO",
+      },
+    ]);
   }, []);
 
   const onRefresh = React.useCallback(async () => {
@@ -101,6 +110,10 @@ const Account = ({ }: AccountProps) => {
             <Item.Item onPress={onLogoutClick} style={styles.item}>
               <Item.Content title="Logout" />
               <Item.Icon icon="logout" />
+            </Item.Item>
+            <Item.Item onPress={onLogoutClick} style={styles.item}>
+              <Item.Content title="Deactivate Account" />
+              <Item.Icon icon="power-settings-new" />
             </Item.Item>
           </View>
         </RefreshScrollView>

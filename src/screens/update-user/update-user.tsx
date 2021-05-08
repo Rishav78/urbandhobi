@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/core";
 import { useUser } from "@urbandhobi/hooks";
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
@@ -13,6 +14,7 @@ interface UpdateUserProps { }
 const UpdateUser = ({ }: UpdateUserProps) => {
 
   const { user } = useUser();
+  const {goBack} = useNavigation();
 
   const [firstName, setFirstName] = useState((user && user.firstName) || "");
   const [lastName, setLastName] = useState((user && user.lastName) || "");
@@ -21,7 +23,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Appbar.Header theme={{colors: {primary: "#fff"}}}>
-        <Appbar.BackAction />
+        <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Update Profile" />
       </Appbar.Header>
       {user ?
