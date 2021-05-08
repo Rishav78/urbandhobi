@@ -7,6 +7,7 @@ import { RootReducerType } from "@urbandhobi/@types";
 import SplashScreen from "@urbandhobi/screens/SplashScreen";
 import BottomTabNavigation from "./tab.navigation";
 import { AddAddress } from "@urbandhobi/screens";
+import UpdateUser from "@urbandhobi/screens/update-user/update-user";
 
 const MainStack = createStackNavigator();
 
@@ -25,7 +26,7 @@ export const MainStackNavigation = () => {
   }, []);
 
   return (
-    <MainStack.Navigator screenOptions={{headerShown: false}}>
+    <MainStack.Navigator screenOptions={{ headerShown: false }}>
       { showSplash &&
         <MainStack.Screen
           name={splash.name}
@@ -54,6 +55,11 @@ export const MainStackNavigation = () => {
           <MainStack.Screen
             name={homeStack.screen.addAddress.name}
             component={AddAddress}
+          />
+
+          <MainStack.Screen
+            name={homeStack.screen.updateUser.name}
+            component={UpdateUser}
           />
         </>
       }

@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/core";
 import { Seperator } from "@urbandhobi/components";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
-import { useUser } from "@urbandhobi/hooks";
+import { useNavigate, useUser } from "@urbandhobi/hooks";
 import * as React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
@@ -17,6 +17,7 @@ interface AccountProps { }
 const Account = ({ }: AccountProps) => {
   const { goBack } = useNavigation();
   const { getUser, user } = useUser();
+  const {navigateToUpdateUser} = useNavigate();
 
   const onOrderClick = React.useCallback(() => {
 
@@ -53,7 +54,7 @@ const Account = ({ }: AccountProps) => {
       <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Account setting" />
-        <Appbar.Action icon={() => <MaterialIcons name="edit" size={24} color="black" />} />
+        <Appbar.Action onPress={navigateToUpdateUser} icon={() => <MaterialIcons name="edit" size={24} color="black" />} />
       </Appbar.Header>
       {!user ? <MessageTile message="" /> :
         <RefreshScrollView>

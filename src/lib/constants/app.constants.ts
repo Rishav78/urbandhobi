@@ -55,6 +55,9 @@ export const screens = {
       pickupTiming: {
         name: "PICKUP_TIMINGS",
       },
+      updateUser: {
+        name: "UPDATE_USER",
+      },
     },
   },
 };
