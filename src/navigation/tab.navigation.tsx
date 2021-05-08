@@ -4,6 +4,10 @@ import { HomeStackNavigation } from "./homestack.navigation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import Orders from "@urbandhobi/screens/orders/Orders";
+import Account from "@urbandhobi/screens/account/Account";
+import Notification from "@urbandhobi/screens/notification/Notification";
+import Help from "@urbandhobi/screens/help/Help";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,19 +54,19 @@ const BottomTabNavigation = () => {
       <Tab.Screen
         name="ORDERTAB"
         options={{ title: "Orders" }}
-        component={HomeStackNavigation} />
+        component={Orders} />
       <Tab.Screen
         name="ACCOUNTTAB"
         options={{ title: "Account" }}
-        component={HomeStackNavigation} />
+        component={Account} />
       <Tab.Screen
         name="NOTIFICATIONTAB"
         options={{ title: "Notification" }}
-        component={HomeStackNavigation} />
+        component={Notification} />
       <Tab.Screen
         name="HELPTAB"
         options={{ title: "Help" }}
-        component={HomeStackNavigation} />
+        component={Help} />
     </Tab.Navigator>
   );
 };

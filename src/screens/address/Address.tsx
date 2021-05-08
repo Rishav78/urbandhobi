@@ -3,37 +3,24 @@ import { StyleSheet, Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "@urbandhobi/@types";
-import { deleteAddress, getMyAddress, makeAddressDefault } from "@urbandhobi/actions";
+import { deleteAddress, makeAddressDefault } from "@urbandhobi/actions";
 import Header from "@urbandhobi/components/header/Header";
-import { setAddress } from "@urbandhobi/redux/address/address.action";
 import AddressCard from "./components/addressCard";
-import { useNavigate } from "@urbandhobi/hooks";
+import { useAddress, useNavigate } from "@urbandhobi/hooks";
 import { Address as AddressInstance } from "@urbandhobi/@types";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 import { FAB } from "react-native-paper";
 
-const addressSelector = (state: RootReducerType) => state.address.data;
-
 export const Address = () => {
 
   const { navigateToAddAddress } = useNavigate();
-  const dispatch = useDispatch();
-  const addresses = useSelector(addressSelector, shallowEqual);
+  const {addresses, getAddress} = useAddress();
   const [FABVisible, setFABVisible] = useState(true);
-
-  const fetchAddress = useCallback(async () => {
-    const myAddress = await getMyAddress();
-    if (myAddress) {
-      dispatch(setAddress(myAddress));
-    }
-  }, []);
 
   const onDefaulClickHandler = useCallback(async (address: AddressInstance) => {
     try {
       await makeAddressDefault(address.id);
-      await fetchAddress();
+      await getAddress();
     }
     catch (error) {
 
@@ -43,7 +30,7 @@ export const Address = () => {
   const onDeleteClickHandler = useCallback(async (address: AddressInstance) => {
     try {
       await deleteAddress(address.id);
-      await fetchAddress();
+      await getAddress();
     }
     catch (error) {
 
@@ -64,11 +51,11 @@ export const Address = () => {
   }, []);
 
   const onRefresh = useCallback(async () => {
-    await fetchAddress();
+    await getAddress();
   }, []);
 
   useEffect(() => {
-    fetchAddress();
+    onRefresh();
   }, []);
 
   return (

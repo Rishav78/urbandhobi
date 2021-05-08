@@ -12,7 +12,7 @@ import ServiceCard from "./components/serviceCard";
 import { HeaderRight } from "./header";
 import { Service } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
-import { useService, useCart, useNavigate } from "@urbandhobi/hooks";
+import { useService, useCart, useNavigate, useAddress } from "@urbandhobi/hooks";
 
 export interface HomeScreenProps { }
 
@@ -21,6 +21,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
 
   const {getAndSetServiceType, serviceType, getServiceStates} = useService();
   const {getCart} = useCart();
+  const {getDefaultAddress} = useAddress();
   const serviceTypeArray = Object.values(serviceType);
 
   const onServicePress = useCallback((service: Service) => {
@@ -28,7 +29,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
   }, []);
 
   const onRefresh = useCallback(async () => {
-    await Promise.all([getCart(), getAndSetServiceType(), getServiceStates()]);
+    await Promise.all([getCart(), getAndSetServiceType(), getServiceStates(), getDefaultAddress()]);
   }, []);
 
   useEffect(() => {

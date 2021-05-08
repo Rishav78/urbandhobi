@@ -1,33 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Clickable } from "@urbandhobi/components/click";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import MessageTile from "@urbandhobi/components/messageTile";
-import { RootReducerType } from "@urbandhobi/@types";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getDefaultAddress } from "@urbandhobi/actions";
-import { setDefaultAddress } from "@urbandhobi/redux/home/home.action";
-
-const addressSelector = (state: RootReducerType) => state.home.defaultAddress;
+import { useAddress } from "@urbandhobi/hooks";
 
 const Heading = () => {
-  const dispatch = useDispatch();
-  const defaultAddress = useSelector(addressSelector, shallowEqual);
   const { navigateToAddress } = useNavigate();
 
-  const fetchDefaultAddress = async () => {
-    try {
-      const address = await getDefaultAddress();
-      dispatch(setDefaultAddress(address));
-    }
-    catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchDefaultAddress();
-  }, []);
+  const { defaultAddress } = useAddress();
   return (
     <View style={styles.container}>
       <Clickable

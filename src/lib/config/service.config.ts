@@ -15,11 +15,11 @@ export const api = {
     state: `${UD_API}/api/services/v1/area/state`,
   },
   address: {
-    myAddress: `${UD_API}/api/address/v1`,
-    create: `${UD_API}/api/address/v1`,
-    delete: (id: string) => `${UD_API}/api/address/v1/${id}`,
-    default: `${UD_API}/api/address/v1/default`,
-    updatedDefault: (id: string) => `${UD_API}/api/address/v1/default/${id}`,
+    myAddress: `${UD_API}:3004/api/address/v1`,
+    create: `${UD_API}:3004/api/address/v1`,
+    delete: (id: string) => `${UD_API}:3004/api/address/v1/${id}`,
+    default: `${UD_API}:3004/api/address/v1/default`,
+    updatedDefault: (id: string) => `${UD_API}:3004/api/address/v1/default/${id}`,
   },
   user: {
     CREATE_USER: `${URBANDHOBI_API}/user/create`,

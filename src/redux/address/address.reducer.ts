@@ -3,6 +3,7 @@ import { AddressAction, AddressActionType, AddressState } from "./address.type";
 const initialState: AddressState = {
   loading: true,
   data: [],
+  defaultAddress: null,
 };
 
 export type AddressReducerFn = (state: AddressState, action: AddressAction) => AddressState;
@@ -18,6 +19,11 @@ export const AddressReducer: AddressReducerFn = (state = initialState, action) =
       ...state,
       loading: false,
       data: payload,
+    };
+    case AddressActionType.SET_DEFAULT_ADDRESS: return {
+      ...state,
+      loading: false,
+      defaultAddress: payload,
     };
     case AddressActionType.RESET: return {
       ...initialState,

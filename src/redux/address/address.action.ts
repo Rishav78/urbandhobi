@@ -7,3 +7,10 @@ export const setAddress = (payload: Array<Address>): AddressAction => {
     payload,
   };
 };
+
+export const setDefaultAddress = (payload: Address): AddressAction => {
+  return {
+    type: AddressActionType.SET_DEFAULT_ADDRESS,
+    payload,
+  };
+};
