@@ -21,10 +21,6 @@ export const HomeStackNavigation = () => {
         component={Address}
       />
       <HomeStack.Screen
-        name={screen.addAddress.name}
-        component={AddAddress}
-      />
-      <HomeStack.Screen
         name={screen.service.name}
         component={ServiceScreen}
       />

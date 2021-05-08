@@ -4,8 +4,9 @@ import { screens } from "@urbandhobi/lib/constants";
 import { AuthStackNavigation } from "./authstack.navigation";
 import { shallowEqual, useSelector } from "react-redux";
 import { RootReducerType } from "@urbandhobi/@types";
-import { HomeStackNavigation } from "./homestack.navigation";
 import SplashScreen from "@urbandhobi/screens/SplashScreen";
+import BottomTabNavigation from "./tab.navigation";
+import { AddAddress } from "@urbandhobi/screens";
 
 const MainStack = createStackNavigator();
 
@@ -24,7 +25,7 @@ export const MainStackNavigation = () => {
   }, []);
 
   return (
-    <MainStack.Navigator>
+    <MainStack.Navigator screenOptions={{headerShown: false}}>
       { showSplash &&
         <MainStack.Screen
           name={splash.name}
@@ -42,13 +43,19 @@ export const MainStackNavigation = () => {
             headerShown: false,
           })}
         /> :
-        <MainStack.Screen
-          name={homeStack.name}
-          component={HomeStackNavigation}
-          options={({ }) => ({
-            headerShown: false,
-          })}
-        />
+        <>
+          <MainStack.Screen
+            name={homeStack.name}
+            component={BottomTabNavigation}
+            options={({ }) => ({
+              headerShown: false,
+            })}
+          />
+          <MainStack.Screen
+            name={homeStack.screen.addAddress.name}
+            component={AddAddress}
+          />
+        </>
       }
     </MainStack.Navigator>
   );

@@ -6,11 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import Service from "@urbandhobi/lib/service";
 import MessageTile from "@urbandhobi/components/messageTile";
-import { Button } from "@urbandhobi/components";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
-import { Appbar } from "react-native-paper";
+import { Appbar, FAB } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 interface PickupTimmingProps { }
 
@@ -27,6 +27,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
   const dispatch = useDispatch();
   const {navigateToHome} = useNavigate();
 
+  const [FABVisible] = useState(true);
   const [timings, setTimings] = useState<Timings[]>([]);
   const [pickupDate, setPickupDate] = useState(0);
   const [pickupTiming, setPickupTiming] = useState<null | number>(null);
@@ -184,14 +185,24 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
           }
         </Timing.Section>
       </View>
-      <View style={styles.buttonContainer}>
+      <FAB
+        onPress={submitCart}
+        visible={FABVisible}
+        style={styles.fab}
+        color="#333"
+        icon={FABIcon} />
+      {/* <View style={styles.buttonContainer}>
         <Button onPress={submitCart} activeOpacity={1} title="SUBMIT" />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };
 
 export default PickupTimming;
+
+const FABIcon = () => (
+  <MaterialCommunityIcons name="cart-arrow-up" size={24} color="#fff" />
+);
 
 const styles = StyleSheet.create({
   container: {},
@@ -215,5 +226,12 @@ const styles = StyleSheet.create({
     paddingVertical: hp("2%"),
     marginHorizontal: wp("3%"),
     borderRadius: wp("2%"),
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#333",
   },
 });

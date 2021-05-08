@@ -1,24 +1,26 @@
 import { useNavigation } from "@react-navigation/core";
 import { CartItem } from "@urbandhobi/@types";
-import { Button, Seperator } from "@urbandhobi/components";
+import { Seperator } from "@urbandhobi/components";
 import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { useCloth } from "@urbandhobi/hooks/cloth.hook";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, FAB } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useService, useCart } from "@urbandhobi/hooks";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const Cart = () => {
-  const {goBack} = useNavigation();
+  const { goBack } = useNavigation();
+  const [FABVisible, setFABVisible] = useState(true);
   const { navigateToTiming } = useNavigate();
-  const {getCloths, cloths} = useCloth();
-  const {getAndSetService, services} = useService();
+  const { getCloths, cloths } = useCloth();
+  const { getAndSetService, services } = useService();
   const { items, cart, getItems, getCart } = useCart();
 
   const data = useMemo<Array<{ title: string, data: CartItem[] }>>(() => {
@@ -72,7 +74,7 @@ const Cart = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Cart" />
       </Appbar.Header>
@@ -83,6 +85,8 @@ const Cart = () => {
           ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
           keyExtractor={item => item.id}
           renderItem={_renderItem}
+          onMomentumScrollBegin={() => setFABVisible(false)}
+          onMomentumScrollEnd={() => setFABVisible(true)}
           renderSectionHeader={({ section: { title, data } }) => (
             data.length > 0 ?
               <CardView>
@@ -95,14 +99,21 @@ const Cart = () => {
           ListFooterComponent={() => <View style={{ height: hp("10%") }} />}
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={submitCart} activeOpacity={1} title="SUBMIT CART" />
-      </View>
+      <FAB
+        onPress={submitCart}
+        visible={FABVisible}
+        style={styles.fab}
+        color="#333"
+        icon={FABIcon} />
     </SafeAreaView>
   );
 };
 
 export default Cart;
+
+const FABIcon = () => (
+  <MaterialIcons name="arrow-forward" size={24} color="#fff" />
+);
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -110,5 +121,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     paddingHorizontal: wp("3%"),
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#333",
   },
 });

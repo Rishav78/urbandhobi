@@ -1,14 +1,15 @@
 import { useNavigation } from "@react-navigation/core";
 import { AddItemBody, Service, SupportedCloth } from "@urbandhobi/@types";
-import { Button, Seperator } from "@urbandhobi/components";
+import { Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Appbar } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Appbar, FAB } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export interface ClothViewProps {
   onAddToCard: (data: AddItemBody[]) => void;
@@ -22,8 +23,9 @@ export const ClothView: React.FC<ClothViewProps> = ({
   service,
 }) => {
   const [counter, setCounter] = useState<{ [key: string]: AddItemBody }>({});
+  const [FABVisible, setFABVisible] = useState(true);
 
-  const {goBack} = useNavigation();
+  const { goBack } = useNavigation();
 
   const onAddCloth = (cloth: SupportedCloth) => {
     return () => {
@@ -90,13 +92,14 @@ export const ClothView: React.FC<ClothViewProps> = ({
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title={toTitleCase(service.name) || "Service"} />
       </Appbar.Header>
       <RefreshFlatList
         data={data}
-        ListFooterComponent={<View style={{ height: hp("8%") }} />}
+        onMomentumScrollBegin={() => setFABVisible(false)}
+        onMomentumScrollEnd={() => setFABVisible(true)}
         keyExtractor={_keyExtractor}
         ItemSeparatorComponent={() => (
           <Seperator
@@ -106,9 +109,14 @@ export const ClothView: React.FC<ClothViewProps> = ({
         )}
         renderItem={_renderItem}
       />
-      <View style={styles.buttonContainer}>
-        <Button onPress={addToCart} activeOpacity={1} title="ADD TO CARD" />
-      </View>
+      <FAB
+        onPress={addToCart}
+        visible={FABVisible}
+        style={styles.fab}
+        color="#333"
+        icon={() => (
+          <MaterialIcons name="add-shopping-cart" size={24} color="#fff" />
+        )} />
     </SafeAreaView>
   );
 };
@@ -128,5 +136,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     paddingHorizontal: wp("3%"),
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#333",
   },
 });
