@@ -18,13 +18,12 @@ import {
   getCurrentPosition,
   LONGITUDE_DELTA,
   LATITUDE_DELTA,
-  reverseGeoCoding,
 } from "@urbandhobi/lib/helpers";
-import { ReverseGeoCode } from "@urbandhobi/@types/services";
-import { saveAddress } from "@urbandhobi/actions/address";
 import EditAddress from "./components/edit-address";
 import { FAB, Portal } from "react-native-paper";
-import { EditAddress as EditAddressT, FABState } from "@urbandhobi/@types";
+import { EditAddress as EditAddressT, FABState, ReverseGeoCode } from "@urbandhobi/@types";
+import Service from "@urbandhobi/lib/service";
+import { useAddress } from "@urbandhobi/hooks";
 
 export const AddAddress = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,6 +31,8 @@ export const AddAddress = () => {
   const [isEditScreenVisible, setEditScreenVisible] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<ReverseGeoCode | null>(null);
   const mapRef = useRef<MapView>(null);
+
+  const {getAddress} = useAddress();
 
   const onFABStateChange = useCallback(({ open }: FABState) => {
     setFABState(open);
@@ -52,10 +53,11 @@ export const AddAddress = () => {
 
   const getAndSetPosition = useCallback(async () => {
     setLoading(true);
+    const service = new Service().address();
     try {
       const { coords: { latitude, longitude } } = await getCurrentPosition();
       if (mapRef.current) {
-        setSelectedPosition(await reverseGeoCoding(longitude, latitude));
+        setSelectedPosition(await service.reverseGeoCoding(longitude, latitude));
         mapRef.current.animateToRegion({
           latitude,
           longitude,
@@ -79,7 +81,9 @@ export const AddAddress = () => {
 
   const onSubmit = useCallback(async (data: EditAddressT) => {
     try {
-      await saveAddress(data);
+      const service = new Service().address();
+      await service.save(data);
+      getAddress();
       onEditScreenBackHandler();
       Alert.alert("Address saved");
     }

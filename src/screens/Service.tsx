@@ -31,7 +31,6 @@ export const ServiceScreen = () => {
     }
     const res = await new ServiceManager()
       .cart()
-      .cart(cart.id)
       .addItem(data);
     if (res) {
       Alert.alert("Added to cart");

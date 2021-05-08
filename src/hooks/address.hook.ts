@@ -1,10 +1,10 @@
 import { RootReducerType } from "@urbandhobi/@types";
-import { getMyAddress } from "@urbandhobi/actions";
 import { setAddress } from "@urbandhobi/redux/address/address.action";
 import { useCallback } from "react";
 import { getDefaultAddress as getDAddress } from "@urbandhobi/actions";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setDefaultAddress } from "@urbandhobi/redux/address/address.action";
+import Service from "@urbandhobi/lib/service";
 
 const addressSelector = (state: RootReducerType) => state.address.data;
 const defaultAddressSelector = (state: RootReducerType) => state.address.defaultAddress;
@@ -15,7 +15,8 @@ export const useAddress = () => {
   const addresses = useSelector(addressSelector, shallowEqual);
 
   const getAddress = useCallback(async () => {
-    const myAddress = await getMyAddress();
+    const service = new Service().address();
+    const myAddress = await service.get();
     if (myAddress) {
       dispatch(setAddress(myAddress));
     }

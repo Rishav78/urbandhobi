@@ -19,6 +19,7 @@ const BottomTabNavigation = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let iconName: string;
+          let size = 24;
           const routeName: BottomTabType = route.name as any;
           const color = focused ? "#333" : "#595959";
           switch (routeName) {
@@ -30,6 +31,7 @@ const BottomTabNavigation = () => {
               break;
             case "ACCOUNTTAB":
               iconName = "account-circle";
+              size = 32;
               break;
             case "HELPTAB":
               iconName = "help";
@@ -40,9 +42,9 @@ const BottomTabNavigation = () => {
           }
           return (
             <MaterialIcons
-              style={styles.icon}
+              // style={styles.icon}
               name={iconName}
-              size={24}
+              size={size}
               color={color} />
           );
         },

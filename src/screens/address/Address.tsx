@@ -3,23 +3,25 @@ import { StyleSheet, Text, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { deleteAddress, makeAddressDefault } from "@urbandhobi/actions";
 import Header from "@urbandhobi/components/header/Header";
 import AddressCard from "./components/addressCard";
 import { useAddress, useNavigate } from "@urbandhobi/hooks";
 import { Address as AddressInstance } from "@urbandhobi/@types";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 import { FAB } from "react-native-paper";
+import Service from "@urbandhobi/lib/service";
 
 export const Address = () => {
 
   const { navigateToAddAddress } = useNavigate();
-  const {addresses, getAddress} = useAddress();
+  const {addresses, getAddress, getDefaultAddress} = useAddress();
   const [FABVisible, setFABVisible] = useState(true);
 
   const onDefaulClickHandler = useCallback(async (address: AddressInstance) => {
     try {
-      await makeAddressDefault(address.id);
+      const service = new Service().address();
+      await service.makeDefault(address.id);
+      getDefaultAddress();
       await getAddress();
     }
     catch (error) {
@@ -29,7 +31,8 @@ export const Address = () => {
 
   const onDeleteClickHandler = useCallback(async (address: AddressInstance) => {
     try {
-      await deleteAddress(address.id);
+      const service = new Service().address();
+      await service.delete(address.id);
       await getAddress();
     }
     catch (error) {

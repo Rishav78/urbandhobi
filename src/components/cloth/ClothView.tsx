@@ -111,17 +111,19 @@ export const ClothView: React.FC<ClothViewProps> = ({
       />
       <FAB
         onPress={addToCart}
-        visible={FABVisible}
+        visible={FABVisible && Object.keys(counter).length !== 0}
         style={styles.fab}
         color="#333"
-        icon={() => (
-          <MaterialIcons name="add-shopping-cart" size={24} color="#fff" />
-        )} />
+        icon={FABAddIcon} />
     </SafeAreaView>
   );
 };
 
 export default ClothView;
+
+const FABAddIcon = () => (
+  <MaterialIcons name="add-shopping-cart" size={24} color="#fff" />
+);
 
 const styles = StyleSheet.create({
   safeArea: {
