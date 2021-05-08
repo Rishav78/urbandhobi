@@ -1,6 +1,5 @@
 import { useRoute } from "@react-navigation/core";
 import { AddItemBody, RootReducerType, Service } from "@urbandhobi/@types";
-import { getSupportedLaundry } from "@urbandhobi/actions";
 import ClothView from "@urbandhobi/components/cloth/ClothView";
 import ServiceManager from "@urbandhobi/lib/service";
 import { setSupportedLaundry } from "@urbandhobi/redux/laundry/laundry.actions";
@@ -19,7 +18,8 @@ export const ServiceScreen = () => {
   const dispatch = useDispatch();
 
   const fetchLaundryData = async () => {
-    const cloths = await getSupportedLaundry();
+    const service = new ServiceManager().cloth();
+    const cloths = await service.get();
     if (cloths) {
       dispatch(setSupportedLaundry(cloths));
     }

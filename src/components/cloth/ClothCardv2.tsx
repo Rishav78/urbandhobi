@@ -1,6 +1,6 @@
 import { SupportedCloth } from "@urbandhobi/@types";
-import { getClothById } from "@urbandhobi/actions";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
+import Service from "@urbandhobi/lib/service";
 import React, { memo, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -28,7 +28,8 @@ const ClothCard: React.FC<ClothCardProps> = ({
   const title = useMemo(() => (typeof cloth === "string" ? "" : toTitleCase(cloth.name)), [cloth]);
 
   const fetchClothInfo = async (id: string) => {
-    const d = await getClothById(id);
+    const service = new Service().cloth();
+    const d = await service.getById(id);
     if (d) {
       setCloth(d);
     }

@@ -1,4 +1,4 @@
-import { Service, ServiceSections } from "@urbandhobi/@types";
+import { Service, ServiceSections, ServiceState } from "@urbandhobi/@types";
 import { api } from "../config";
 import { getTokens } from "../helpers"
 import { getFetchWrapper, Iterator } from "../utils";
@@ -30,6 +30,20 @@ export class ServicesService {
         .send();
       const grouped = await Iterator.groupby(res, service => service.id);
       return grouped;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  public async getAvailableStates() {
+    try {
+      const url = api.serviceArea.state;
+      const states = await getFetchWrapper<null, ServiceState[]>()
+        .setURL(url)
+        .setReqMethod("GET")
+        .send();
+      return states;
     }
     catch (error) {
       console.error(error);

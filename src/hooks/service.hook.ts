@@ -1,5 +1,4 @@
 import { RootReducerType } from "@urbandhobi/@types";
-import { getAvailableStates } from "@urbandhobi/actions";
 import Service from "@urbandhobi/lib/service";
 import { setServices, setServiceState, setServiceType } from "@urbandhobi/redux/services/services.action";
 import { useCallback } from "react";
@@ -31,7 +30,8 @@ export const useService = () => {
   }, []);
 
   const getServiceStates = useCallback(async () => {
-    const state = await getAvailableStates();
+    const service = new Service().services();
+    const state = await service.getAvailableStates();
     if (state) {
       dispatch(setServiceState(state));
     }

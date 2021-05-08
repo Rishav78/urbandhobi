@@ -1,5 +1,5 @@
 import { RootReducerType } from "@urbandhobi/@types";
-import { getSupportedLaundry } from "@urbandhobi/actions";
+import Service from "@urbandhobi/lib/service";
 import { setSupportedLaundry } from "@urbandhobi/redux/laundry/laundry.actions";
 import { useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,8 @@ export const useCloth = () => {
   const cloths = useSelector(clothSelector, shallowEqual);
 
   const getCloths = useCallback(async () => {
-    const res = await getSupportedLaundry();
+    const service = new Service().cloth();
+    const res = await service.get();
     if (res) {
       dispatch(setSupportedLaundry(res));
     }
