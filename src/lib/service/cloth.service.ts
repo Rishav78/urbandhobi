@@ -1,4 +1,4 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { Cloth } from "@urbandhobi/@types";
 import { api } from "../config";
 import { getTokens } from "../helpers";
 import { getFetchWrapper, Iterator } from "../utils";
@@ -8,7 +8,7 @@ export class ClothService {
     const url = api.cloth.laundry;
     try {
       const { auth } = await getTokens();
-      const clothes = await getFetchWrapper<null, Array<SupportedCloth>>(url)
+      const clothes = await getFetchWrapper<null, Array<Cloth>>(url)
         .setReqMethod("GET")
         .setTokens(auth)
         .send();
@@ -24,7 +24,7 @@ export class ClothService {
     const url = `${api.cloth.laundry}?id=${id}`;
     try {
       const { auth } = await getTokens();
-      const cloth = (await getFetchWrapper<null, Array<SupportedCloth>>(url)
+      const cloth = (await getFetchWrapper<null, Array<Cloth>>(url)
         .setReqMethod("GET")
         .setTokens(auth)
         .send())[0];

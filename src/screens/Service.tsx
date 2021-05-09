@@ -1,29 +1,19 @@
 import { useRoute } from "@react-navigation/core";
 import { AddItemBody, RootReducerType, Service } from "@urbandhobi/@types";
 import ClothView from "@urbandhobi/components/cloth/ClothView";
+import { useCloth } from "@urbandhobi/hooks";
 import ServiceManager from "@urbandhobi/lib/service";
-import { setSupportedLaundry } from "@urbandhobi/redux/laundry/laundry.actions";
 import React, { useCallback, useEffect } from "react";
 import { Alert } from "react-native";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 
 const cartSelector = (state: RootReducerType) => state.cart.cart;
-const clothSelector = (state: RootReducerType) => state.laundry.data;
 
 export const ServiceScreen = () => {
   const { service } = useRoute().params as { service: Service };
 
   const cart = useSelector(cartSelector, shallowEqual);
-  const clothes = Object.values(useSelector(clothSelector, shallowEqual));
-  const dispatch = useDispatch();
-
-  const fetchLaundryData = async () => {
-    const service = new ServiceManager().cloth();
-    const cloths = await service.get();
-    if (cloths) {
-      dispatch(setSupportedLaundry(cloths));
-    }
-  };
+  const {getCloths, clothArray} = useCloth();
 
   const onAddToCard = useCallback(async (data: AddItemBody[]) => {
     if (!cart) {
@@ -38,14 +28,14 @@ export const ServiceScreen = () => {
   }, []);
 
   useEffect(() => {
-    fetchLaundryData();
+    getCloths();
   }, []);
 
   return (
     <ClothView
       service={service}
       onAddToCard={onAddToCard}
-      data={clothes} />
+      data={clothArray} />
   );
 };
 

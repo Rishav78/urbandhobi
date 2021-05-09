@@ -19,7 +19,7 @@ const Cart = () => {
   const { goBack } = useNavigation();
   const [FABVisible, setFABVisible] = useState(true);
   const { navigateToTiming } = useNavigate();
-  const { getCloths, cloths } = useCloth();
+  const { getCloths, clothes } = useCloth();
   const { getAndSetService, services } = useService();
   const { items, cart, getItems, getCart } = useCart();
 
@@ -68,9 +68,9 @@ const Cart = () => {
       <ClothCardv2
         editable={false}
         quantity={item.count}
-        data={cloths[item.itemId] || {}} />
+        data={clothes[item.itemId] || {}} />
     );
-  }, [cloths]);
+  }, [clothes]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>

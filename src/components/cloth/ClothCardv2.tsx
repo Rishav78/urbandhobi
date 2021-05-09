@@ -1,4 +1,4 @@
-import { SupportedCloth } from "@urbandhobi/@types";
+import { Cloth } from "@urbandhobi/@types";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import Service from "@urbandhobi/lib/service";
 import React, { memo, useEffect, useMemo, useState } from "react";
@@ -9,7 +9,7 @@ import Counter from "../counter";
 
 export interface ClothCardProps {
   imageUri?: string;
-  data: SupportedCloth | string;
+  data: Cloth | string;
   onAdd?: () => boolean;
   onRemove?: () => boolean;
   editable?: boolean;

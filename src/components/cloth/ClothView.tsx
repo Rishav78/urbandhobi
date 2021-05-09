@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import { AddItemBody, Service, SupportedCloth } from "@urbandhobi/@types";
+import { AddItemBody, Service, Cloth } from "@urbandhobi/@types";
 import { Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
@@ -13,7 +13,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export interface ClothViewProps {
   onAddToCard: (data: AddItemBody[]) => void;
-  data: Array<SupportedCloth>;
+  data: Array<Cloth>;
   service: Service
 }
 
@@ -27,7 +27,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
 
   const { goBack } = useNavigation();
 
-  const onAddCloth = (cloth: SupportedCloth) => {
+  const onAddCloth = (cloth: Cloth) => {
     return () => {
       const { id } = cloth;
       setCounter(state => {
@@ -49,7 +49,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
     };
   };
 
-  const onRemoveCloth = (cloth: SupportedCloth) => {
+  const onRemoveCloth = (cloth: Cloth) => {
     return () => {
       const { id } = cloth;
       setCounter(state => {
@@ -76,11 +76,11 @@ export const ClothView: React.FC<ClothViewProps> = ({
     setCounter({});
   }, [counter, onAddToCard]);
 
-  const _keyExtractor = useCallback((item: SupportedCloth) => {
+  const _keyExtractor = useCallback((item: Cloth) => {
     return item.id;
   }, []);
 
-  const _renderItem = useCallback(({ item }: { item: SupportedCloth }) => {
+  const _renderItem = useCallback(({ item }: { item: Cloth }) => {
     return (
       <ClothCard
         onRemove={onRemoveCloth(item)}
