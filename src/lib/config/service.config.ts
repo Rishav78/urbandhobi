@@ -43,6 +43,7 @@ export const api = {
   },
   laundry: {
     request: () => `${UD_API}:3006/api/laundry/v1/raise`,
+    getRequests: `${UD_API}:3006/api/laundry/v1`,
     timing: () => `${UD_API}/api/services/v1/timing/pickup`,
   },
 };

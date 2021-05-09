@@ -6,3 +6,4 @@ export * from "./service.hook";
 export * from "./address.hook";
 export * from "./user.hook";
 export * from "./auth.hook";
+export * from "./laundry.hook";

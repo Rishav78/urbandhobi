@@ -1,4 +1,4 @@
-import { Service, ServiceSections, ServiceState } from "@urbandhobi/@types";
+import { Service, ServiceSections, ServiceState, Timings } from "@urbandhobi/@types";
 import { api } from "../config";
 import { getTokens } from "../helpers"
 import { getFetchWrapper, Iterator } from "../utils";
@@ -44,6 +44,17 @@ export class ServicesService {
         .setReqMethod("GET")
         .send();
       return states;
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  public timings = async () => {
+    const url = api.laundry.timing();
+    try {
+      const res = await getFetchWrapper<null, Timings[]>(url, "GET").send();
+      return res;
     }
     catch (error) {
       console.error(error);

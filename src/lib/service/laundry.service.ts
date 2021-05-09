@@ -1,4 +1,4 @@
-import { Cart, Timings } from "@urbandhobi/@types";
+import { Cart, Request } from "@urbandhobi/@types";
 import { api } from "../config";
 import { getTokens } from "../helpers";
 import { getFetchWrapper } from "../utils";
@@ -11,6 +11,21 @@ export interface RequestBody {
 export class LaundryService {
   constructor() { }
 
+  public async get() {
+    const url = api.laundry.getRequests;
+    try {
+      const { auth } = await getTokens();
+      const res = await getFetchWrapper<null, Request[]>(url, "GET")
+      .setTokens(auth)
+      .send();
+
+    return res;
+    }
+    catch (error) {
+
+    }
+  }
+
   public request = async (timingId: number) => {
     const url = api.laundry.request();
     try {
@@ -20,17 +35,6 @@ export class LaundryService {
         .setTokens(auth)
         .send();
 
-      return res;
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
-  public timings = async () => {
-    const url = api.laundry.timing();
-    try {
-      const res = await getFetchWrapper<null, Timings[]>(url, "GET").send();
       return res;
     }
     catch (error) {

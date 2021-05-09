@@ -88,7 +88,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
   };
 
   const fetchTimings = async () => {
-    const res = await new Service().laundry().timings();
+    const res = await new Service().services().timings();
     if (res) {
       setTimings(res);
     }

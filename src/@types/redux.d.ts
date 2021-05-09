@@ -1,5 +1,6 @@
 import { CartState } from "@urbandhobi/redux/cart/cart.type";
 import { ClothState } from "@urbandhobi/redux/cloth/cloth.type";
+import { LaundryState } from "@urbandhobi/redux/laundry/laundry.type";
 import { UserState } from "@urbandhobi/redux/user/user.type";
 import { AddressState } from "../redux/address/address.type";
 import { AuthState } from "../redux/authentication/auth.type";
@@ -10,10 +11,11 @@ export interface RootReducerType {
   auth: AuthState;
   home: HomeState;
   address: AddressState;
-  laundry: ClothState;
+  cloth: ClothState;
   cart: CartState;
   services: ServiceState;
   user: UserState;
+  laundry: LaundryState;
 }
 
 export interface Cloth {

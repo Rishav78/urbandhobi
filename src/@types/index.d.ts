@@ -8,6 +8,7 @@ export * from "./actions";
 export * from "./service";
 export * from "./common";
 export * from "./user";
+export * from "./laundry";
 
 export interface FABState {
   open: boolean;

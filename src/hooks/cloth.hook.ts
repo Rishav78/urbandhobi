@@ -4,7 +4,7 @@ import { setCloth } from "@urbandhobi/redux/cloth/cloth.actions";
 import { useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-const clothSelector = (state: RootReducerType) => state.laundry.data;
+const clothSelector = (state: RootReducerType) => state.cloth.data;
 
 export const useCloth = () => {
   const dispatch = useDispatch();
