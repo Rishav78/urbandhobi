@@ -1,7 +1,7 @@
 import { Address, ReverseGeoCode } from "@urbandhobi/@types";
 import { api, HERE_API, HERE_API_KEY } from "../config";
 import { getTokens } from "../helpers";
-import { getFetchWrapper } from "../utils";
+import { getFetchWrapper, Iterator } from "../utils";
 
 export class AddressService {
   public async get() {
@@ -13,7 +13,8 @@ export class AddressService {
         .setReqMethod("GET")
         .setTokens(tokens.auth!)
         .send();
-      return res;
+      const grouped = await Iterator.groupby(res, address => address.id);
+      return grouped;
     }
     catch (error) {
       console.error(error);

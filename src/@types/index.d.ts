@@ -1,3 +1,5 @@
+import { AddressType } from "./address";
+
 export * from "./authentication";
 export * from "./hooks";
 export * from "./error";
@@ -9,30 +11,8 @@ export * from "./service";
 export * from "./common";
 export * from "./user";
 export * from "./laundry";
+export * from "./address";
 
 export interface FABState {
   open: boolean;
 }
-
-export type AddressType = "home" | "work";
-
-export interface EditAddress {
-  title?: string;
-  email: string;
-  phonenumber: string;
-  city: string;
-  postalCode: string;
-  state: string;
-  locality: string;
-  houseno: string;
-  type: AddressType;
-}
-
-export interface Address extends EditAddress{
-  id: string;
-  default: boolean;
-
-  createdAt: Date;
-  updatedAt: Date;
-}
-

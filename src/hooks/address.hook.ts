@@ -13,6 +13,8 @@ export const useAddress = () => {
   const defaultAddress = useSelector(defaultAddressSelector, shallowEqual);
   const addresses = useSelector(addressSelector, shallowEqual);
 
+  const addressArray = Object.values(addresses);
+
   const getAddress = useCallback(async () => {
     const service = new Service().address();
     const myAddress = await service.get();
@@ -37,5 +39,6 @@ export const useAddress = () => {
     defaultAddress,
     getAddress,
     getDefaultAddress,
+    addressArray,
   };
 };

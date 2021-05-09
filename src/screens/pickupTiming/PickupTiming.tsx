@@ -1,4 +1,4 @@
-import { RootReducerType, Timings } from "@urbandhobi/@types";
+import { Address, RootReducerType, Timings } from "@urbandhobi/@types";
 import * as Timing from "./components/timingCart";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Text, View, StyleSheet, Alert } from "react-native";
@@ -9,15 +9,14 @@ import MessageTile from "@urbandhobi/components/messageTile";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { setCart } from "@urbandhobi/redux/cart/cart.action";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
-import { Appbar, FAB } from "react-native-paper";
+import { Appbar, FAB, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/core";
+import { useAddress } from "@urbandhobi/hooks";
+import { monthNames } from "@urbandhobi/lib/constants";
+import { AddressPicker } from "./components/address-picker";
 
 interface PickupTimmingProps { }
-
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
 
 const cartSelector = (state: RootReducerType) => state.cart;
 
@@ -26,17 +25,25 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
 }) => {
   const { cart } = useSelector(cartSelector, shallowEqual);
   const dispatch = useDispatch();
-  const {navigateToHome} = useNavigate();
-  const {goBack} = useNavigation();
+  const { navigateToHome } = useNavigate();
+  const { goBack } = useNavigation();
+  const { defaultAddress } = useAddress();
 
   const [FABVisible] = useState(true);
   const [timings, setTimings] = useState<Timings[]>([]);
   const [pickupDate, setPickupDate] = useState(0);
   const [pickupTiming, setPickupTiming] = useState<null | number>(null);
+  const [address, setAddress] = useState<Address | null>(defaultAddress);
+  const [showAddressPicker, setShowAddressPicker] = useState(false);
 
   const todayDate = new Date();
   const tomorrow = new Date(new Date().setDate(todayDate.getDate() + 1));
   const dayAfterTomorrow = new Date(new Date().setDate(todayDate.getDate() + 2));
+
+  const onAddressSelect = useCallback((obj: Address) => {
+    setAddress(obj);
+    setShowAddressPicker(false);
+  }, []);
 
   const filteredTimings = useMemo(() => (
     timings.filter(timing => {
@@ -57,8 +64,11 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
       if (pickupTiming === null) {
         return Alert.alert("", "SELECT PICKUP TIMING");
       }
-
-      const newCart = await new Service().laundry().request(pickupTiming);
+      if (!address) {
+        return Alert.alert("", "SELECT ADDRESS");
+      }
+      const date = pickupDate === 0 ? todayDate : pickupDate === 1 ? tomorrow : dayAfterTomorrow;
+      const newCart = await new Service().laundry().request(pickupTiming, address.id, date);
       if (newCart) {
         dispatch(setCart(newCart));
         Alert.alert("Requested!! Thank you", "", [
@@ -72,7 +82,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
     catch (error) {
       console.log(error);
     }
-  }, [cart, pickupDate, pickupTiming]);
+  }, [cart, pickupDate, pickupTiming, address]);
 
   const selectDate = (date: number) => {
     return () => {
@@ -116,8 +126,8 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Pickup timing" />
       </Appbar.Header>
@@ -161,7 +171,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
                 }
                 else {
                   start = "pm";
-                  sh = appendZero(sh - (sh === 12 ?  0 : 12));
+                  sh = appendZero(sh - (sh === 12 ? 0 : 12));
                 }
 
                 if (eh < 12) {
@@ -170,7 +180,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
                 }
                 else {
                   end = "pm";
-                  eh = appendZero(eh - (eh === 12 ?  0 : 12));
+                  eh = appendZero(eh - (eh === 12 ? 0 : 12));
                 }
 
                 const text = `${sh}:${sm} ${start} to ${eh}:${em} ${end}`;
@@ -187,15 +197,26 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
           }
         </Timing.Section>
       </View>
+
+      <View style={styles.section}>
+        <Text style={{ fontSize: wp("5%") }}>Address</Text>
+        <TouchableRipple onPress={() => setShowAddressPicker(true)}>
+          {address ?
+            <View style={{ paddingHorizontal: wp("1%"), paddingVertical: wp("2%") }}>
+              <Text style={{ fontSize: wp("4.5%"), fontWeight: "bold" }}>{address.email}</Text>
+              <Text>{address.houseno}, {address.locality}, {address.city}, {address.state} {address.postalCode}</Text>
+            </View> :
+            <MessageTile message="No address selected" />
+          }
+        </TouchableRipple>
+      </View>
       <FAB
         onPress={submitCart}
         visible={FABVisible}
         style={styles.fab}
         color="#333"
         icon={FABIcon} />
-      {/* <View style={styles.buttonContainer}>
-        <Button onPress={submitCart} activeOpacity={1} title="SUBMIT" />
-      </View> */}
+      <AddressPicker animationType="slide" visible={showAddressPicker} onSelect={onAddressSelect} />
     </SafeAreaView>
   );
 };

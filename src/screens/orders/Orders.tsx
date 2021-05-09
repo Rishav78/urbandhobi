@@ -1,30 +1,33 @@
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
-import { useLaundry } from "@urbandhobi/hooks";
+import { useAddress, useLaundry } from "@urbandhobi/hooks";
 import React, { useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrderCard from "./components/order-card";
-import {Request} from "@urbandhobi/@types";
+import { Request } from "@urbandhobi/@types";
 
-interface OrdersProps {}
+interface OrdersProps { }
 
-const Orders = ({}: OrdersProps) => {
-  const {goBack} = useNavigation();
-  const {getRequests, requests} = useLaundry();
+const Orders = ({ }: OrdersProps) => {
+  const { goBack } = useNavigation();
+  const { getRequests, requests } = useLaundry();
+  const { getAddress, addresses } = useAddress();
 
   const onRefresh = useCallback(async () => {
-    await Promise.all([getRequests()]);
+    await Promise.all([getRequests(), getAddress()]);
   }, []);
 
-  useEffect(() => {
-    onRefresh();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      onRefresh();
+    }, [])
+  );
 
-  const _renderItem = useCallback(({item}: {item: Request}) => {
+  const _renderItem = useCallback(({ item }: { item: Request }) => {
     return (
-      <OrderCard data={item} />
+      <OrderCard address={addresses[item.addressId]} request={item} />
     );
   }, [requests]);
 
@@ -33,12 +36,12 @@ const Orders = ({}: OrdersProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Orders" />
       </Appbar.Header>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <RefreshFlatList
           data={requests || []}
           onRefreshHandler={onRefresh}

@@ -1,7 +1,7 @@
-import { Address } from "@urbandhobi/@types";
+import { Address, GenericObject } from "@urbandhobi/@types";
 import { AddressAction, AddressActionType } from "./address.type";
 
-export const setAddress = (payload: Array<Address>): AddressAction => {
+export const setAddress = (payload: GenericObject<Address>): AddressAction => {
   return {
     type: AddressActionType.SET_ADDRESS,
     payload,

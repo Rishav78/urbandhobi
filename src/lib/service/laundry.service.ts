@@ -6,6 +6,8 @@ import { getFetchWrapper } from "../utils";
 export interface RequestBody {
   paymentMethod: "cod";
   timingId: number;
+  addressId: string;
+  pickupDate: Date;
 }
 
 export class LaundryService {
@@ -26,12 +28,12 @@ export class LaundryService {
     }
   }
 
-  public request = async (timingId: number) => {
+  public request = async (timingId: number, addressId: string, pickupDate: Date) => {
     const url = api.laundry.request();
     try {
       const { auth } = await getTokens();
       const res = await getFetchWrapper<RequestBody, Cart>(url, "PUT")
-        .setData({paymentMethod: "cod", timingId})
+        .setData({paymentMethod: "cod", timingId, addressId, pickupDate})
         .setTokens(auth)
         .send();
 

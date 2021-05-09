@@ -4,7 +4,10 @@ export interface Request {
   cartId: string;
   timingId: number;
   paymentMethod: "cod";
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
+  addressId: string;
+  pickupDate: string;
+  canceled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 }

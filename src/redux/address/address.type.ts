@@ -1,4 +1,4 @@
-import { Address } from "@urbandhobi/@types";
+import { Address, GenericObject } from "@urbandhobi/@types";
 
 export interface AddressAction {
   type: AddressActionType,
@@ -15,6 +15,6 @@ export enum AddressActionType {
 
 export interface AddressState {
   loading: boolean;
-  data: Array<Address>;
+  data: GenericObject<Address>;
   defaultAddress: Address | null;
 }

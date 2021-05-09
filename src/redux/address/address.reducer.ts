@@ -2,7 +2,7 @@ import { AddressAction, AddressActionType, AddressState } from "./address.type";
 
 const initialState: AddressState = {
   loading: true,
-  data: [],
+  data: {},
   defaultAddress: null,
 };
 

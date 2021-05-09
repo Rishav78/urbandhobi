@@ -32,11 +32,12 @@ export const AddAddress = () => {
   const [selectedPosition, setSelectedPosition] = useState<ReverseGeoCode | null>(null);
   const mapRef = useRef<MapView>(null);
 
-  const {getAddress} = useAddress();
+  const { getAddress } = useAddress();
 
   const onFABStateChange = useCallback(({ open }: FABState) => {
+    if (loading) {return;}
     setFABState(open);
-  }, []);
+  }, [loading]);
 
   const editScreenData = useMemo(() => (selectedPosition ? {
     city: selectedPosition.address.city,
@@ -102,7 +103,7 @@ export const AddAddress = () => {
           <FAB.Group
             onStateChange={onFABStateChange}
             visible={true}
-            open={fabState}
+            open={loading ? false : fabState}
             icon={loading ?
               () => (
                 <View style={styles.mylocation}>
@@ -124,12 +125,12 @@ export const AddAddress = () => {
             ]}
           />
         </Portal>
-          <EditAddress
-            data={editScreenData}
-            onBack={onEditScreenBackHandler}
-            visible={isEditScreenVisible}
-            onSubmit={onSubmit}
-            animationType="slide" />
+        <EditAddress
+          data={editScreenData}
+          onBack={onEditScreenBackHandler}
+          visible={isEditScreenVisible}
+          onSubmit={onSubmit}
+          animationType="slide" />
       </RNMap>
     </SafeAreaView>
   );
