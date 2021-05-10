@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { screens } from "@urbandhobi/lib/constants";
-import { Service } from "@urbandhobi/@types";
+import { Request, Service } from "@urbandhobi/@types";
 
 export const useNavigate = () => {
   const navigation = useNavigation();
@@ -39,8 +39,8 @@ export const useNavigate = () => {
     navigation.navigate(homeStack.screen.service.name, data);
   }, []);
 
-  const navigateToTiming = useCallback(() => {
-    navigation.navigate(homeStack.screen.pickupTiming.name);
+  const navigateToTiming = useCallback((payload: Request) => {
+    navigation.navigate(homeStack.screen.pickupTiming.name, {payload: {request: payload}});
   }, []);
 
   const navigateToUpdateUser = useCallback(() => {

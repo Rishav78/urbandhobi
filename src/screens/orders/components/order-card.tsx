@@ -10,6 +10,7 @@ interface OrderCardProps {
   address: Address;
   onRevoke: (request: Request) => void;
   onDelete: (request: Request) => void;
+  onSchdule: (request: Request) => void;
 }
 
 const converDate = (text: string) => {
@@ -18,7 +19,7 @@ const converDate = (text: string) => {
   return dateString;
 };
 
-const OrderCard = ({ request, address, onRevoke, onDelete }: OrderCardProps) => {
+const OrderCard = ({ request, address, onRevoke, onDelete, onSchdule }: OrderCardProps) => {
   const date = useMemo(() => converDate(request.createdAt), [request.createdAt]);
   const scheduleDate = useMemo(() => converDate(request.pickupDate), [request.pickupDate]);
 
@@ -31,6 +32,12 @@ const OrderCard = ({ request, address, onRevoke, onDelete }: OrderCardProps) => 
   const deleteHandler = useCallback(() => {
     if (onDelete) {
       onDelete(request);
+    }
+  }, []);
+
+  const scheduleHandler = useCallback(() => {
+    if (onSchdule) {
+      onSchdule(request);
     }
   }, []);
 
@@ -53,7 +60,7 @@ const OrderCard = ({ request, address, onRevoke, onDelete }: OrderCardProps) => 
             <Card.Actions style={{ justifyContent: "flex-end" }}>
               {request.revoked === true ?
                 <>
-                  <Button theme={{ colors: { primary: "#333" } }} onPress={() => { }}>Reschedule</Button>
+                  <Button theme={{ colors: { primary: "#333" } }} onPress={scheduleHandler}>Schedule</Button>
                   <Button theme={{ colors: { primary: "#333" } }} onPress={deleteHandler}>Delete</Button>
                 </> :
                 <>

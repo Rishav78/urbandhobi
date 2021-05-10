@@ -6,25 +6,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import Service from "@urbandhobi/lib/service";
 import MessageTile from "@urbandhobi/components/messageTile";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { setCart } from "@urbandhobi/redux/cart/cart.action";
+import { shallowEqual, useSelector } from "react-redux";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { Appbar, FAB, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import { useAddress } from "@urbandhobi/hooks";
 import { monthNames } from "@urbandhobi/lib/constants";
 import { AddressPicker } from "./components/address-picker";
+import {Request} from "@urbandhobi/@types";
 
 interface PickupTimmingProps { }
 
 const cartSelector = (state: RootReducerType) => state.cart;
 
-const PickupTimming: React.FC<PickupTimmingProps> = ({
+const PickupTimming: React.FC<PickupTimmingProps> = () => {
 
-}) => {
+  const params = useRoute().params as {payload: {request: Request}};
+
+  const {request} = params.payload;
+
   const { cart } = useSelector(cartSelector, shallowEqual);
-  const dispatch = useDispatch();
   const { navigateToHome } = useNavigate();
   const { goBack } = useNavigation();
   const { defaultAddress } = useAddress();
@@ -67,7 +69,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
     })
   ), [timings, pickupDate, todayDate]);
 
-  const submitCart = useCallback(async () => {
+  const scheduleRequest = useCallback(async () => {
     try {
       if (pickupTiming === null) {
         return Alert.alert("", "SELECT PICKUP TIMING");
@@ -76,10 +78,9 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
         return Alert.alert("", "SELECT ADDRESS");
       }
       const date = pickupDate === 0 ? todayDate : pickupDate === 1 ? tomorrow : dayAfterTomorrow;
-      const newCart = await new Service().laundry().request(pickupTiming, address.id, date);
-      if (newCart) {
-        dispatch(setCart(newCart));
-        Alert.alert("Requested!! Thank you", "", [
+      const res = await new Service().laundry().schedule(request.id, {timingId: pickupTiming, addressId: address.id, pickupDate: date});
+      if (res) {
+        Alert.alert("Scheduled!! Thank you", "", [
           {
             onPress: navigateToHome,
             text: "Ok",
@@ -221,7 +222,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
         </View>
       </View>
       <FAB
-        onPress={submitCart}
+        onPress={scheduleRequest}
         visible={FABVisible}
         style={styles.fab}
         color="#333"

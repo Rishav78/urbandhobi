@@ -1,7 +1,7 @@
 import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
-import { useAddress, useLaundry } from "@urbandhobi/hooks";
-import React, { useCallback, useEffect } from "react";
+import { useAddress, useLaundry, useNavigate } from "@urbandhobi/hooks";
+import React, { useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +15,7 @@ const Orders = ({ }: OrdersProps) => {
   const { goBack } = useNavigation();
   const { getRequests, requests } = useLaundry();
   const { getAddress, addresses } = useAddress();
+  const {navigateToTiming} = useNavigate();
 
   const onRefresh = useCallback(async () => {
     await Promise.all([getRequests(), getAddress()]);
@@ -38,9 +39,13 @@ const Orders = ({ }: OrdersProps) => {
     await onRefresh();
   }, []);
 
+  const scheduleHandler = useCallback(async (req: Request) => {
+    navigateToTiming(req);
+  }, []);
+
   const _renderItem = useCallback(({ item }: { item: Request }) => {
     return (
-      <OrderCard onDelete={deleteHandler} onRevoke={revokeHandler} address={addresses[item.addressId]} request={item} />
+      <OrderCard onSchdule={scheduleHandler} onDelete={deleteHandler} onRevoke={revokeHandler} address={addresses[item.addressId]} request={item} />
     );
   }, [requests]);
 

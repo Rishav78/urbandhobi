@@ -1,6 +1,6 @@
-import { RootReducerType } from "@urbandhobi/@types";
+import { Cart, RootReducerType } from "@urbandhobi/@types";
 import Service from "@urbandhobi/lib/service";
-import { setCart, setCartItems } from "@urbandhobi/redux/cart/cart.action";
+import { setCart as setCartRedux, setCartItems } from "@urbandhobi/redux/cart/cart.action";
 import { useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
@@ -16,7 +16,7 @@ export const useCart = () => {
   const getCart = useCallback(async () => {
     const res = await new Service().cart().getCart();
     if (res) {
-      dispatch(setCart(res));
+      dispatch(setCartRedux(res));
     }
   }, []);
 
@@ -27,10 +27,15 @@ export const useCart = () => {
     }
   }, []);
 
+  const setCart = useCallback((obj: Cart) => {
+    dispatch(setCartRedux(obj));
+  }, []);
+
   return {
     cart,
     items,
     getCart,
     getItems,
+    setCart,
   };
 };

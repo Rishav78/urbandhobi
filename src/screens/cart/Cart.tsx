@@ -8,17 +8,18 @@ import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { useCloth } from "@urbandhobi/hooks/cloth.hook";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { Appbar, FAB } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useService, useCart } from "@urbandhobi/hooks";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Service from "@urbandhobi/lib/service";
 
 const Cart = () => {
   const { goBack } = useNavigation();
   const [FABVisible, setFABVisible] = useState(true);
-  const { navigateToTiming } = useNavigate();
+  const { navigateToTiming, navigateToHome } = useNavigate();
   const { getCloths, clothes } = useCloth();
   const { getAndSetService, services } = useService();
   const { items, cart, getItems, getCart } = useCart();
@@ -35,16 +36,28 @@ const Cart = () => {
 
   const submitCart = useCallback(async () => {
     try {
-      if (!cart) {
-        return console.error("cart is not intilized");
+      const service = new Service().laundry();
+      const req = await service.request();
+      await getCart();
+      if (req) {
+        Alert.alert("Request Raised", "want to schdule now", [
+          {
+            text: "Ok",
+            onPress: () => navigateToTiming(req),
+          },
+          {
+            text: "Cancel",
+            onPress: () => navigateToHome(),
+          },
+        ]);
+      } else {
+        Alert.alert("Error", "Fail to raised request. Please try again laster", [
+          {
+            text: "Ok",
+            onPress: () => navigateToHome(),
+          },
+        ]);
       }
-
-      navigateToTiming();
-
-      // const newCart = await new Service().laundry(cart.id).request();
-      // if (newCart) {
-      //   dispatch(setCart(newCart));
-      // }
     }
     catch (error) {
       console.log(error);
