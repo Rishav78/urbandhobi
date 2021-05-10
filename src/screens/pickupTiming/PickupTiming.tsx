@@ -42,7 +42,15 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
 
   const onAddressSelect = useCallback((obj: Address) => {
     setAddress(obj);
+    closeAddressPicker();
+  }, []);
+
+  const closeAddressPicker = useCallback(() => {
     setShowAddressPicker(false);
+  }, []);
+
+  const openAddressPicker = useCallback(() => {
+    setShowAddressPicker(true);
   }, []);
 
   const filteredTimings = useMemo(() => (
@@ -200,15 +208,17 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
 
       <View style={styles.section}>
         <Text style={{ fontSize: wp("5%") }}>Address</Text>
-        <TouchableRipple onPress={() => setShowAddressPicker(true)}>
-          {address ?
-            <View style={{ paddingHorizontal: wp("1%"), paddingVertical: wp("2%") }}>
-              <Text style={{ fontSize: wp("4.5%"), fontWeight: "bold" }}>{address.email}</Text>
-              <Text>{address.houseno}, {address.locality}, {address.city}, {address.state} {address.postalCode}</Text>
-            </View> :
-            <MessageTile message="No address selected" />
-          }
-        </TouchableRipple>
+        <View style={{ borderRadius: 2, overflow: "hidden" }}>
+          <TouchableRipple onPress={openAddressPicker}>
+            {address ?
+              <View style={{ paddingHorizontal: wp("1%"), paddingVertical: wp("2%") }}>
+                <Text style={{ fontSize: wp("4.5%"), fontWeight: "bold" }}>{address.email}</Text>
+                <Text>{address.houseno}, {address.locality}, {address.city}, {address.state} {address.postalCode}</Text>
+              </View> :
+              <MessageTile message="No address selected" />
+            }
+          </TouchableRipple>
+        </View>
       </View>
       <FAB
         onPress={submitCart}
@@ -216,7 +226,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = ({
         style={styles.fab}
         color="#333"
         icon={FABIcon} />
-      <AddressPicker animationType="slide" visible={showAddressPicker} onSelect={onAddressSelect} />
+      <AddressPicker onRequestClose={closeAddressPicker} animationType="slide" visible={showAddressPicker} onSelect={onAddressSelect} />
     </SafeAreaView>
   );
 };

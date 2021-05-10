@@ -6,7 +6,7 @@ export interface Request {
   paymentMethod: "cod";
   addressId: string;
   pickupDate: string;
-  canceled: boolean;
+  revoked: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

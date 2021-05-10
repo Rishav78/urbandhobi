@@ -7,6 +7,7 @@ import { Appbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrderCard from "./components/order-card";
 import { Request } from "@urbandhobi/@types";
+import Service from "@urbandhobi/lib/service";
 
 interface OrdersProps { }
 
@@ -25,9 +26,21 @@ const Orders = ({ }: OrdersProps) => {
     }, [])
   );
 
+  const revokeHandler = useCallback(async (req: Request) => {
+    const service = new Service().laundry();
+    await service.revoke(req.id);
+    await onRefresh();
+  }, []);
+
+  const deleteHandler = useCallback(async (req: Request) => {
+    const service = new Service().laundry();
+    await service.delete(req.id);
+    await onRefresh();
+  }, []);
+
   const _renderItem = useCallback(({ item }: { item: Request }) => {
     return (
-      <OrderCard address={addresses[item.addressId]} request={item} />
+      <OrderCard onDelete={deleteHandler} onRevoke={revokeHandler} address={addresses[item.addressId]} request={item} />
     );
   }, [requests]);
 

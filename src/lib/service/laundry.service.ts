@@ -18,10 +18,38 @@ export class LaundryService {
     try {
       const { auth } = await getTokens();
       const res = await getFetchWrapper<null, Request[]>(url, "GET")
-      .setTokens(auth)
-      .send();
+        .setTokens(auth)
+        .send();
 
-    return res;
+      return res;
+    }
+    catch (error) {
+
+    }
+  }
+
+  public async revoke(id: string) {
+    const url = api.laundry.revoke(id);
+    try {
+      const { auth } = await getTokens();
+      const res = await getFetchWrapper<null, boolean>(url, "PATCH")
+        .setTokens(auth)
+        .send();
+      return res;
+    }
+    catch (error) {
+
+    }
+  }
+
+  public async delete(id: string) {
+    const url = api.laundry.delete(id);
+    try {
+      const { auth } = await getTokens();
+      const res = await getFetchWrapper<null, boolean>(url, "DELETE")
+        .setTokens(auth)
+        .send();
+      return res;
     }
     catch (error) {
 
@@ -33,7 +61,7 @@ export class LaundryService {
     try {
       const { auth } = await getTokens();
       const res = await getFetchWrapper<RequestBody, Cart>(url, "PUT")
-        .setData({paymentMethod: "cod", timingId, addressId, pickupDate})
+        .setData({ paymentMethod: "cod", timingId, addressId, pickupDate })
         .setTokens(auth)
         .send();
 

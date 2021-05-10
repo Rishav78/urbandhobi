@@ -44,6 +44,9 @@ export const api = {
   laundry: {
     request: () => `${UD_API}:3006/api/laundry/v1/raise`,
     getRequests: `${UD_API}:3006/api/laundry/v1`,
+    schdule: (id: string) => `${UD_API}:3006/api/laundry/v1/schedule/${id}`,
+    revoke: (id: string) => `${UD_API}:3006/api/laundry/v1/revoke/${id}`,
+    delete: (id: string) => `${UD_API}:3006/api/laundry/v1/${id}`,
     timing: () => `${UD_API}/api/services/v1/timing/pickup`,
   },
 };
