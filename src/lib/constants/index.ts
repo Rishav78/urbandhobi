@@ -1,5 +1,6 @@
 export * from "./app.constants";
 export * from "./colors.constants";
+export * from "./styles";
 
 export const monthNames = ["January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December",

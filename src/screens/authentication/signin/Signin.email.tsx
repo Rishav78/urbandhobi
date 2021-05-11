@@ -1,14 +1,16 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { View, StyleSheet, Alert, SafeAreaView } from "react-native";
+import { Button, TextInput, Appbar } from "react-native-paper";
+import { View, StyleSheet, Alert, SafeAreaView, Text } from "react-native";
 import { ResponseToken } from "@urbandhobi/@types";
-import { Seperator, Input, Button } from "@urbandhobi/components";
+import { Seperator } from "@urbandhobi/components";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
 import { Heading } from "../components";
 import { setVerified, signIn } from "@urbandhobi/redux/authentication/auth.action";
 import { setTokens } from "@urbandhobi/lib/helpers";
-import Header from "@urbandhobi/components/header/Header";
+import { useNavigation } from "@react-navigation/core";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
 
 export interface SigninForm {
   email: string;
@@ -36,13 +38,14 @@ const form: UseFormProps = {
 
 export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   const dispatch = useDispatch();
+  const { goBack } = useNavigation();
   const { getValue, setValue, submit, error } = useForm<SigninForm>(form, { email: "", password: "" });
 
   const { email, password } = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setValue<string>("email", text);
+    setValue<string>("email", text.toLowerCase());
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
@@ -51,10 +54,10 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
 
   const onSubmit = useCallback(async () => {
     try {
-      const {access, refresh} = await submit<ResponseToken>();
+      const { access, refresh } = await submit<ResponseToken>();
       await setTokens(access, refresh);
       // if (await isVerified()) {
-        dispatch(setVerified(true));
+      dispatch(setVerified(true));
       // }
       dispatch(signIn());
     }
@@ -64,10 +67,10 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Header
-        headerLeftContainerStyle={styles.headerleft}
-        headerContainerStyle={styles.header} />
+    <SafeAreaView style={{ flex: 1 }}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+        <Appbar.BackAction onPress={goBack} />
+      </Appbar.Header>
       <View style={styles.container}>
         <Heading
           title="LOGIN"
@@ -75,27 +78,33 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
           contentContainerStyle={styles.heading} />
         <Seperator contentContainerStyle={styles.seprator} />
         <View style={styles.form}>
-          <Input
-            onChangeText={onEmailChangeHandler}
-            value={email}
-            keyboardType="email-address"
-            contentContainerStyle={styles.inputContainer}
-            style={[styles.input]}
-            placeholder="Email" />
-
-          <Input
-            onChangeText={onPasswordChangeHandler}
-            value={password}
-            secureTextEntry
-            contentContainerStyle={styles.inputContainer}
-            style={[styles.input]}
-            placeholder="Password" />
+          <View style={styles.inputContainer}>
+            <TextInput
+              theme={theme.dark}
+              onChangeText={onEmailChangeHandler}
+              value={email}
+              style={globalStyles.textinput}
+              mode="outlined"
+              keyboardType="email-address"
+              label="Email (Required)*" />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              theme={theme.dark}
+              onChangeText={onPasswordChangeHandler}
+              value={password}
+              style={globalStyles.textinput}
+              secureTextEntry
+              right={<></>}
+              mode="outlined"
+              label="Password (Required)*" />
+          </View>
         </View>
-        <Button
-          disabled={disable}
-          onPress={onSubmit}
-          style={styles.button}
-          title="LOGIN" />
+        <View style={styles.buttonContainer}>
+          <Button onPress={onSubmit} disabled={disable} theme={theme.dark} mode="contained" style={globalStyles.button} contentStyle={globalStyles.buttonContent}>
+            <Text>Login</Text>
+          </Button>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -126,13 +135,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 15,
   },
-  input: {
-    padding: 0,
-    paddingVertical: 5,
-    marginVertical: 5,
-  },
-  button: {
+  buttonContainer: {
     marginHorizontal: 15,
-    marginBottom: 10,
   },
 });

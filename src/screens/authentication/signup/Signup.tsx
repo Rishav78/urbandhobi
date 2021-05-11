@@ -1,13 +1,15 @@
 import React, { useCallback } from "react";
-import { View, StyleSheet, Alert, SafeAreaView } from "react-native";
+import { View, StyleSheet, Alert, SafeAreaView, Text } from "react-native";
 import { ResponseToken } from "@urbandhobi/@types";
-import { Seperator, Input, Button } from "@urbandhobi/components";
-import Header from "@urbandhobi/components/header/Header";
+import { Seperator } from "@urbandhobi/components";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
 import { getValidator } from "@urbandhobi/lib/helpers/validator";
 import { Heading } from "../components";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
+import { Appbar, Button, TextInput } from "react-native-paper";
+import { useNavigation } from "@react-navigation/core";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
 
 export interface SignupForm {
   email: string;
@@ -43,14 +45,15 @@ const form: UseFormProps = {
 };
 
 export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
-  const {navigateToSignin} = useNavigate();
+  const { navigateToSignin } = useNavigate();
+  const { goBack } = useNavigation();
   const { getValue, setValue, submit, error } = useForm<SignupForm>(form, { email: "", password: "", confirm: "" });
 
   const { email, password, confirm } = getValue();
   const disable = error.error;
 
   const onEmailChangeHandler = useCallback((text: string) => {
-    setValue<string>("email", text);
+    setValue<string>("email", text.toLowerCase());
   }, []);
 
   const onPasswordChangeHandler = useCallback((text: string) => {
@@ -71,10 +74,6 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
           style: "default",
         },
       ]);
-      // await AsyncStorage.setItem("token", token);
-      // await AsyncStorage.setItem("refreshToken", refreshToken);
-      // dispatch(signIn());
-      // navigateToCreateUser();
     }
     catch (err) {
       console.error(err);
@@ -83,10 +82,10 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   }, [confirm]);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Header
-        headerLeftContainerStyle={styles.headerleft}
-        headerContainerStyle={styles.header} />
+    <SafeAreaView style={{ flex: 1 }}>
+      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+        <Appbar.BackAction onPress={goBack} />
+      </Appbar.Header>
       <View style={styles.container}>
         <Heading
           title="SIGNUP"
@@ -94,35 +93,44 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
           contentContainerStyle={styles.heading} />
         <Seperator contentContainerStyle={styles.seprator} />
         <View style={styles.form}>
-          <Input
-            onChangeText={onEmailChangeHandler}
-            value={email}
-            keyboardType="email-address"
-            contentContainerStyle={styles.inputContainer}
-            style={[styles.input]}
-            placeholder="Email" />
+        <View style={styles.inputContainer}>
+            <TextInput
+              theme={theme.dark}
+              onChangeText={onEmailChangeHandler}
+              value={email}
+              style={globalStyles.textinput}
+              mode="outlined"
+              keyboardType="email-address"
+              label="Email (Required)*" />
+          </View>
 
-          <Input
-            onChangeText={onPasswordChangeHandler}
-            value={password}
-            secureTextEntry
-            contentContainerStyle={styles.inputContainer}
-            style={[styles.input]}
-            placeholder="Password" />
+          <View style={styles.inputContainer}>
+            <TextInput
+              theme={theme.dark}
+              onChangeText={onPasswordChangeHandler}
+              value={password}
+              style={globalStyles.textinput}
+              secureTextEntry
+              mode="outlined"
+              label="Password (Required)*" />
+          </View>
 
-          <Input
-            onChangeText={onConfirmChangeHandler}
-            value={confirm}
-            secureTextEntry
-            contentContainerStyle={styles.inputContainer}
-            style={[styles.input]}
-            placeholder="Confirm Password" />
+          <View style={styles.inputContainer}>
+            <TextInput
+              theme={theme.dark}
+              onChangeText={onConfirmChangeHandler}
+              value={confirm}
+              style={globalStyles.textinput}
+              secureTextEntry
+              mode="outlined"
+              label="Confirm Password (Required)*" />
+          </View>
         </View>
-        <Button
-          disabled={disable}
-          onPress={onSubmit}
-          style={styles.button}
-          title="CREATE ACCOUNT" />
+        <View style={styles.buttonContainer}>
+          <Button onPress={onSubmit} disabled={disable} theme={theme.dark} mode="contained" style={globalStyles.button} contentStyle={globalStyles.buttonContent}>
+            <Text>Create Account</Text>
+          </Button>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -153,13 +161,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 15,
   },
-  input: {
-    padding: 0,
-    paddingVertical: 5,
-    marginVertical: 5,
-  },
-  button: {
+  buttonContainer: {
     marginHorizontal: 15,
-    marginBottom: 10,
   },
 });
