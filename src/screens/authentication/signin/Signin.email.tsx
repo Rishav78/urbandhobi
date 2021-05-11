@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, SafeAreaView } from "react-native";
 import { ResponseToken } from "@urbandhobi/@types";
 import { Seperator, Input, Button } from "@urbandhobi/components";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
@@ -64,7 +64,7 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   }, []);
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <Header
         headerLeftContainerStyle={styles.headerleft}
         headerContainerStyle={styles.header} />
@@ -97,7 +97,7 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
           style={styles.button}
           title="LOGIN" />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

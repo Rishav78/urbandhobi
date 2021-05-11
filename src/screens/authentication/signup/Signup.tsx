@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, SafeAreaView } from "react-native";
 import { ResponseToken } from "@urbandhobi/@types";
 import { Seperator, Input, Button } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
@@ -83,7 +83,7 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
   }, [confirm]);
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <Header
         headerLeftContainerStyle={styles.headerleft}
         headerContainerStyle={styles.header} />
@@ -124,7 +124,7 @@ export const SignupWithEmailScreen: React.FC<SignupWithEmailProps> = ({ }) => {
           style={styles.button}
           title="CREATE ACCOUNT" />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
