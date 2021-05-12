@@ -57,8 +57,6 @@ const Account = ({ }: AccountProps) => {
     onRefresh();
   }, []);
 
-  console.log(user);
-
   return (
     <SafeAreaView style={globalStyles.safearea}>
       <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>

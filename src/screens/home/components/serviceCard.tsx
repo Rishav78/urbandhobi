@@ -6,10 +6,9 @@ import {
   View,
 } from "react-native";
 import { heightPercentageToDP, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import CardView from "@urbandhobi/components/cardview";
-import { Clickable } from "@urbandhobi/components/click";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import { Service } from "@urbandhobi/@types";
+import { Card, TouchableRipple } from "react-native-paper";
 
 export interface ServiceCardProps {
   data: Service;
@@ -34,8 +33,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   }, [data]);
 
   return (
-    <CardView style={styles.container}>
-      <Clickable onPress={onClick} style={styles.clickable}>
+    <Card style={styles.container}>
+      <TouchableRipple onPress={onClick} style={styles.clickable}>
         <View style={styles.content}>
           <Image source={{ uri: image }} style={styles.image} />
           <Text style={styles.title}>{name}</Text>
@@ -43,8 +42,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
             {typeof daysRequired === "number" ? `${daysRequired} Days` : "Unvailable"}
           </Text>
         </View>
-      </Clickable>
-    </CardView>
+      </TouchableRipple>
+    </Card>
   );
 };
 

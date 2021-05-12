@@ -1,7 +1,18 @@
 import React, { useCallback, useState, memo } from "react";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { StyleSheet, View, RefreshControl, ScrollViewProps, FlatList, FlatListProps, ScrollView, SectionList, SectionListProps, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  RefreshControl,
+  ScrollViewProps,
+  FlatList,
+  FlatListProps,
+  ScrollView,
+  SectionList,
+  SectionListProps,
+  Alert,
+} from "react-native";
 import MessageTile from "./messageTile";
+import { globalStyles } from "@urbandhobi/lib/constants";
 
 export interface PullRefreshProps {
   onRefreshHandler?: () => (Promise<void> | void);
@@ -22,20 +33,19 @@ export const RefreshScrollView: React.FC<RefreshScrollViewProps> = ({
       setRefreshing(true);
       try {
         await onRefreshHandler();
-        console.log("complete")
+        console.log("complete");
       }
       catch (error) {
         Alert.alert(error.message);
       }
       finally {
-        
         setRefreshing(false);
       }
     }
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <ScrollView
         {...scrollViewProps}
         refreshControl={
@@ -73,11 +83,11 @@ export const RefreshFlatList: React.FC<PullRefreshProps & FlatListProps<any>> = 
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <FlatList
         {...flatlistprops}
         data={data}
-        ListHeaderComponent={(!data || data.length <= 0) ? <MessageTile style={styles.message} message="NO DATA" /> : <></>}
+        ListHeaderComponent={(!data || data.length <= 0) ? <MessageTile style={globalStyles.message} message="NO DATA" /> : <></>}
         removeClippedSubviews={true}
         refreshControl={
           <RefreshControl
@@ -114,7 +124,7 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {isEmpty ?
         <ScrollView
           refreshControl={
@@ -124,7 +134,7 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
             />
           }
         >
-          <MessageTile style={styles.message} message="NO DATA IN THE CART" />
+          <MessageTile style={globalStyles.message} message="NO DATA IN THE CART" />
         </ScrollView> :
         <SectionList
           sections={sections}
@@ -143,12 +153,7 @@ export const RefreshSectionList: React.FC<PullRefreshProps & SectionListProps<an
 });
 
 const styles = StyleSheet.create({
-  message: {
-    elevation: 10,
-    backgroundColor: "#fff",
-    marginVertical: hp("2%"),
-    paddingVertical: hp("2%"),
-    marginHorizontal: wp("3%"),
-    borderRadius: wp("2%"),
+  container: {
+    flex: 1,
   },
 });

@@ -199,11 +199,11 @@ const PickupTimming: React.FC<PickupTimmingProps> = () => {
                     key={timing.id}
                     text={text}
                     fill={pickupTiming === timing.id}
-                    style={{ marginVertical: wp("2%") }}
+                    style={styles.timingBlock}
                     onPress={selectTiming(timing.id)} />
                 );
               }) :
-              <MessageTile style={styles.message} message="NO TIMING AVAILABLE FOR THIS DATE" />
+              <MessageTile style={globalStyles.message} message="NO TIMING AVAILABLE FOR THIS DATE" />
           }
         </Timing.Section>
       </View>
@@ -217,7 +217,7 @@ const PickupTimming: React.FC<PickupTimmingProps> = () => {
                 <Text style={styles.email}>{address.email}</Text>
                 <Text>{address.houseno}, {address.locality}, {address.city}, {address.state} {address.postalCode}</Text>
               </View> :
-              <MessageTile message="No address selected" />
+              <MessageTile style={globalStyles.message} message="No address selected" />
             }
           </TouchableRipple>
         </View>
@@ -256,15 +256,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: wp("3%"),
   },
-  message: {
-    elevation: 10,
-    flex: 1,
-    backgroundColor: "#fff",
-    marginTop: hp("1%"),
-    paddingVertical: hp("2%"),
-    marginHorizontal: wp("3%"),
-    borderRadius: wp("2%"),
-  },
   fab: {
     position: "absolute",
     margin: 16,
@@ -275,6 +266,10 @@ const styles = StyleSheet.create({
   addressContainer: {
     borderRadius: 2,
     overflow: "hidden",
+  },
+  timingBlock: {
+    marginVertical: wp("2%"),
+    width: wp("44%"),
   },
   email:{
     fontSize: wp("4.5%"),

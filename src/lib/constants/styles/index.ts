@@ -25,10 +25,19 @@ export const globalStyles = StyleSheet.create({
       },
     }),
   },
+  message: {
+    elevation: 10,
+    backgroundColor: "#fff",
+    marginVertical: hp("2%"),
+    paddingVertical: hp("2%"),
+    marginHorizontal: wp("3%"),
+    borderRadius: wp("2%"),
+  },
 });
 
 export const theme = {
   dark: { colors: { primary: "#333" } },
   light: { colors: { primary: "#fff" } },
+  black: { colors: { primary: "#000" } },
 };
 

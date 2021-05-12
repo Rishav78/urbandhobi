@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewProps } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {Card} from "react-native-paper";
 
 export interface MessageTileProps extends ViewProps {
   message: string;
@@ -11,9 +12,11 @@ export const MessageTile: React.FC<MessageTileProps> = ({
   style,
 }) => {
   return (
-    <View style={[styles.container, style]}>
+    <Card style={[styles.container, style]}>
+      <View>
       <Text style={styles.message}>{message}</Text>
-    </View>
+      </View>
+    </Card>
   );
 };
 

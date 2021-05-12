@@ -4,6 +4,7 @@ import { Clickable } from "@urbandhobi/components/click";
 import { useNavigate } from "@urbandhobi/hooks/navigation";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { useAddress } from "@urbandhobi/hooks";
+import { globalStyles } from "@urbandhobi/lib/constants";
 
 const Heading = () => {
   const { navigateToAddress } = useNavigate();
@@ -15,7 +16,7 @@ const Heading = () => {
         style={styles.clickable}
         onPress={navigateToAddress}>
         {!defaultAddress ?
-          <MessageTile message="NO DEFAULT ADDRESS" /> :
+          <MessageTile style={globalStyles.message} message="NO DEFAULT ADDRESS" /> :
           <>
             <Text
               numberOfLines={1}

@@ -20,7 +20,7 @@ export const AddressView = ({
 }: AddressViewProps) => {
 
   const { navigateToAddAddress } = useNavigate();
-  const {addressArray, getAddress, getDefaultAddress} = useAddress();
+  const { addressArray, getAddress, getDefaultAddress } = useAddress();
   const [FABVisible, setFABVisible] = useState(true);
 
   const onDefaulClickHandler = useCallback(async (address: Address) => {
@@ -83,12 +83,14 @@ export const AddressView = ({
           onRefreshHandler={onRefresh}
         />
       </View>
-      <FAB
-        onPress={navigateToAddAddress}
-        visible={FABVisible}
-        style={styles.fab}
-        color="#333"
-        icon={FABIcon} />
+      {mode === "config" &&
+        <FAB
+          onPress={navigateToAddAddress}
+          visible={FABVisible}
+          style={styles.fab}
+          color="#333"
+          icon={FABIcon} />
+      }
     </>
   );
 };
@@ -110,13 +112,6 @@ const styles = StyleSheet.create({
     color: "#0C0C0C",
     fontSize: wp("6%"),
     marginHorizontal: wp("3%"),
-  },
-  message: {
-    elevation: 10,
-    backgroundColor: "#fff",
-    paddingVertical: hp("2%"),
-    marginHorizontal: wp("3%"),
-    borderRadius: wp("2%"),
   },
   subTitle: {
     color: "#898989",

@@ -1,34 +1,44 @@
 import React, { useCallback, useEffect } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { AppLogo } from "@urbandhobi/components";
-import Header from "@urbandhobi/components/header/Header";
 import Heading from "./components/heading";
 import ServiceSection from "./components/service";
 import ServiceArea from "./components/serviceArea";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import ServiceCard from "./components/serviceCard";
-import { HeaderRight } from "./header";
 import { Service } from "@urbandhobi/@types";
 import Loading from "@urbandhobi/components/loading";
 import { useService, useCart, useNavigate, useAddress } from "@urbandhobi/hooks";
+import { Appbar } from "react-native-paper";
+import { theme } from "@urbandhobi/lib/constants";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export interface HomeScreenProps { }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
-  const { navigateToService } = useNavigate();
+  const { navigateToService, navigateToCart } = useNavigate();
 
-  const {getAndSetServiceType, serviceType, getServiceStates} = useService();
-  const {getCart} = useCart();
-  const {getDefaultAddress} = useAddress();
+  const { getAndSetServiceType, serviceType, getServiceStates } = useService();
+  const { getCart } = useCart();
+  const { getDefaultAddress } = useAddress();
   const serviceTypeArray = Object.values(serviceType);
 
   const onServicePress = useCallback((service: Service) => {
-    navigateToService({service});
+    navigateToService({ service });
   }, []);
 
   const onRefresh = useCallback(async () => {
     await Promise.all([getCart(), getAndSetServiceType(), getServiceStates(), getDefaultAddress()]);
+  }, []);
+
+  const _cartIcon = useCallback(() => {
+    return (
+      <Ionicons
+        name="md-cart-outline"
+        size={27}
+        color="#fff" />
+    );
   }, []);
 
   useEffect(() => {
@@ -38,11 +48,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
 
   return (
     <SafeAreaView style={styles.safearea}>
-      <Header
-        headerContainerStyle={styles.header}
-        headerTitle={<AppLogo contentContainerStyle={styles.logoContainer} iconStyle={styles.logoIcon} />}
-        headerRight={HeaderRight}
-        headerLeft={null} />
+      <Appbar.Header style={styles.header} theme={theme.black}>
+        <View style={styles.logoContainer}>
+          <AppLogo contentContainerStyle={styles.logoContainer} iconStyle={styles.logoIcon} />
+        </View>
+        <View style={{ flex: 1 }} />
+        <Appbar.Action onPress={navigateToCart} icon={_cartIcon} />
+      </Appbar.Header>
       <Heading />
       <RefreshScrollView
         onRefreshHandler={onRefresh}
@@ -81,19 +93,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#000",
-    height: hp("5%"),
-  },
+  header: { height: 40 },
   logoContainer: {
-    height: hp("5%"),
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     backgroundColor: "transparent",
-    elevation: 0,
-    padding: 0,
-    margin: 0,
   },
   logoIcon: {
     fontSize: hp("4.5%"),

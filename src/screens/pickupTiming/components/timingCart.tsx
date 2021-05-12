@@ -46,6 +46,7 @@ export const Block: React.FC<BlockProps> = ({
 
 const styles = StyleSheet.create({
   container: {
+    // width: wp("44%"),
     borderWidth: 1,
     borderColor: "#bfbfbf",
     paddingVertical: wp("1.5%"),
