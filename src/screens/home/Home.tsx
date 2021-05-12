@@ -38,7 +38,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safearea}>
       <Header
         headerContainerStyle={styles.header}
         headerTitle={<AppLogo contentContainerStyle={styles.logoContainer} iconStyle={styles.logoIcon} />}
@@ -72,6 +72,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ }) => {
 };
 
 const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   container: {
     display: "flex",
     flex: 1,

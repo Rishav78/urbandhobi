@@ -1,9 +1,8 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { Button, TextInput, Appbar } from "react-native-paper";
+import { Button, TextInput, Appbar, Divider } from "react-native-paper";
 import { View, StyleSheet, Alert, SafeAreaView, Text } from "react-native";
 import { ResponseToken } from "@urbandhobi/@types";
-import { Seperator } from "@urbandhobi/components";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
 import { Heading } from "../components";
@@ -67,8 +66,8 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+    <SafeAreaView style={globalStyles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
       </Appbar.Header>
       <View style={styles.container}>
@@ -76,7 +75,7 @@ export const SigninWithEmailScreen: React.FC<SigninWithEmailProps> = ({ }) => {
           title="LOGIN"
           subTitle="LOGIN with your email and password"
           contentContainerStyle={styles.heading} />
-        <Seperator contentContainerStyle={styles.seprator} />
+        <Divider style={styles.seprator} />
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <TextInput

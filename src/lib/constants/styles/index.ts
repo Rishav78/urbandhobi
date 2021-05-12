@@ -1,7 +1,11 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 export const globalStyles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   textinput: {
     height: hp("7%"),
     fontSize: wp("3.5%"),
@@ -13,6 +17,13 @@ export const globalStyles = StyleSheet.create({
   },
   buttonContent: {
     paddingVertical: wp("2%"),
+  },
+  headerContainer: {
+    ...Platform.select({
+      ios: {
+        elevation: 0,
+      },
+    }),
   },
 });
 

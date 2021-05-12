@@ -1,7 +1,7 @@
 import { Address, RootReducerType, Timings } from "@urbandhobi/@types";
 import * as Timing from "./components/timingCart";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Text, View, StyleSheet, Alert } from "react-native";
+import { Text, View, StyleSheet, Alert, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import Service from "@urbandhobi/lib/service";
@@ -12,11 +12,13 @@ import { Appbar, FAB, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { useAddress } from "@urbandhobi/hooks";
-import { monthNames } from "@urbandhobi/lib/constants";
+import { globalStyles, monthNames, theme } from "@urbandhobi/lib/constants";
 import { AddressPicker } from "./components/address-picker";
 import {Request} from "@urbandhobi/@types";
 
 interface PickupTimmingProps { }
+
+const HEADER_TITLE = Platform.select({ ios: "SCHEDULE ORDER", android: "Schedule order" });
 
 const cartSelector = (state: RootReducerType) => state.cart;
 
@@ -135,10 +137,10 @@ const PickupTimming: React.FC<PickupTimmingProps> = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+    <SafeAreaView style={globalStyles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Pickup timing" />
+        <Appbar.Content title={HEADER_TITLE} />
       </Appbar.Header>
 
       <View style={styles.section}>
@@ -209,11 +211,11 @@ const PickupTimming: React.FC<PickupTimmingProps> = () => {
 
       <View style={styles.section}>
         <Text style={{ fontSize: wp("5%") }}>Address</Text>
-        <View style={{ borderRadius: 2, overflow: "hidden" }}>
+        <View style={styles.addressContainer}>
           <TouchableRipple onPress={openAddressPicker}>
             {address ?
               <View style={{ paddingHorizontal: wp("1%"), paddingVertical: wp("2%") }}>
-                <Text style={{ fontSize: wp("4.5%"), fontWeight: "bold" }}>{address.email}</Text>
+                <Text style={styles.email}>{address.email}</Text>
                 <Text>{address.houseno}, {address.locality}, {address.city}, {address.state} {address.postalCode}</Text>
               </View> :
               <MessageTile message="No address selected" />
@@ -239,6 +241,9 @@ const FABIcon = () => (
 );
 
 const styles = StyleSheet.create({
+  safearea: {
+
+  },
   container: {},
   section: {
     paddingHorizontal: wp("5%"),
@@ -267,5 +272,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "#333",
+  },
+  addressContainer: {
+    borderRadius: 2,
+    overflow: "hidden",
+  },
+  email:{
+    fontSize: wp("4.5%"),
+    fontWeight: "bold",
   },
 });

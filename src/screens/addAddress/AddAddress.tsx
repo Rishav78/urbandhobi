@@ -24,6 +24,7 @@ import { FAB, Portal } from "react-native-paper";
 import { EditAddress as EditAddressT, FABState, ReverseGeoCode } from "@urbandhobi/@types";
 import Service from "@urbandhobi/lib/service";
 import { useAddress } from "@urbandhobi/hooks";
+import { globalStyles } from "@urbandhobi/lib/constants";
 
 export const AddAddress = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,7 +95,7 @@ export const AddAddress = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={globalStyles.safearea}>
       <RNMap
         ref={mapRef}
         onMapReady={setLoadingComplete}
@@ -139,9 +140,6 @@ export const AddAddress = () => {
 export default AddAddress;
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   footer: {
     position: "absolute",
     bottom: 0,

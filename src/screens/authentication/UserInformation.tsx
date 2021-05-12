@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { useDispatch } from "react-redux";
-import { Seperator, Input, Button } from "@urbandhobi/components";
+import { Input, Button } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import { useForm, UseFormProps } from "@urbandhobi/hooks/form";
 import { api } from "@urbandhobi/lib/config";
@@ -9,6 +9,7 @@ import { setVerified } from "@urbandhobi/redux/authentication/auth.action";
 import { Heading } from "./components";
 import { CreateUserForm } from "@urbandhobi/@types";
 import { createUser } from "@urbandhobi/actions";
+import { Divider } from "react-native-paper";
 
 export interface UserInformationProps { }
 
@@ -78,7 +79,7 @@ export const UserInformation: React.FC<UserInformationProps> = ({ }) => {
           title="USER INFORMATION"
           subTitle="Please provide your information"
           contentContainerStyle={styles.heading} />
-        <Seperator contentContainerStyle={styles.seprator} />
+        <Divider />
         <View style={styles.form}>
           <Input
             onChangeText={onFirstNameChangeHandler}
@@ -125,9 +126,6 @@ const styles = StyleSheet.create({
   heading: {
     marginHorizontal: 15,
     marginTop: 20,
-  },
-  seprator: {
-    marginVertical: 30,
   },
   form: {
     marginHorizontal: 15,

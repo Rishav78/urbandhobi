@@ -1,13 +1,12 @@
 import { useNavigation } from "@react-navigation/core";
 import { AddItemBody, Service, Cloth } from "@urbandhobi/@types";
-import { Seperator } from "@urbandhobi/components";
 import ClothCard from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { useCallback, useState } from "react";
 import { StyleSheet } from "react-native";
-import { Appbar, FAB } from "react-native-paper";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Appbar, Divider, FAB } from "react-native-paper";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -102,10 +101,7 @@ export const ClothView: React.FC<ClothViewProps> = ({
         onMomentumScrollEnd={() => setFABVisible(true)}
         keyExtractor={_keyExtractor}
         ItemSeparatorComponent={() => (
-          <Seperator
-            style={styles.seprator}
-            contentContainerStyle={{ marginVertical: hp("1%") }}
-          />
+          <Divider />
         )}
         renderItem={_renderItem}
       />
@@ -129,9 +125,6 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  seprator: {
-    height: 1,
   },
   buttonContainer: {
     position: "absolute",

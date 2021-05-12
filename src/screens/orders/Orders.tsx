@@ -2,14 +2,17 @@ import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { RefreshFlatList } from "@urbandhobi/components/pullrefresh";
 import { useAddress, useLaundry, useNavigate } from "@urbandhobi/hooks";
 import React, { useCallback } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { Appbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrderCard from "./components/order-card";
 import { Request } from "@urbandhobi/@types";
 import Service from "@urbandhobi/lib/service";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
 
 interface OrdersProps { }
+
+const HEADER_TITLE = Platform.select({ ios: "ORDERS", android: "Orders" });
 
 const Orders = ({ }: OrdersProps) => {
   const { goBack } = useNavigation();
@@ -54,12 +57,12 @@ const Orders = ({ }: OrdersProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+    <SafeAreaView style={styles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Orders" />
+        <Appbar.Content title={HEADER_TITLE} />
       </Appbar.Header>
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <RefreshFlatList
           data={requests || []}
           onRefreshHandler={onRefresh}
@@ -73,5 +76,11 @@ const Orders = ({ }: OrdersProps) => {
 export default Orders;
 
 const styles = StyleSheet.create({
-  container: {},
+  safearea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  container: {
+    flex: 1,
+  },
 });

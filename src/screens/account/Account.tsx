@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/core";
-import { Seperator } from "@urbandhobi/components";
 import MessageTile from "@urbandhobi/components/messageTile";
 import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import { useAuth, useNavigate, useUser } from "@urbandhobi/hooks";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
 import * as React from "react";
 import { Text, View, StyleSheet, Alert } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Divider } from "react-native-paper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -17,8 +17,8 @@ interface AccountProps { }
 const Account = ({ }: AccountProps) => {
   const { goBack } = useNavigation();
   const { getUser, user } = useUser();
-  const {navigateToUpdateUser} = useNavigate();
-  const {logout} = useAuth();
+  const { navigateToUpdateUser } = useNavigate();
+  const { logout } = useAuth();
 
   const onOrderClick = React.useCallback(() => {
 
@@ -59,8 +59,8 @@ const Account = ({ }: AccountProps) => {
   console.log(user);
 
   return (
-    <SafeAreaView style={styles.safearea}>
-      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+    <SafeAreaView style={globalStyles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="Account setting" />
         <Appbar.Action onPress={navigateToUpdateUser} icon={() => <MaterialIcons name="edit" size={24} color="black" />} />
@@ -78,12 +78,12 @@ const Account = ({ }: AccountProps) => {
               </View>
             </View>
             <View style={styles.item}>
-              <Seperator style={{ height: 0.5, backgroundColor: "#666666" }} />
+              <Divider />
               <Item.Item>
                 <Item.Content title="My Account" />
                 <Item.Icon icon="keyboard-arrow-down" />
               </Item.Item>
-              <Seperator style={{ height: 0.4, backgroundColor: "#666666" }} />
+              <Divider />
             </View>
             <Item.Item onPress={onOrderClick} style={styles.item}>
               <Item.Icon icon={(props) => <MaterialCommunityIcons name="note-multiple-outline" {...props} />} />

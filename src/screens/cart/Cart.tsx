@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
 import { CartItem } from "@urbandhobi/@types";
-import { Seperator } from "@urbandhobi/components";
 import CardView from "@urbandhobi/components/cardview";
 import ClothCardv2 from "@urbandhobi/components/cloth/ClothCardv2";
 import { RefreshSectionList } from "@urbandhobi/components/pullrefresh";
@@ -8,13 +7,16 @@ import { useNavigate } from "@urbandhobi/hooks/navigation";
 import { useCloth } from "@urbandhobi/hooks/cloth.hook";
 import { toTitleCase } from "@urbandhobi/lib/helpers/string";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
-import { Appbar, FAB } from "react-native-paper";
+import { Alert, DefaultSectionT, Platform, SectionListData, StyleSheet, Text, View } from "react-native";
+import { Appbar, Divider, FAB } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useService, useCart } from "@urbandhobi/hooks";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Service from "@urbandhobi/lib/service";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
+
+const HEADER_TITLE = Platform.select({ ios: "CART", android: "Cart" });
 
 const Cart = () => {
   const { goBack } = useNavigation();
@@ -40,16 +42,7 @@ const Cart = () => {
       const req = await service.request();
       await getCart();
       if (req) {
-        Alert.alert("Request Raised", "want to schdule now", [
-          {
-            text: "Ok",
-            onPress: () => navigateToTiming(req),
-          },
-          {
-            text: "Cancel",
-            onPress: () => navigateToHome(),
-          },
-        ]);
+        navigateToTiming(req);
       } else {
         Alert.alert("Error", "Fail to raised request. Please try again laster", [
           {
@@ -69,11 +62,36 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    getItems();
-  }, [cart]);
-
-  useEffect(() => {
     onRefresh();
+  }, []);
+
+  const _renderSectionHeader = useCallback(({ section }: { section: SectionListData<any, DefaultSectionT>; }) => {
+    const { title, data } = section;
+    if (data.length <= 0) { return <></>; }
+    return (
+      <CardView>
+        <Text style={{
+          paddingHorizontal: wp("3%"),
+          fontSize: wp("6%"),
+        }}>{toTitleCase(title)}</Text>
+      </CardView>
+    );
+  }, []);
+
+  const _keyExtractor = useCallback((item: CartItem) => {
+    return item.id;
+  }, []);
+
+  const _itemSeparatorComponent = useCallback(() => {
+    return (
+      <Divider />
+    );
+  }, []);
+
+  const _listFooterComponent = useCallback(() => {
+    return (
+      <View style={{ height: hp("10%") }} />
+    );
   }, []);
 
   const _renderItem = useCallback(({ item }: { item: CartItem }) => {
@@ -86,30 +104,22 @@ const Cart = () => {
   }, [clothes]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Appbar.Header theme={{ colors: { primary: "#fff" } }}>
+    <SafeAreaView style={styles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Cart" />
+        <Appbar.Content title={HEADER_TITLE} />
       </Appbar.Header>
-      <View style={{ flex: 1 }}>
+      <View style={styles.contentContainer}>
         <RefreshSectionList
           sections={data}
           onRefreshHandler={onRefresh}
-          ItemSeparatorComponent={() => <Seperator style={{ height: 1, marginHorizontal: wp("5%") }} />}
-          keyExtractor={item => item.id}
+          ItemSeparatorComponent={_itemSeparatorComponent}
+          keyExtractor={_keyExtractor}
           renderItem={_renderItem}
           onMomentumScrollBegin={() => setFABVisible(false)}
           onMomentumScrollEnd={() => setFABVisible(true)}
-          renderSectionHeader={({ section: { title, data } }) => (
-            data.length > 0 ?
-              <CardView>
-                <Text style={{
-                  paddingHorizontal: wp("3%"),
-                  fontSize: wp("6%"),
-                }}>{toTitleCase(title)}</Text>
-              </CardView> : <></>
-          )}
-          ListFooterComponent={() => <View style={{ height: hp("10%") }} />}
+          renderSectionHeader={_renderSectionHeader}
+          ListFooterComponent={_listFooterComponent}
         />
       </View>
       <FAB
@@ -129,6 +139,13 @@ const FABIcon = () => (
 );
 
 const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  contentContainer: {
+    flex: 1,
+  },
   buttonContainer: {
     position: "absolute",
     bottom: 0,
