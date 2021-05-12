@@ -1,8 +1,7 @@
 import { Address, RootReducerType, Timings } from "@urbandhobi/@types";
 import * as Timing from "./components/timingCart";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Text, View, StyleSheet, Alert, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View, StyleSheet, Alert, Platform, SafeAreaView } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import Service from "@urbandhobi/lib/service";
 import MessageTile from "@urbandhobi/components/messageTile";

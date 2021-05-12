@@ -1,11 +1,9 @@
 import { useNavigation } from "@react-navigation/core";
 import { useUser } from "@urbandhobi/hooks";
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const theme = { colors: { primary: "#333" } };
 

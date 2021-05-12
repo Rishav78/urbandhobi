@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { AppLogo } from "@urbandhobi/components";
 import Header from "@urbandhobi/components/header/Header";
 import Heading from "./components/heading";

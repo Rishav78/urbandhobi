@@ -9,9 +9,9 @@ import {
   View,
   ActivityIndicator,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-maps";
 import RNMap from "@urbandhobi/components/map";
 import {
