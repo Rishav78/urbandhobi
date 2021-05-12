@@ -1,13 +1,14 @@
 import { useNavigation } from "@react-navigation/core";
 import { useUser } from "@urbandhobi/hooks";
+import { globalStyles, theme } from "@urbandhobi/lib/constants";
 import React, { useState } from "react";
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, Text, SafeAreaView, Platform } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const theme = { colors: { primary: "#333" } };
-
 interface UpdateUserProps { }
+
+const HEADER_TITLE = Platform.select({ios: "UPDATE PROFILE", android: "Update Profile"});
 
 const UpdateUser = ({ }: UpdateUserProps) => {
 
@@ -19,10 +20,10 @@ const UpdateUser = ({ }: UpdateUserProps) => {
   const [number, setNumber] = useState((user && user.number) || "");
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Appbar.Header theme={{colors: {primary: "#fff"}}}>
+    <SafeAreaView style={globalStyles.safearea}>
+      <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Update Profile" />
+        <Appbar.Content title={HEADER_TITLE} />
       </Appbar.Header>
       {user ?
         <View style={{flex: 1}}>
@@ -30,7 +31,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
             <View style={styles.itemContiner}>
               <TextInput
                 disabled
-                theme={theme}
+                theme={theme.dark}
                 style={styles.textinput}
                 mode="outlined"
                 keyboardType="email-address"
@@ -40,7 +41,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
             </View>
             <View style={styles.itemContiner}>
               <TextInput
-                theme={theme}
+                theme={theme.dark}
                 style={styles.textinput}
                 mode="outlined"
                 value={firstName}
@@ -50,7 +51,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
             </View>
             <View style={styles.itemContiner}>
               <TextInput
-                theme={theme}
+                theme={theme.dark}
                 style={styles.textinput}
                 mode="outlined"
                 value={lastName}
@@ -60,7 +61,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
             </View>
             <View style={styles.itemContiner}>
               <TextInput
-                theme={theme}
+                theme={theme.dark}
                 style={styles.textinput}
                 mode="outlined"
                 value={number}
@@ -70,7 +71,7 @@ const UpdateUser = ({ }: UpdateUserProps) => {
             </View>
           </View>
           <View style={styles.itemContiner}>
-            <Button contentStyle={styles.submitButtonContent} mode="contained" theme={theme}>
+            <Button contentStyle={styles.submitButtonContent} mode="contained" theme={theme.dark}>
               <Text>Update</Text>
             </Button>
           </View>

@@ -4,7 +4,7 @@ import { RefreshScrollView } from "@urbandhobi/components/pullrefresh";
 import { useAuth, useNavigate, useUser } from "@urbandhobi/hooks";
 import { globalStyles, theme } from "@urbandhobi/lib/constants";
 import * as React from "react";
-import { Text, View, StyleSheet, Alert, SafeAreaView } from "react-native";
+import { Text, View, StyleSheet, Alert, SafeAreaView, Platform } from "react-native";
 import { Appbar, Divider } from "react-native-paper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,6 +12,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import * as Item from "./components/item";
 
 interface AccountProps { }
+
+const HEADER_TITLE = Platform.select({ios: "ACCOUNT SETTING", android: "Account setting"});
 
 const Account = ({ }: AccountProps) => {
   const { goBack } = useNavigation();
@@ -61,7 +63,7 @@ const Account = ({ }: AccountProps) => {
     <SafeAreaView style={globalStyles.safearea}>
       <Appbar.Header style={globalStyles.headerContainer} theme={theme.light}>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Account setting" />
+        <Appbar.Content title={HEADER_TITLE} />
         <Appbar.Action onPress={navigateToUpdateUser} icon={() => <MaterialIcons name="edit" size={24} color="black" />} />
       </Appbar.Header>
       {!user ? <MessageTile message="" /> :
