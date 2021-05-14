@@ -27,6 +27,7 @@ export const globalStyles = StyleSheet.create({
   },
   message: {
     elevation: 10,
+    flex: 1,
     backgroundColor: "#fff",
     marginVertical: hp("2%"),
     paddingVertical: hp("2%"),
